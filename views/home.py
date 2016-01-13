@@ -11,6 +11,7 @@ from zlogin.decorators import login_detect,login_required
 from zlogin import zlauth
 from zlogin.zlauth import GetUser,PermCheck
 from zlogin.captcha_app import CheckCaptcha,OutsiteCaptchaURL
+from pichublog.models import *
 
 @login_detect()
 def Home(request):
@@ -66,6 +67,3 @@ def LeaveMsgAdd(request):
 			stk = request.auth.cookie.get('zl2_token')
 			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=False)
 			return HttpResponseRedirect(reverse('swzry_leavemsg'))
-
-def baidu_verify(request,vfs):
-	return HttpResponse(settings.PUBLIC_CONF ['siteinfo']['baidu_verify'].get(vfs))
