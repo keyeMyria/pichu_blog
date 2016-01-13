@@ -4,7 +4,7 @@ from django.conf import settings
 from django.shortcuts import render_to_response,RequestContext
 from django_hosts.resolvers import reverse
 from django.contrib import messages
-from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID
+from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,KVConfGetText,KVConfGetBool
 from siteutil.CommonPaginator import SelfPaginator
 from zlogin.common.JsonResponse import JsonResponse
 from zlogin.decorators import login_detect,login_required
@@ -52,7 +52,7 @@ def LeaveMsgAdd(request):
 			content = request.POST.get('content')
 			title = request.POST.get('title')
 			stk = request.auth.cookie.get('zl2_token')
-			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=False,stoken=stk,fromuser=request.auth.user,content=content,reviewed=False)
+			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=False,stoken=stk,fromuser=request.auth.user,content=content,reviewed=True)
 			return HttpResponseRedirect(reverse('swzry_leavemsg'))
 		else:
 			capt = request.POST.get('captcha')
@@ -65,5 +65,6 @@ def LeaveMsgAdd(request):
 			web = request.POST.get('website')
 			title = request.POST.get('title')
 			stk = request.auth.cookie.get('zl2_token')
-			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=False)
+			rws = not KVConfGetBool(KVConf,"LeaveMsgReviewSwitch",default=True)
+			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=rws)
 			return HttpResponseRedirect(reverse('swzry_leavemsg'))

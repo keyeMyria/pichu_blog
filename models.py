@@ -32,6 +32,7 @@ class BlogPost(models.Model):
 
 class BlogComment(models.Model):
 	cmid      = models.BigIntegerField(primary_key=True)
+	reviewed  = models.BooleanField(default=False)
 	post      = models.ForeignKey(BlogPost)
 	time      = models.DateTimeField(auto_now_add=True,auto_now=True)
 	anonymou  = models.BooleanField(default=True)
@@ -44,6 +45,7 @@ class BlogComment(models.Model):
 
 class LeaveMsg(models.Model):
 	cmid      = models.BigIntegerField(primary_key=True)
+	reviewed  = models.BooleanField(default=False)
 	time      = models.DateTimeField(auto_now_add=True,auto_now=True)
 	anonymou  = models.BooleanField(default=True)
 	stoken    = models.CharField(max_length=36,db_index=True)
