@@ -19,7 +19,8 @@ def Home(request):
 	return render_to_response('home/home.html',kwargs,RequestContext(request))
 
 def LeaveMsgPage(request):
-	kwargs = {"request":request,'OutsiteCaptchaURL':OutsiteCaptchaURL(request),}
+	kwargs = {"request":request,'OutsiteCaptchaURL':OutsiteCaptchaURL(request),
+			  "LeaveMsgReviewSwitch":KVConfGetBool(KVConf,"LeaveMsgReviewSwitch",default=True)}
 	return render_to_response('home/leave.msg.html',kwargs,RequestContext(request))
 
 def AjaxShowLeaveMsg(request):
@@ -53,12 +54,12 @@ def LeaveMsgAdd(request):
 			title = request.POST.get('title')
 			stk = request.auth.cookie.get('zl2_token')
 			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=False,stoken=stk,fromuser=request.auth.user,content=content,reviewed=True)
-			return HttpResponseRedirect(reverse('swzry_leavemsg'))
+			return HttpResponseRedirect(reverse('pichublog_msgboard'))
 		else:
 			capt = request.POST.get('captcha')
 			if not CheckCaptcha(request,capt):
 				messages.error(request,u"<b>验证码错误</b>")
-				return HttpResponseRedirect(reverse('swzry_leavemsg'))
+				return HttpResponseRedirect(reverse('pichublog_msgboard'))
 			content = request.POST.get('content')
 			nick = request.POST.get('nick')
 			mail = request.POST.get('mail')
@@ -67,4 +68,4 @@ def LeaveMsgAdd(request):
 			stk = request.auth.cookie.get('zl2_token')
 			rws = not KVConfGetBool(KVConf,"LeaveMsgReviewSwitch",default=True)
 			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=rws)
-			return HttpResponseRedirect(reverse('swzry_leavemsg'))
+			return HttpResponseRedirect(reverse('pichublog_msgboard'))

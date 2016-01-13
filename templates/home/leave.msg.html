@@ -29,7 +29,11 @@
   </div>
   <div id="commentAdd" class="panel-body">
     <div class="container">
-      <h4>(您发表的留言经过管理员审核后方可看见)</h4>
+      {% if LeaveMsgReviewSwitch %}
+        {% if not request.auth.islogin %}
+          <h4>(您发表的留言经过管理员审核后方可看见)</h4>
+        {% endif %}
+      {% endif %}
       <form class="form-horizontal" role="form" action="{% url 'pichublog_lmadd' %}" method="POST" >
         {% csrf_token %}
         <div class="form-group">
