@@ -2,11 +2,11 @@ from django.db import models
 from zlogin.models import User,UserGroup
 
 class KVConf(models.Model):
-	key = models.CharField(max_length=64,unique=True,index=True)
+	key = models.CharField(max_length=64,unique=True,db_index=True)
 	value = models.TextField()
 
 class BlogCategoty(models.Model):
-	engname = models.CharField(max_length=64,index=True)
+	engname = models.CharField(max_length=64,db_index=True)
 	title = models.CharField(max_length=64)
 
 # Create your models here.
@@ -35,7 +35,7 @@ class BlogComment(models.Model):
 	post      = models.ForeignKey(BlogPost)
 	time      = models.DateTimeField(auto_now_add=True,auto_now=True)
 	anonymou  = models.BooleanField(default=True)
-	stoken    = models.CharField(max_length=36,db_index=True)
+	stoken    = models.CharField(max_length=36,db_db_index=True)
 	mail      = models.CharField(max_length=255,blank=True,null=True)
 	website   = models.CharField(max_length=255,blank=True,null=True)
 	fromuser = models.CharField(max_length=64)
@@ -46,7 +46,7 @@ class LeaveMsg(models.Model):
 	cmid      = models.BigIntegerField(primary_key=True)
 	time      = models.DateTimeField(auto_now_add=True,auto_now=True)
 	anonymou  = models.BooleanField(default=True)
-	stoken    = models.CharField(max_length=36,db_index=True)
+	stoken    = models.CharField(max_length=36,db_db_index=True)
 	mail      = models.CharField(max_length=255,blank=True,null=True)
 	website   = models.CharField(max_length=255,blank=True,null=True)
 	fromuser = models.CharField(max_length=64)
