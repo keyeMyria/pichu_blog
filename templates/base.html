@@ -1,0 +1,276 @@
+{% load staticres %}
+{% load authperm %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7">
+    <![endif]-->
+    <!--[if IE 7]>
+    <html class="no-js lt-ie9 lt-ie8">
+        <![endif]-->
+        <!--[if IE 8]>
+        <html class="no-js lt-ie9">
+            <![endif]-->
+            <!--[if gt IE 8]>
+            <!-->
+            <html class="no-js">
+                <!--<![endif]-->
+<head>
+                <meta http-equiv="content-type" content="text/html; charset=utf-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <meta name="renderer" content="webkit">
+                <link rel="shortcut icon" href="/favicon.ico"/>
+                <link rel="bookmark" href="/favicon.ico"/>
+                <title>{% block title %}丘丘塔台{% endblock %}</title>
+                {% res css "bootstrap" %}
+        {% res css "main" %}
+        {% res css "common" %}
+        {% res css "footer" %}
+        {% res js "jquery" %}
+        {% res js "jquery.cookie" %}
+        {% res js "bootstrap" %}
+        {% res js "common" %}
+
+        {% block head %}{% endblock %}
+</head>
+
+<body>
+                <!-- 导航栏 -->
+                <div class="mainmenu-wrapper hidden-xs">
+                    <div class="container">
+                        <div class="menuextras">
+
+                            <div class="extras">
+                                <ul>
+                                    <li class="envelope-items dropdown">
+                                        <span class="glyphicon glyphicon-envelope icon-white"></span>
+                                        <a href="" data-toggle="dropdown"> <b>通知</b> <b class="caret"></b>
+                                        </a>
+                                        <span class="navmsgalt badge"></span>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li role="menuitem">
+                                                <a href="{% siteurl 'smail_mailbox' %}">站内信箱</a>
+                                            </li>
+                                            <li role="menuitem">
+                                                <a href="{% siteurl 'smail_edit' %}">发送站内信</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    {% if request.auth.islogin %}
+                                    <li class="dropdown">
+                                        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                            <b>{{ request.auth.user }}</b>
+                                            <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            {% ifperm "adminsys" "Access" %}
+                                            <li role="menuitem">
+                                                <a href="{% siteurl 'admin_home' %}">管理后台</a>
+                                            </li>
+                                            {% endifperm %}
+                                            <li role="menuitem">
+                                                <a href="{% siteurl 'zlum' %}">个人中心</a>
+                                            </li>
+                                            <li role="menuitem">
+                                                <a href="{% siteurl 'zlum_logout' %}">注销登陆</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    {% else %}
+                                    <li>
+                                        <a href="{% siteurl 'zlum_loginurl' %}">
+                                            <b>登陆</b>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        <nav id="mainmenu" class="mainmenu">
+                            <ul>
+                                <li class="logo-wrapper">
+                                    <a href="{% siteurl 'home' %}">{% res img "title-logo" %}</a>
+                                </li>
+                                <li>
+                                    <a href="//" target="_self">分站首页</a>
+                                </li>
+                                {% for i in request.pubconf.siteinfo.header.navigator %}
+                                <!-- {{i.title}} - {{i.type}} -->
+                                {% ifequal i.type "link" %}
+                                <li>
+                                    <a href="{{i.href}}" target="{{i.target}}">{{i.title}}</a>
+                                </li>
+                                {% endifequal %}
+                                    {% ifequal i.type "menu" %}
+                                <li class="dropdown">
+                                    <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                        {{i.title}}
+                                        <b class="caret"></b>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        {% for j in i.items %}
+                                        <li role="menuitem">
+                                            <a href="{{j.href}}" target="{{j.target}}">{{j.title}}</a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endifequal %}
+                                {% endfor %}
+                            </ul>
+                        </nav>
+                        <!--/.nav-collapse --> </div>
+                </div>
+                <div class="mainmenu-wrapper visible-xs">
+                    <div class="container">
+                        <div class="menuextras">
+                            <div class="extras">
+                                <ul>
+                                    <li class="envelope-items dropdown">
+                                        <span class="glyphicon glyphicon-envelope icon-white"></span>
+                                        <a href="" data-toggle="dropdown">
+                                            <b>通知</b>
+                                            <b class="caret"></b>
+                                        </a>
+                                        <span class="navmsgalt badge"></span>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li role="menuitem">
+                                                <a href="{% siteurl 'smail_mailbox' %}">站内信箱</a>
+                                            </li>
+                                            <li role="menuitem">
+                                                <a href="{% siteurl 'smail_edit' %}">发送站内信</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    {% if request.auth.islogin %}
+                                    <li class="dropdown">
+                                        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                            <b>{{ request.auth.user }}</b>
+                                            <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            {% ifperm "adminsys" "Access" %}
+                                            <li role="menuitem">
+                                                <a href="{% siteurl 'admin_home' %}">管理后台</a>
+                                            </li>
+                                            {% endifperm %}
+                                            <li role="menuitem">
+                                                <a href="{% siteurl 'zlum' %}">个人中心</a>
+                                            </li>
+                                            <li role="menuitem">
+                                                <a href="{% siteurl 'zlum_logout' %}">注销登陆</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    {% else %}
+                                    <li>
+                                        <a href="{% siteurl 'zlum_loginurl' %}">
+                                            <b>登陆</b>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        <nav id="mainmenu" class="mainmenu">
+                            <ul>
+                                <li class="logo-wrapper">
+                                    <a href="{% siteurl 'home' %}" style="padding-right:0px;">
+                                        <h3 class="vertical-middle">{% res img "32pxlogo" %}&nbsp;丘丘塔台</h3>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!--/.nav-collapse --> </div>
+                </div>
+                <div class="section section-breadcrumbs hidden-xs">
+                    <div class="container" style="width:70%">
+                        <h1>
+                            <span id="pagetitlebar_pcc">正在载入...</span>
+                        </h1>
+                    </div>
+                </div>
+                <div id="mobi_navmenu" disp="0" style="display:none">
+                    <nav id="mainmenu" class="mainmenu mobi-navmenu">
+                        <ul>
+                            <li>
+                                <a href="//" target="_self">分站首页</a>
+                            </li>
+                            {% for i in request.pubconf.siteinfo.header.navigator %}
+                            <!-- {{i.title}} - {{i.type}} -->
+                            {% ifequal i.type "link" %}
+                            <li>
+                                <a href="{{i.href}}" target="{{i.target}}">{{i.title}}</a>
+                            </li>
+                            {% endifequal %}
+                                {% ifequal i.type "menu" %}
+                            <li class="dropdown">
+                                <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                    {{i.title}}
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    {% for j in i.items %}
+                                    <li role="menuitem">
+                                        <a href="{{j.href}}" target="{{j.target}}">{{j.title}}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            {% endifequal %}
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </div>
+                <div class="section section-breadcrumbs visible-xs">
+                    <div class="container" style="width:90%">
+                        <h1>
+                            <span role="button" onclick="mobi_navmenutoggle()" id="pagetitlebar_mbb">
+                                <span id="pagetitlebar_mbc">正在载入...</span>
+                                <span id="mobi_navmenu_icon" class="glyphicon glyphicon-chevron-up"></span>
+                            </span>
+                        </h1>
+                    </div>
+                </div>
+                <!-- 内容区域 -->
+                <div class="container main-container">
+                    {% if messages %}
+                        {% for message in messages %}
+                    <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}role="alert">{{ message|safe }}</div>
+                    {% endfor %}
+                    {% endif %}
+                    {% block content %}{% endblock %}
+                </div>
+                <script type="text/javascript">
+                    CopyTitle();
+                    GetMsgAlt();
+                </script>
+                <div class="footer">
+                    <div class="container col-footer">
+                        <div class="row">
+                            <div class="col-footer col-md-4 col-xs-6">
+                                <br/>
+                                <p class="text-muted">丘丘塔台 &copy; pichuworks 技术支持：<a href="http://www.swzry.com/" target="_blank">swzry.com</a> 2016
+                                <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256691021'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1256691021%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
+                                </p>
+                            </div>
+                            <div class="col-footer col-md-4 col-md-offset-4 col-xs-6">
+                                <br/>
+                                <p class="text-muted">
+                                    最佳浏览分辨率1920x1080
+                                    <br />
+                                    推荐使用IE9.0以上、Firefox、Chrome、Opera等浏览器
+                                </p>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript" src="{% siteurl 'smail_alt' %}"></script>
+                {% res js "jquery.sequence" %}
+    {% res js "jquery.bxslider" %}
+    {% res js "slide-template" %}
+</body>
+            </html>
