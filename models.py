@@ -13,7 +13,7 @@ class BlogCategoty(models.Model):
 class BlogPost(models.Model):
 	title = models.CharField(max_length=128)
 	category = models.ManyToManyField(BlogCategoty,null=True)
-	author = models.ForeignKey(User)
+	author = models.ForeignKey(User,related_name="pichublog_post_set")
 	crttime = models.DateTimeField(auto_now_add=True)
 	pubtime = models.DateTimeField(auto_now_add=True,auto_now=True)
 	markdown = models.TextField()
@@ -22,13 +22,13 @@ class BlogPost(models.Model):
 	private = models.BooleanField(default=True)
 	passwdlck = models.BooleanField(default=True)
 	passwd = models.CharField(max_length=128)
-	readgrp = models.ManyToManyField(UserGroup,blank=True,null=True)
-	readuin = models.ManyToManyField(User,blank=True,null=True)
-	readuex = models.ManyToManyField(User,blank=True,null=True)
+	readgrp = models.ManyToManyField(UserGroup,blank=True,null=True,related_name="pichublog_readgrp")
+	readuin = models.ManyToManyField(User,blank=True,null=True,related_name="pichublog_readuin")
+	readuex = models.ManyToManyField(User,blank=True,null=True,related_name="pichublog_readuex")
 	freecomment = models.BooleanField(default=True)
-	commentgrp = models.ManyToManyField(UserGroup,blank=True,null=True)
-	commentuin = models.ManyToManyField(User,blank=True,null=True)
-	commentuex = models.ManyToManyField(User,blank=True,null=True)
+	commentgrp = models.ManyToManyField(UserGroup,blank=True,null=True,related_name="pichublog_commentgrp")
+	commentuin = models.ManyToManyField(User,blank=True,null=True,related_name="pichublog_commentuin")
+	commentuex = models.ManyToManyField(User,blank=True,null=True,related_name="pichublog_commentuex")
 
 class BlogComment(models.Model):
 	cmid      = models.BigIntegerField(primary_key=True)
