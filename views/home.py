@@ -17,55 +17,55 @@ def Home(request):
 	kwargs = {"request":request}
 	return render_to_response('home/home.html',kwargs,RequestContext(request))
 
-# def LeaveMsgPage(request):
-# 	kwargs = {"request":request,'OutsiteCaptchaURL':OutsiteCaptchaURL(request),}
-# 	return render_to_response('mainapp/home/leave.msg.html',kwargs,RequestContext(request))
+def LeaveMsgPage(request):
+	kwargs = {"request":request,'OutsiteCaptchaURL':OutsiteCaptchaURL(request),}
+	return render_to_response('home/leave.msg.html',kwargs,RequestContext(request))
 
-# def AjaxShowLeaveMsg(request):
-# 	thisuser = GetUser(request)
-# 	owner = PermCheck(request.auth,'adminsys','LeaveMsgMgr')
-# 	if owner:
-# 		cmt = LeaveMsg.objects.all().order_by('-time')
-# 	else:
-# 		cmt = LeaveMsg.objects.filter(reviewed=True).order_by('-time')
-# 	lPage = SelfPaginator(request,cmt,20)
-# 	kwvars = {
-# 		'request':request,
-# 		'owner':owner,
-# 		'lPage':lPage,
-# 		'AjaxPaginatorID':'cmt',
-# 	}
-# 	return render_to_response('mainapp/home/ajax.leavemsg.html',kwvars,RequestContext(request))
+def AjaxShowLeaveMsg(request):
+	thisuser = GetUser(request)
+	owner = PermCheck(request.auth,'pichublog','Admin')
+	if owner:
+		cmt = LeaveMsg.objects.all().order_by('-time')
+	else:
+		cmt = LeaveMsg.objects.filter(reviewed=True).order_by('-time')
+	lPage = SelfPaginator(request,cmt,20)
+	kwvars = {
+		'request':request,
+		'owner':owner,
+		'lPage':lPage,
+		'AjaxPaginatorID':'cmt',
+	}
+	return render_to_response('home/ajax.leavemsg.html',kwvars,RequestContext(request))
 
-# def LeaveMsgAdd(request):
-# 	if request.method == "POST":
-# 		if request.auth.islogin:
-# 			chkpr=CheckPOST(['content'],request.POST.keys())
-# 			if not chkpr == "" :
-# 				return JsonResponse({"code":400,"msg":"Error Args."})
-# 		else:
-# 			chkpr=CheckPOST(['content','nick','website','mail','title'],request.POST.keys())
-# 			if not chkpr == "" :
-# 				return JsonResponse({"code":400,"msg":"Error Args."})
-# 		if request.auth.islogin:
-# 			content = request.POST.get('content')
-# 			title = request.POST.get('title')
-# 			stk = request.auth.cookie.get('zl2_token')
-# 			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=False,stoken=stk,fromuser=request.auth.user,content=content,reviewed=False)
-# 			return HttpResponseRedirect(reverse('swzry_leavemsg'))
-# 		else:
-# 			capt = request.POST.get('captcha')
-# 			if not CheckCaptcha(request,capt):
-# 				messages.error(request,u"<b>验证码错误</b>")
-# 				return HttpResponseRedirect(reverse('swzry_leavemsg'))
-# 			content = request.POST.get('content')
-# 			nick = request.POST.get('nick')
-# 			mail = request.POST.get('mail')
-# 			web = request.POST.get('website')
-# 			title = request.POST.get('title')
-# 			stk = request.auth.cookie.get('zl2_token')
-# 			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=False)
-# 			return HttpResponseRedirect(reverse('swzry_leavemsg'))
+def LeaveMsgAdd(request):
+	if request.method == "POST":
+		if request.auth.islogin:
+			chkpr=CheckPOST(['content'],request.POST.keys())
+			if not chkpr == "" :
+				return JsonResponse({"code":400,"msg":"Error Args."})
+		else:
+			chkpr=CheckPOST(['content','nick','website','mail','title'],request.POST.keys())
+			if not chkpr == "" :
+				return JsonResponse({"code":400,"msg":"Error Args."})
+		if request.auth.islogin:
+			content = request.POST.get('content')
+			title = request.POST.get('title')
+			stk = request.auth.cookie.get('zl2_token')
+			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=False,stoken=stk,fromuser=request.auth.user,content=content,reviewed=False)
+			return HttpResponseRedirect(reverse('swzry_leavemsg'))
+		else:
+			capt = request.POST.get('captcha')
+			if not CheckCaptcha(request,capt):
+				messages.error(request,u"<b>验证码错误</b>")
+				return HttpResponseRedirect(reverse('swzry_leavemsg'))
+			content = request.POST.get('content')
+			nick = request.POST.get('nick')
+			mail = request.POST.get('mail')
+			web = request.POST.get('website')
+			title = request.POST.get('title')
+			stk = request.auth.cookie.get('zl2_token')
+			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=False)
+			return HttpResponseRedirect(reverse('swzry_leavemsg'))
 
-# def baidu_verify(request,vfs):
-# 	return HttpResponse(settings.PUBLIC_CONF ['siteinfo']['baidu_verify'].get(vfs))
+def baidu_verify(request,vfs):
+	return HttpResponse(settings.PUBLIC_CONF ['siteinfo']['baidu_verify'].get(vfs))

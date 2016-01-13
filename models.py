@@ -1,4 +1,54 @@
 from django.db import models
+from zlogin.models import User,UserGroup
+
+class KVConf(models.Model):
+	key = models.CharField(max_length=64,unique=True,index=True)
+	value = models.TextField()
+
+class BlogCategoty(models.Model):
+	engname = models.CharField(max_length=64,index=True)
+	title = models.CharField(max_length=64)
 
 # Create your models here.
-class BlogPost(models.Model)
+class BlogPost(models.Model):
+	title = models.CharField(max_length=128)
+	category = models.ManyToManyField(BlogCategoty,null=True)
+	author = models.ForeignKey(User)
+	crttime = models.DateTimeField(auto_now_add=True)
+	pubtime = models.DateTimeField(auto_now_add=True,auto_now=True)
+	markdown = models.TextField()
+	rendered = models.TextField()
+	hidden = models.BooleanField(default=False)
+	private = models.BooleanField(default=True)
+	passwdlck = models.BooleanField(default=True)
+	passwd = models.CharField(max_length=128)
+	readgrp = models.ManyToManyField(UserGroup,blank=True,null=True)
+	readuin = models.ManyToManyField(User,blank=True,null=True)
+	readuex = models.ManyToManyField(User,blank=True,null=True)
+	freecomment = models.BooleanField(default=True)
+	commentgrp = models.ManyToManyField(UserGroup,blank=True,null=True)
+	commentuin = models.ManyToManyField(User,blank=True,null=True)
+	commentuex = models.ManyToManyField(User,blank=True,null=True)
+
+class BlogComment(models.Model):
+	cmid      = models.BigIntegerField(primary_key=True)
+	post      = models.ForeignKey(BlogPost)
+	time      = models.DateTimeField(auto_now_add=True,auto_now=True)
+	anonymou  = models.BooleanField(default=True)
+	stoken    = models.CharField(max_length=36,db_index=True)
+	mail      = models.CharField(max_length=255,blank=True,null=True)
+	website   = models.CharField(max_length=255,blank=True,null=True)
+	fromuser = models.CharField(max_length=64)
+	title     = models.CharField(max_length=255)
+	content   = models.TextField()
+
+class LeaveMsg(models.Model):
+	cmid      = models.BigIntegerField(primary_key=True)
+	time      = models.DateTimeField(auto_now_add=True,auto_now=True)
+	anonymou  = models.BooleanField(default=True)
+	stoken    = models.CharField(max_length=36,db_index=True)
+	mail      = models.CharField(max_length=255,blank=True,null=True)
+	website   = models.CharField(max_length=255,blank=True,null=True)
+	fromuser = models.CharField(max_length=64)
+	title     = models.CharField(max_length=255)
+	content   = models.TextField()

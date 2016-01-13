@@ -1,0 +1,51 @@
+{% load staticres %}
+<ul class="list-group">
+	{% for i in lPage %}
+	<li class="list-group-item">
+		<h4 class="list-group-item-heading">
+			{% if owner%}
+			<a role="button" class="btn btn-danger btn-xs" href="javascript:dellm('{{i.cmid}}');">删除</a>
+			{% if i.reviewed %}
+			<a role="button" class="btn btn-warning btn-xs" href="javascript:reviewedCancel('{{i.cmid}}');">取消审核</a>
+			{% else %}
+			<a role="button" class="btn btn-success btn-xs" href="javascript:reviewedOK('{{i.cmid}}');">审核通过</a>
+			{% endif %}
+			{% endif %}
+			<strong>{{i.title}}</strong>
+		</h4>
+		<h5 class="list-group-item-heading">
+			{% if owner%}
+			{% if i.reviewed %}
+			<span class="label label-success">已审核</span>
+			{% else %}
+			<span class="label label-default">未审核</span>
+			{% endif %}
+			{% endif %}
+			{% if i.anonymou %}
+			<span class="label label-default">未注册访问者</span>
+			&nbsp;
+			{% if i.website %}
+			<a href="{{i.website}}" target="_blank">{{i.fromuser}}</a>
+			{% else %}
+			{{i.fromuser}}
+			{% endif %}
+			{% if owner%}
+			&nbsp;
+			（邮件：{{i.mail}}）
+			{% endif %}
+			{% else %}
+			<span class="label label-primary">本站注册用户</span>
+			&nbsp;
+			<a href="{% siteurl 'zluc_uzone' %}{{i.fromuser}}/" target="_blank">{{i.fromuser}}</a>
+			{% endif %}
+			&nbsp;
+			发表于
+			&nbsp;
+			{{ i.time|date:"Y-m-d H:i:s" }}
+		</h5>
+		<blockquote>{{i.content|linebreaks}}</blockquote>
+	</li>
+	{% endfor %}
+</ul>
+<br />
+{% include "common/paginator-ajax.html" %}
