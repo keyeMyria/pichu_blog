@@ -79,7 +79,7 @@ def SysConf(request):
 		("HomePagePost","首页内容来源文章ID","","str"),
 	]
 	conf = []
-	map(lambda x:return (x[0],x[1],cache.get_or_set(x[0],x[2]),x[3]), defaultconf)
+	map(lambda x:(x[0],x[1],cache.get_or_set(x[0],x[2]),x[3]), defaultconf)
 	kwvars = {
 		"request":request,
 		"conf":conf
