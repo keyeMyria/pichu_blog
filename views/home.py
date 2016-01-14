@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response,RequestContext
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,KVConfGetText,KVConfGetBool
+from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,KVConfGetText,KVConfGetBool,ReturnTrue,ReturnFalse
 from siteutil.CommonPaginator import SelfPaginator
 from zlogin.common.JsonResponse import JsonResponse
 from zlogin.decorators import login_detect,login_required,PermNeed
@@ -22,7 +22,7 @@ def Home(request):
 
 def LeaveMsgPage(request):
 	kwargs = {"request":request,'OutsiteCaptchaURL':OutsiteCaptchaURL(request),
-			  "LeaveMsgReviewSwitch":cache.get_or_set('LeaveMsgReviewSwitch',True)}
+			  "LeaveMsgReviewSwitch":cache.get_or_set('LeaveMsgReviewSwitch',ReturnTrue)}
 	return render_to_response('home/leave.msg.html',kwargs,RequestContext(request))
 
 def AjaxShowLeaveMsg(request):
@@ -68,12 +68,9 @@ def LeaveMsgAdd(request):
 			web = request.POST.get('website')
 			title = request.POST.get('title')
 			stk = request.auth.cookie.get('zl2_token')
-			rws = not cache.get_or_set('LeaveMsgReviewSwitch',True)
+			rws = not cache.get_or_set('LeaveMsgReviewSwitch',ReturnTrue)
 			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=rws)
 			return HttpResponseRedirect(reverse('pichublog_msgboard'))
-
-def ReturnTrue():
-	return True
 
 @PermNeed('pichublog','Admin')
 def SysConf(request):
