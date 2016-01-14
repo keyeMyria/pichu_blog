@@ -3,7 +3,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.conf import settings
 from django.shortcuts import render_to_response,RequestContext
 #from django_hosts.resolvers import reverse
-from django.core.cache import cache
+from django.core.cache import get_cache
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,CacheConfGetText,CacheConfGetBool
@@ -14,6 +14,7 @@ from zlogin import zlauth
 from zlogin.zlauth import GetUser,PermCheck
 from zlogin.captcha_app import CheckCaptcha,OutsiteCaptchaURL
 from pichublog.models import *
+cache = get_cache("pichublog")
 
 @login_detect()
 def Home(request):
