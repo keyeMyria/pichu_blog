@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load authperm %}
+{% load staticres %}
+
+{% block title %}
+博客设置 - 丘丘塔台
+{% endblock %}
+{% block content %}
+<table class="table table-hover table-striped  table-bordered table-condensed">
+	<tr>
+		<th>名称</th>
+		<th>说明</th>
+		<th>值</th>
+		<th>操作</th>
+	</tr>
+	<tr style="font-size: 13px;">
+		<td>LeaveMsgReviewSwitch</td>
+		<td>留言审核开关(True/False)</td>
+		<td>{{kv.LeaveMsgReviewSwitch}}</td>
+		<td><a class="btn btn-warning btn-xs" href="javascript:editkey('LeaveMsgReviewSwitch');">编辑</a></td>
+	</tr>
+</table>
+{% endblock %}

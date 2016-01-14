@@ -69,6 +69,11 @@
                                                 <a href="{% siteurl 'admin_home' %}">管理后台</a>
                                             </li>
                                             {% endifperm %}
+                                            {% ifperm "pichublog" "Admin" %}
+                                            <li role="menuitem">
+                                                <a href="{% siteurl 'pichublog_sysconf' %}">博客设置</a>
+                                            </li>
+                                            {% endifperm %}
                                             <li role="menuitem">
                                                 <a href="{% siteurl 'zlum' %}">个人中心</a>
                                             </li>

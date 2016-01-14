@@ -70,3 +70,9 @@ def LeaveMsgAdd(request):
 			rws = not KVConfGetBool(KVConf,"LeaveMsgReviewSwitch",default=True)
 			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=rws)
 			return HttpResponseRedirect(reverse('pichublog_msgboard'))
+			
+def SysConf(request):
+	kwvars = {
+		"request":request,
+	}
+	return render_to_response('home/sysconf.html',kwargs,RequestContext(request))
