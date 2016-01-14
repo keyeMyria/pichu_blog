@@ -13,11 +13,23 @@
 		<th>值</th>
 		<th>操作</th>
 	</tr>
-	<tr style="font-size: 13px;">
-		<td>LeaveMsgReviewSwitch</td>
-		<td>留言审核开关(True/False)</td>
-		<td>{{kv.LeaveMsgReviewSwitch}}</td>
-		<td><a class="btn btn-warning btn-xs" href="javascript:editkey('LeaveMsgReviewSwitch');">编辑</a></td>
+	{% for i in conf %}
+	<tr>
+		<td>{{i.0}}</td>
+		<td>{{i.1}}</td>
+		<td>
+			{% ifequal i.3 "bool" %}
+				{% if i.2 %}
+					真
+				{% else %}
+					假
+				{% endif %}
+			{% else %}
+				{{i.2}}
+			{% endifequal %}
+		</td>
+		<td><a class="btn btn-warning btn-xs" href="javascript:editkey('{{i.0}}','{{i.3}}');">编辑</a></td>
 	</tr>
+	{% endfor %}
 </table>
 {% endblock %}

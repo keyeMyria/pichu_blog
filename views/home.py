@@ -3,6 +3,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.conf import settings
 from django.shortcuts import render_to_response,RequestContext
 #from django_hosts.resolvers import reverse
+from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,KVConfGetText,KVConfGetBool
@@ -21,7 +22,7 @@ def Home(request):
 
 def LeaveMsgPage(request):
 	kwargs = {"request":request,'OutsiteCaptchaURL':OutsiteCaptchaURL(request),
-			  "LeaveMsgReviewSwitch":KVConfGetBool(KVConf,"LeaveMsgReviewSwitch",default=True)}
+			  "LeaveMsgReviewSwitch":cache.get_or_set('LeaveMsgReviewSwitch',True)}
 	return render_to_response('home/leave.msg.html',kwargs,RequestContext(request))
 
 def AjaxShowLeaveMsg(request):
@@ -67,12 +68,20 @@ def LeaveMsgAdd(request):
 			web = request.POST.get('website')
 			title = request.POST.get('title')
 			stk = request.auth.cookie.get('zl2_token')
-			rws = not KVConfGetBool(KVConf,"LeaveMsgReviewSwitch",default=True)
+			rws = not cache.get_or_set('LeaveMsgReviewSwitch',True)
 			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=rws)
 			return HttpResponseRedirect(reverse('pichublog_msgboard'))
-			
+
+@PermNeed('pichublog','Admin')
 def SysConf(request):
+	defaultconf = [
+		("LeaveMsgReviewSwitch","访客评论要求审核再显示",True,"bool"),
+		("HomePagePost","首页内容来源文章ID","","str"),
+	]
+	conf = []
+	map(lambda x:return (x[0],x[1],cache.get_or_set(x[0],x[2]),x[3]), defaultconf)
 	kwvars = {
 		"request":request,
+		"conf":conf
 	}
 	return render_to_response('home/sysconf.html',kwvars,RequestContext(request))
