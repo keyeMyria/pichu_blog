@@ -74,6 +74,13 @@ def LeaveMsgAdd(request):
 
 @PermNeed('pichublog','Admin')
 def SysConf(request):
+	kwvars = {
+		"request":request,
+	}
+	return render_to_response('home/sysconf.home.html',kwvars,RequestContext(request))
+
+@PermNeed('pichublog','Admin')
+def SysVarConf(request):
 	defaultconf = [
 		("LeaveMsgReviewSwitch","访客评论要求审核再显示",True,"bool"),
 		("HomePagePost","首页内容来源文章ID","","str"),
@@ -85,4 +92,4 @@ def SysConf(request):
 		"request":request,
 		"conf":conf
 	}
-	return render_to_response('home/sysconf.html',kwvars,RequestContext(request))
+	return render_to_response('home/sysconf.var.html',kwvars,RequestContext(request))
