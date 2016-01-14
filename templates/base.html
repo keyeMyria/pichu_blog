@@ -59,7 +59,7 @@
                                     {% ifperm "pichublog" "Admin" %}
                                     <li role="menuitem">
                                         <span class="glyphicon glyphicon-cog"></span>
-                                        <a href="{% url 'pichublog_sysconf' %}">博客后台</a>
+                                        <a href="{% url 'pichublog_sysconf' %}"><b>博客后台</b></a>
                                     </li>
                                     {% endifperm %}
                                     {% if request.auth.islogin %}

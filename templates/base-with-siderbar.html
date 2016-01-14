@@ -56,6 +56,12 @@
                                             </li>
                                         </ul>
                                     </li>
+                                    {% ifperm "pichublog" "Admin" %}
+                                    <li role="menuitem">
+                                        <span class="glyphicon glyphicon-cog"></span>
+                                        <a href="{% url 'pichublog_sysconf' %}"><b>博客后台</b></a>
+                                    </li>
+                                    {% endifperm %}
                                     {% if request.auth.islogin %}
                                     <li class="dropdown">
                                         <a href="" class="dropdown-toggle" data-toggle="dropdown">
