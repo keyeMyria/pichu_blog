@@ -72,10 +72,13 @@ def LeaveMsgAdd(request):
 			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=rws)
 			return HttpResponseRedirect(reverse('pichublog_msgboard'))
 
+def ReturnTrue():
+	return True
+
 @PermNeed('pichublog','Admin')
 def SysConf(request):
 	defaultconf = [
-		("LeaveMsgReviewSwitch","访客评论要求审核再显示",True,"bool"),
+		("LeaveMsgReviewSwitch","访客评论要求审核再显示",ReturnTrue,"bool"),
 		("HomePagePost","首页内容来源文章ID","","str"),
 	]
 	conf = []
