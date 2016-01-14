@@ -75,4 +75,4 @@ def SysConf(request):
 	kwvars = {
 		"request":request,
 	}
-	return render_to_response('home/sysconf.html',kwargs,RequestContext(request))
+	return render_to_response('home/sysconf.html',kwvars,RequestContext(request))
