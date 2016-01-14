@@ -9,7 +9,7 @@ from django.contrib import messages
 from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,KVConfGetText,KVConfGetBool
 from siteutil.CommonPaginator import SelfPaginator
 from zlogin.common.JsonResponse import JsonResponse
-from zlogin.decorators import login_detect,login_required
+from zlogin.decorators import login_detect,login_required,PermNeed
 from zlogin import zlauth
 from zlogin.zlauth import GetUser,PermCheck
 from zlogin.captcha_app import CheckCaptcha,OutsiteCaptchaURL
