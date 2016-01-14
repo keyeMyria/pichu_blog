@@ -80,7 +80,7 @@ def SysConf(request):
 	]
 	conf = []
 	for i in defaultconf:
-		conf.append((i[0],i[1],CacheConfGetText(cache,i[0],default=i[3])))
+		conf.append((i[0],i[1],CacheConfGetText(cache,i[0],default=i[2]),i[3]))
 	kwvars = {
 		"request":request,
 		"conf":conf
