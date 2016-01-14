@@ -78,8 +78,7 @@ def SysConf(request):
 		("LeaveMsgReviewSwitch","访客评论要求审核再显示",True,"bool"),
 		("HomePagePost","首页内容来源文章ID","","str"),
 	]
-	conf = []
-	map((lambda x:(x[0],x[1],CacheConfGetText(cache,x[0],default=x[3])), defaultconf)
+	conf = map((lambda x:(x[0],x[1],CacheConfGetText(cache,x[0],default=x[3])), defaultconf)
 	kwvars = {
 		"request":request,
 		"conf":conf
