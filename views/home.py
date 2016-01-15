@@ -14,6 +14,7 @@ from zlogin import zlauth
 from zlogin.zlauth import GetUser,PermCheck
 from zlogin.captcha_app import CheckCaptcha,OutsiteCaptchaURL
 from pichublog.models import *
+from pichublog.forms import *
 cache = get_cache("pichublog")
 
 @login_detect()
@@ -129,3 +130,57 @@ def SysVarConfAjaxToggle(request):
 		return JsonResponse({"code":"200"})
 	else:
 		return JsonResponse({"code":"400","errmsg":"Invalid Args."})
+
+@PermNeed('pichublog','Admin')
+def CategoryList(request):
+	cto = BlogCategoty.objects.all()
+	kwvars = {
+		"request":request,
+		"cto":cto,
+	}
+	return render_to_response('home/sysconf.category.list.html',kwvars,RequestContext(request))
+
+@PermNeed('pichublog','Admin')
+def CategoryAdd(request):
+	if request.method == "POST":
+		form = BlogCategotyForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect(reverse('pichublog_catlist'))
+	else:
+		form = BlogCategotyForm()
+	kwvars = {
+		"request":request,
+		'form':form,
+		"addmode":True,
+	}
+	return render_to_response('home/sysconf.category.edit.html',kwvars,RequestContext(request))
+
+@PermNeed('pichublog','Admin')
+def CategoryEdit(request,ID):
+	try:
+		bco = BlogCategoty.objects.get(id=ID)
+	except BlogCategoty.DoesNotExist:
+		messages.error(request,u"<b>编辑分类失败</b><br /><b>详细信息：</b>找不到ID为%s的分类！"%ID)
+		return HttpResponseRedirect(reverse('pichublog_catlist'))
+	if request.method == "POST":
+		form = BlogCategotyForm(request.POST,instance=bco)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect(reverse('pichublog_catlist'))
+	else:
+		form = BlogCategotyForm(instance=bco)
+	kwvars = {
+		"request":request,
+		'form':form,
+		"addmode":False,
+	}
+	return render_to_response('home/sysconf.category.edit.html',kwvars,RequestContext(request))
+
+@PermNeed('pichublog','Admin')
+def CategoryDel(request,ID):
+	try:
+		bco = BlogCategoty.objects.get(id=ID).delete()
+	except BlogCategoty.DoesNotExist:
+		messages.error(request,u"<b>删除分类失败</b><br /><b>详细信息：</b>找不到ID为%s的分类！"%ID)
+	return HttpResponseRedirect(reverse('pichublog_catlist'))

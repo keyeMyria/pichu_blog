@@ -1,0 +1,54 @@
+{% extends "base-with-sidebar.html" %}
+{% load authperm %}
+{% load staticres %}
+
+{% block title %}
+博客参数设置 - 丘丘塔台
+{% endblock %}
+
+{% block sidebar %}
+{% include "home/sysconf.sidebar.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="btn-toolbar">
+	<div class="btn-group">
+		{% url "pichublog_catlist" as pichublog_catlist %}
+		<a class="btn btn-primary {%if request.path = pichublog_catlist %} active {% endif %}" href="{{ pichublog_catlist }}">
+			<span class="glyphicon glyphicon-th-list"></span>
+			分类列表
+		</a>
+		{% url "pichublog_catadd" as pichublog_catadd %}
+		<a class="btn btn-primary {%if request.path = pichublog_catadd %} active {% endif %}" href="{{ pichublog_catadd }}">
+			<span class="glyphicon glyphicon-plus"></span>
+			新建分类
+		</a>
+	</div>
+</div>
+<br />
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<td>#</td>
+			<td>英文名</td>
+			<td>分类名</td>
+			<td>操作</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% for i in lPage %}
+		<tr>
+			<td>{{i.id}}</td>
+			<td>{{i.engname}}</td>
+			<td>{{i.title}}</td>
+			<td>
+				<td class="host_buttom">
+					<a class="btn btn-warning btn-xs" href="{% url 'pichublog_catedit' i.id %}">编辑</a>
+					<a class="btn btn-danger btn-xs" href="{% url 'pichublog_catdel' i.id %}" onclick="return confirm('是否确认删除？')">删除</a>
+				</td>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
