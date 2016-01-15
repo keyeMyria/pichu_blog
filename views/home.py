@@ -34,7 +34,7 @@ def AjaxShowLeaveMsg(request):
 	else:
 		cmt = LeaveMsg.objects.filter(reviewed=True).order_by('-time')
 	lPage = SelfPaginator(request,cmt,20)
-	kwvars = {0
+	kwvars = {
 		'request':request,
 		'owner':owner,
 		'lPage':lPage,
