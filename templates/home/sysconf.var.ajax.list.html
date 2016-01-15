@@ -1,0 +1,32 @@
+<table class="table table-hover table-striped  table-bordered table-condensed">
+	<tr>
+		<th>名称</th>
+		<th>说明</th>
+		<th>值</th>
+		<th>操作</th>
+	</tr>
+	{% for i in conf %}
+	<tr>
+		<td>{{i.0}}</td>
+		<td>{{i.1}}</td>
+		<td>
+			{% ifequal i.3 "bool" %}
+				{% if i.2 %}
+					真
+				{% else %}
+					假
+				{% endif %}
+			{% else %}
+				{{i.2}}
+			{% endifequal %}
+		</td>
+		<td>
+			{% ifequal i.3 "bool" %}
+				<a class="btn btn-warning btn-xs" href="javascript:togglekey('{{i.0}}');">切换</a>
+			{% else %}
+				<a class="btn btn-warning btn-xs" href="javascript:editkey('{{i.0}}');">编辑</a>
+			{% endifequal %}
+		</td>
+	</tr>
+	{% endfor %}
+</table>

@@ -34,7 +34,7 @@ def AjaxShowLeaveMsg(request):
 	else:
 		cmt = LeaveMsg.objects.filter(reviewed=True).order_by('-time')
 	lPage = SelfPaginator(request,cmt,20)
-	kwvars = {
+	kwvars = {0
 		'request':request,
 		'owner':owner,
 		'lPage':lPage,
@@ -82,6 +82,13 @@ def SysConf(request):
 
 @PermNeed('pichublog','Admin')
 def SysVarConf(request):
+	kwvars = {
+		"request":request,
+	}
+	return render_to_response('home/sysconf.var.html',kwvars,RequestContext(request))
+
+@PermNeed('pichublog','Admin')
+def SysVarConfAjaxGet(request):
 	defaultconf = [
 		("LeaveMsgReviewSwitch","访客评论要求审核再显示",True,"bool"),
 		("HomePagePost","首页内容来源文章ID","","str"),
@@ -93,4 +100,15 @@ def SysVarConf(request):
 		"request":request,
 		"conf":conf
 	}
-	return render_to_response('home/sysconf.var.html',kwvars,RequestContext(request))
+	return render_to_response('home/sysconf.var.ajax.list.html',kwvars,RequestContext(request))
+
+@PermNeed('pichublog','Admin')
+def SysVarConfAjaxEdit(request):
+	if request.method == "POST":
+		chkpr=CheckPOST(['key','value'],request.POST.keys())
+		if not chkpr == "" :
+			return JsonResponse({"code":"400","errmsg":"Invalid Args."})
+		cache.set(request.POST['key'],request.POST['value'])
+		return JsonResponse({"code":"200"})
+	else:
+		return JsonResponse({"code":"400","errmsg":"Invalid Args."})
