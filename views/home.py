@@ -119,7 +119,7 @@ def SysVarConfAjaxToggle(request):
 		chkpr=CheckPOST(['key'],request.POST.keys())
 		if not chkpr == "" :
 			return JsonResponse({"code":"400","errmsg":"Invalid Args."})
-		c = cache.get(request)
+		c = cache.get(request.POST['key'])
 		if c == True:
 			cache.set(request.POST['key'],False)
 		elif c == False:
