@@ -3,7 +3,11 @@
 {% load staticres %}
 
 {% block title %}
-博客参数设置 - 丘丘塔台
+	{% if addmode %}
+		新建分类 - 丘丘塔台
+	{% else %}
+		编辑分类 - 丘丘塔台
+	{% endif %}
 {% endblock %}
 
 {% block sidebar %}
