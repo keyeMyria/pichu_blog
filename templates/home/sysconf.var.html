@@ -25,6 +25,13 @@
 				LoadVarList();
 			});
 		}
+		function togglekey(keyname){
+			var csrf = $.cookie("csrftoken");
+			$("#varlist_container").html("处理中...");
+			$.post("{% url 'pichublog_sysvarajaxtoggle' %}",{"key":keyname,"csrfmiddlewaretoken":csrf},function(data){
+				LoadVarList();
+			});
+		}
 		LoadVarList();
 	</script>
 {% endblock %}

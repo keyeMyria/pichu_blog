@@ -112,3 +112,20 @@ def SysVarConfAjaxEdit(request):
 		return JsonResponse({"code":"200"})
 	else:
 		return JsonResponse({"code":"400","errmsg":"Invalid Args."})
+
+@PermNeed('pichublog','Admin')
+def SysVarConfAjaxToggle(request):
+	if request.method == "POST":
+		chkpr=CheckPOST(['key'],request.POST.keys())
+		if not chkpr == "" :
+			return JsonResponse({"code":"400","errmsg":"Invalid Args."})
+		c = cache.get(request)
+		if c == "True":
+			cache.set(request.POST['key'],"False")
+		elif c == "False":
+			cache.set(request.POST['key'],"True")
+		else:
+			return JsonResponse({"code":"505","errmsg":"Not Boolean Field"})
+		return JsonResponse({"code":"200"})
+	else:
+		return JsonResponse({"code":"400","errmsg":"Invalid Args."})
