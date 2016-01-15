@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response,RequestContext
 from django.core.cache import get_cache
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,CacheConfGetText,CacheConfGetBool
+from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,CacheConfGet
 from siteutil.CommonPaginator import SelfPaginator
 from zlogin.common.JsonResponse import JsonResponse
 from zlogin.decorators import login_detect,login_required,PermNeed
@@ -23,7 +23,7 @@ def Home(request):
 
 def LeaveMsgPage(request):
 	kwargs = {"request":request,'OutsiteCaptchaURL':OutsiteCaptchaURL(request),
-			  "LeaveMsgReviewSwitch":CacheConfGetBool(cache,'LeaveMsgReviewSwitch',default=True)}
+			  "LeaveMsgReviewSwitch":CacheConfGet(cache,'LeaveMsgReviewSwitch',default=True)}
 	return render_to_response('home/leave.msg.html',kwargs,RequestContext(request))
 
 def AjaxShowLeaveMsg(request):
@@ -69,7 +69,7 @@ def LeaveMsgAdd(request):
 			web = request.POST.get('website')
 			title = request.POST.get('title')
 			stk = request.auth.cookie.get('zl2_token')
-			rws = not CacheConfGetBool(cache,'LeaveMsgReviewSwitch',default=True)
+			rws = not CacheConfGet(cache,'LeaveMsgReviewSwitch',default=True)
 			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=rws)
 			return HttpResponseRedirect(reverse('pichublog_msgboard'))
 
@@ -95,7 +95,7 @@ def SysVarConfAjaxGet(request):
 	]
 	conf = []
 	for i in defaultconf:
-		conf.append((i[0],i[1],CacheConfGetText(cache,i[0],default=i[2]),i[3]))
+		conf.append((i[0],i[1],CacheConfGet(cache,i[0],default=i[2]),i[3]))
 	kwvars = {
 		"request":request,
 		"conf":conf
@@ -120,10 +120,10 @@ def SysVarConfAjaxToggle(request):
 		if not chkpr == "" :
 			return JsonResponse({"code":"400","errmsg":"Invalid Args."})
 		c = cache.get(request)
-		if c == "True":
-			cache.set(request.POST['key'],"False")
-		elif c == "False":
-			cache.set(request.POST['key'],"True")
+		if c == True:
+			cache.set(request.POST['key'],False)
+		elif c == False:
+			cache.set(request.POST['key'],True)
 		else:
 			return JsonResponse({"code":"505","errmsg":"Not Boolean Field"})
 		return JsonResponse({"code":"200"})
