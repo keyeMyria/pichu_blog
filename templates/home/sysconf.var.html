@@ -20,9 +20,6 @@
 		function editkey(keyname){
 			var val = prompt("");
 			var csrf = $.cookie("csrftoken");
-			if(!val){
-				return;
-			}
 			$("#varlist_container").html("处理中...");
 			$.post("{% url 'pichublog_sysvarajaxedit' %}",{"key":keyname,"value":val,"csrfmiddlewaretoken":csrf},function(data){
 				LoadVarList();
