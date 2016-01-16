@@ -9,6 +9,7 @@ from django.contrib import messages
 from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,CacheConfGet
 from siteutil.CommonPaginator import SelfPaginator
 from siteutil.CommonFilter import CommonFilter,FilterCondition
+from siteutil.htmlutil import renderMarkdownSafety
 from zlogin.common.JsonResponse import JsonResponse
 from zlogin.decorators import login_detect,login_required,PermNeed
 from zlogin import zlauth
@@ -134,6 +135,23 @@ def PostEdit(request,ID):
 		"ctlist":BlogCategoty.objects.all(),
 		}
 		return render_to_response('home/post.404.html',kwvars,RequestContext(request))
+	if request.method == "POST":
+		form = EditPostForm(request.POST,instance=bpo)
+		if form.is_valid():
+			nbp = form.save(commit=False)
+			nbp.html = renderMarkdownSafety(nbp.markdown)
+			nbp.rendered = True
+			nbp.save()
+			nbp.save_m2m()
+			return HttpResponseRedirect(reverse('pichublog_postwbklist'))
+	else:
+		form = EditPostForm(instance=bpo)
+	kwvars = {
+		"request":request,
+		'form':form,
+	}
+	return render_to_response('home/post.edit.html',kwvars,RequestContext(request))
+
 
 def PostGrant(request,ID):
 	try:

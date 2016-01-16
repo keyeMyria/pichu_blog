@@ -1,101 +1,41 @@
-{% extends "base.html" %}
+{% extends "base-with-sidebar.html" %}
+{% load authperm %}
 {% load staticres %}
 
 {% block title %}
-留言板 - 丘丘塔台
+	编辑文章 - 丘丘塔台
+{% endblock %}
+
+{% block sidebar %}
+{% include "home/sysconf.sidebar.html" %}
+{% endblock %}
+
+{% block head %}
+{% res js "duallistbox" %}
 {% endblock %}
 
 {% block content %}
-<div class="btn-toolbar">
-	<div class="btn-group">
-		<a class="btn btn-primary" href="//">
-			<span class="glyphicon glyphicon-chevron-left"></span>
-			返回首页
-		</a>
+<form class="form-horizontal" role="form" action="" method="POST" >
+	{% csrf_token %}
+    {% for item in form %}
+	<div class="form-group">
+		<label class="control-label col-md-1">{{item.label}}</label>
+		<div class="col-md-2">{{item}}</div>
+		<div class="col-md-offset-1 col-md-10">{{item.errors}}</div>
 	</div>
-</div>
-<br />
-
-<div class="panel panel-info">
-  <div class="panel-heading"><h4 class="panel-title">留言板</h4></div>
-  <div id="commentBox" class="panel-body">
-    载入中...
-  </div>
-</div>
-
-<div class="panel panel-info">
-  <div class="panel-heading">
-    <h4 class="panel-title">发表留言</h4>
-  </div>
-  <div id="commentAdd" class="panel-body">
-    <div class="container">
-      {% if LeaveMsgReviewSwitch %}
-        {% if not request.auth.islogin %}
-          <h4>(您发表的留言经过管理员审核后方可看见)</h4>
-        {% endif %}
-      {% endif %}
-      <form class="form-horizontal" role="form" action="{% url 'pichublog_lmadd' %}" method="POST" >
-        {% csrf_token %}
-        <div class="form-group">
-          <label for="lmtitle">标题</label>
-          <input type="text" name="title" class="form-control" id="lmtitle" placeholder="标题">
-        </div>
-        {% if not request.auth.islogin %}
-        <div class="form-group">
-          <label for="anonymousMail">电子邮箱</label>
-          <input type="email" name="mail" class="form-control" id="anonymousMail" placeholder="电子邮箱（不会公开，仅管理员和本小说作者可见）">
-        </div>
-        <div class="form-group">
-          <label for="anonymousSite">个人主页</label>
-          <input type="text" name="website" class="form-control" id="anonymousSite" placeholder="个人主页">
-        </div>
-        <div class="form-group">
-          <label for="anonymousNick">昵称</label>
-          <input type="text" name="nick" class="form-control" id="anonymousNick" placeholder="昵称">
-        </div>
-        {% endif %}
-        <div class="form-group">
-          <label for="CmtCnt">内容</label>
-          <textarea name="content" id="CmtCnt" class="form-control" rows="3" placeholder="评论内容"></textarea>
-        </div>
-        {% if not request.auth.islogin %}
-        <div class="form-group">
-          <label for="CmtCnt">验证码</label>
-          <input type="text" name="captcha" id="CaptInput" class="form-control" placeholder="验证码">
-        </div>        
-        <div><img id="captcha_box" src="" alt="" class="img-thumbnail"></div>
-        <div class="alert alert-info" role="alert"><strong>友情提示：</strong>注册后发表评论无需再输入验证码~</div>
-        {% endif %}
-        <br />
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">发表评论</button>
-            {% if not request.auth.islogin %}
-            <button type="button" class="btn btn-info" onclick="newCaptcha();">
-              <span class="glyphicon glyphicon-refresh"></span>
-              刷新验证码
-            </button>
-            {% endif %}
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<script type="text/javascript">
-function LoadComment(page){
-  $("#commentBox").html("载入中...");
-  $("#commentBox").load("{% url 'pichublog_lmshow' %}?page="+page);
-}
-function pageturn_cmt(page){
-  LoadComment(page);
-}
-function newCaptcha(){
-  var uuid = uuidGenerate();
-  var urlsource = "{{OutsiteCaptchaURL}}";
-  var url = urlsource + uuid + ".png";
-  $("#captcha_box").attr("src",url);
-}
-LoadComment(1);
-newCaptcha();
+	{% endfor %}
+	<div class="form-group">
+		<div class="col-md-offset-1 col-md-10">
+			<button type="submit" class="btn btn-primary btn-lg">提交更改</button>
+		</div>
+	</div>
+</form>
+<script>
+    var catbox = $('select[name="classid"]').bootstrapDualListbox({
+          nonSelectedListLabel: '可选择分类',
+          selectedListLabel: '已选择分类',
+          preserveSelectionOnMove: 'moved',
+          moveOnSelect: false,
+    });
 </script>
 {% endblock %}
