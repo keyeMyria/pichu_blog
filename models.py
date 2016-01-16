@@ -12,7 +12,7 @@ class BlogCategoty(models.Model):
 # Create your models here.
 class BlogPost(models.Model):
 	class Meta:
-		ordering = ["-pubdate"]
+		ordering = ["-pubtime"]
 
 	title = models.CharField(max_length=128)
 	category = models.ManyToManyField(BlogCategoty,null=True)
