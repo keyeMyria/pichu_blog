@@ -82,7 +82,7 @@ def PostWBkList(request):
 def PostList(request,ctname):
 	bpo = BlogPost.objects.all().filter(rendered=True,hidden=False)
 	if not ctname == "*":
-		bpo = bpo.filter(category_engname=ctname)
+		bpo = bpo.filter(category__engname=ctname)
 	fco = FilterCondition()
 	fco.addTextContain("t","标题","title")
 	fco.addTextContain("au","作者用户名","author__name")
@@ -90,7 +90,7 @@ def PostList(request,ctname):
 	fco.addDateRange("ct","创建时间","crttime")
 	fco.addDateRange("pt","发布时间","pubtime")
 
-	fList = CommonFilter(request,fco,mList)
+	fList = CommonFilter(request,fco,bpo)
 	#分页功能
 	lst = SelfPaginator(request,fList, 20)
 	kwvars = {
