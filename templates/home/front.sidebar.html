@@ -1,0 +1,26 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <span class="glyphicon glyphicon-th-large btn-xs"></span>
+            分类导航
+        </h4>
+    </div>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    <span class="glyphicon glyphicon-list-alt btn-xs"></span>
+                    <a href="{% url 'pichublog_postlist' '*' %}">全部</a>
+                </td>
+            </tr>
+            {% for i in ctlist %}
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-list-alt btn-xs"></span>
+                        <a href="{% url 'pichublog_postlist' i.engname %}">全部</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

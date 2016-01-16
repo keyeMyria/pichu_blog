@@ -1,0 +1,100 @@
+{% extends "base-with-sidebar.html" %}
+{% load authperm %}
+{% load crypto %}
+{% load staticres %}
+
+{% block title %}
+{% if adminmode %}
+	全局文章管理 - 丘丘塔台
+{% else %}
+	个人文章管理 - 丘丘塔台
+{% enfif %}
+{% endblock %}
+
+{% block sidebar %}
+{% include "home/sysconf.sidebar.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="btn-toolbar">
+	<div class="btn-group">
+		{% url "pichublog_catlist" as pichublog_catlist %}
+		<a class="btn btn-primary {%if request.path = pichublog_postbklist %} active {% endif %}" href="{{ pichublog_catlist }}">
+			<span class="glyphicon glyphicon-th-list"></span>
+			文章列表
+		</a>
+		{% url "pichublog_catadd" as pichublog_catadd %}
+		<a class="btn btn-primary {%if request.path = pichublog_postadd %} active {% endif %}" href="{{ pichublog_catadd }}">
+			<span class="glyphicon glyphicon-plus"></span>
+			新建文章
+		</a>
+	</div>
+</div>
+<br />
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<td>#</td>
+			<td>标题</td>
+			{% if adminmode %}
+				<td>作者</td>
+			{% endif %}
+			<td>分类</td>
+			<td>创建时间</td>
+			<td>发布时间</td>
+			<td>状态</td>
+			<td>评论数</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% for i in bpo %}
+		<tr>
+			<td>{{i.id}}</td>
+			<td>{{i.title}}</td>
+			{% if adminmode %}
+				<td>{{i.author.name}}</td>
+			{% endif %}
+			<td>
+				{% for j in i.category %}
+					<span class="label label-info" style="display:inline-block">{{j.title}}</span>
+				{% endfor %}
+			</td>
+			<td>{{i.crttime|date:"Y-m-d H:M:S"}}</td>
+			<td>{{i.pubtime|date:"Y-m-d H:M:S"}}</td>
+			<td>
+				{% if i.rendered %}
+					<span class="label label-success" style="display:inline-block">已渲染</span>
+				{% else %}
+					<span class="label label-default" style="display:inline-block">未渲染</span>
+				{% endif %}
+				{% if i.hidden %}
+					<span class="label label-danger" style="display:inline-block">隐藏</span>
+				{% endif %}
+				{% if i.private %}
+					{% if i.passwdlck %}
+						<span class="label label-warning" style="display:inline-block">密码保护</span>
+					{% else %}
+						<span class="label label-warning" style="display:inline-block">访问限制</span>
+					{% endif %}
+				{% endif %}
+				{% if not i.freecomment %}
+					<span class="label label-warning" style="display:inline-block">限制评论</span>
+				{% endif %}
+			</td>
+			<td>
+				<td class="host_buttom">
+					<a class="btn btn-primary btn-xs" href="{% url 'pichublog_postedit' i.id %}">编辑内容</a>
+					<a class="btn btn-success btn-xs" href="{% url 'pichublog_postgrant' i.id %}">权限设置</a>
+					{% if i.hidden %}
+						<a class="btn btn-info btn-xs" href="{% url 'pichublog_posthid' i.id %}?val=false">取消隐藏</a>
+					{% else %}
+						<a class="btn btn-warning btn-xs" href="{% url 'pichublog_posthid' i.id %}?val=true">隐藏</a>
+					{% endif %}
+					<a class="btn btn-danger btn-xs" href="{% url 'pichublog_postdel' i.id %}?confirmcode={% hash i.id %}" onclick="return confirm('删除后不可恢复，是否确认删除？')">删除</a>
+				</td>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base-with-sidebar.html" %}
+{% load authperm %}
+{% load crypto %}
+{% load staticres %}
+
+{% block title %}
+{% ifequal ctname "*" %}
+	全部文章 - 丘丘塔台
+{% else %}
+	分类浏览：{{ctname}} - 丘丘塔台
+{% endifequal %}
+{% endblock %}
+
+{% block sidebar %}
+{% include "home/front.sidebar.html" %}
+{% endblock %}
+
+{% block content %}
+{% ifperm "pichublog" "Writer" %}
+<div class="btn-toolbar">
+	<div class="btn-group">
+		{% url "pichublog_catadd" as pichublog_catadd %}
+		<a class="btn btn-primary {%if request.path = pichublog_postadd %} active {% endif %}" href="{{ pichublog_catadd }}">
+			<span class="glyphicon glyphicon-plus"></span>
+			新建文章
+		</a>
+	</div>
+</div>
+{% endifperm %}
+<br />
+{% endblock %}

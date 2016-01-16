@@ -11,16 +11,20 @@ class BlogCategoty(models.Model):
 
 # Create your models here.
 class BlogPost(models.Model):
+	class Meta:
+		ordering = ["-pubdate"]
+
 	title = models.CharField(max_length=128)
 	category = models.ManyToManyField(BlogCategoty,null=True)
 	author = models.ForeignKey(User,related_name="pichublog_post_set")
 	crttime = models.DateTimeField(auto_now_add=True)
 	pubtime = models.DateTimeField(auto_now_add=True,auto_now=True)
 	markdown = models.TextField()
-	rendered = models.TextField()
-	hidden = models.BooleanField(default=False)
-	private = models.BooleanField(default=True)
-	passwdlck = models.BooleanField(default=True)
+	rendered = models.BooleanField(default=False)
+	html = models.TextField()
+	hidden = models.BooleanField(default=True)
+	private = models.BooleanField(default=False)
+	passwdlck = models.BooleanField(default=False)
 	passwd = models.CharField(max_length=128)
 	readgrp = models.ManyToManyField(UserGroup,blank=True,null=True,related_name="pichublog_readgrp")
 	readuin = models.ManyToManyField(User,blank=True,null=True,related_name="pichublog_readuin")
