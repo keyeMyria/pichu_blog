@@ -80,7 +80,7 @@ def PostWBkList(request):
 	return render_to_response('home/post.bk.list.html',kwvars,RequestContext(request))
 
 def PostList(request,ctname):
-	bpo = BlogPost.objects.all()
+	bpo = BlogPost.objects.all().filter(rendered=True,hidden=False)
 	if not ctname == "*":
 		bpo = bpo.filter(category_engname=ctname)
 	fco = FilterCondition()

@@ -16,16 +16,48 @@
 {% endblock %}
 
 {% block content %}
-{% ifperm "pichublog" "Writer" %}
 <div class="btn-toolbar">
 	<div class="btn-group">
-		{% url "pichublog_catadd" as pichublog_catadd %}
-		<a class="btn btn-primary {%if request.path = pichublog_postadd %} active {% endif %}" href="{{ pichublog_catadd }}">
-			<span class="glyphicon glyphicon-plus"></span>
-			新建文章
-		</a>
+		{% ifperm "pichublog" "Writer" %}
+			{% url "pichublog_catadd" as pichublog_catadd %}
+			<a class="btn btn-primary {%if request.path = pichublog_postadd %} active {% endif %}" href="{{ pichublog_catadd }}">
+				<span class="glyphicon glyphicon-plus"></span>
+				新建文章
+			</a>
+		{% endifperm %}
+		<button type="button" class="btn btn-primary" data-toggle="button" data-toggle="collapse" data-toggle="collapse" data-target="#FilterCollapse"
+		aria-expanded="false" aria-controls="FilterCollapse" aria-pressed="false" autocomplete="off">
+			<span class="glyphicon glyphicon-filter"></span>
+			显示筛选器
+		</button>
 	</div>
 </div>
-{% endifperm %}
 <br />
+<div class="collapse" id="FilterCollapse">
+	{{FilterHTML|safe}}
+</div>
+<div>{% include "common/paginator.html" %}</div>
+<br />
+<ul class="list-group">
+	{% for i in lPgae %}
+	<li class="list-group-item">
+		<h3>
+			{% if i.private %}
+				{% if i.passwdlck %}
+					<span class="label label-warning" style="display:inline-block">密码保护</span>
+				{% else %}
+					<span class="label label-warning" style="display:inline-block">访问限制</span>
+				{% endif %}
+			{% endif %}
+			<a href="{% 'pichublog_postview' i.id %}">{{i.title}}</a>
+		</h3>
+		<p>
+			作者：{{i.author.nick}}&nbsp;&nbsp;&nbsp;
+			发布时间：{{i.pubtime|date:"Y-m-d H:M:S"}}&nbsp;&nbsp;&nbsp;
+		</p>
+	</li>
+	{% endfor %}
+</ul>
+<br />
+<div>{% include "common/paginator.html" %}</div>
 {% endblock %}
