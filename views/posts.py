@@ -40,7 +40,7 @@ def PostABkList(request):
 
 	fList = CommonFilter(request,fco,bpo)
 	#分页功能
-	lst = SelfPaginator(request,fList, 20)
+	lpg = SelfPaginator(request,fList, 20)
 	kwvars = {
 		"request":request,
 		"lPage":lpg,
@@ -70,7 +70,7 @@ def PostWBkList(request):
 
 	fList = CommonFilter(request,fco,mList)
 	#分页功能
-	lst = SelfPaginator(request,fList, 20)
+	lpg = SelfPaginator(request,fList, 20)
 	kwvars = {
 		"request":request,
 		"lPage":lpg,
@@ -92,7 +92,7 @@ def PostList(request,ctname):
 
 	fList = CommonFilter(request,fco,bpo)
 	#分页功能
-	lst = SelfPaginator(request,fList, 20)
+	lpg = SelfPaginator(request,fList, 20)
 	kwvars = {
 		"request":request,
 		"ctname":ctname,
