@@ -25,8 +25,7 @@
 				新建文章
 			</a>
 		{% endifperm %}
-		<button type="button" class="btn btn-primary" data-toggle="collapse button" data-target="#FilterCollapse"
-		aria-expanded="false" aria-controls="FilterCollapse" aria-pressed="false" autocomplete="off">
+		<button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="$('#FilterCollapse').collapse('toggle');">
 			<span class="glyphicon glyphicon-filter"></span>
 			显示筛选器
 		</button>
