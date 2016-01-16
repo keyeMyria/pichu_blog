@@ -30,7 +30,7 @@ class EditPostForm(forms.ModelForm):
         }
 
     def __init__(self,*args,**kwargs):
-        super(RemoveUsersForm,self).__init__(*args,**kwargs)
+        super(EditPostForm,self).__init__(*args,**kwargs)
         self.fields['title'].label=u'标题'
         self.fields['title'].required=True
         self.fields['title'].error_messages="请输入标题"
