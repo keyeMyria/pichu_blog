@@ -49,7 +49,7 @@
 					<span class="label label-warning" style="display:inline-block">访问限制</span>
 				{% endif %}
 			{% endif %}
-			<a href="{% 'pichublog_postview' i.id %}">{{i.title}}</a>
+			<a href="{% url 'pichublog_postview' i.id %}">{{i.title}}</a>
 		</h3>
 		<p>
 			作者：{{i.author.nick}}&nbsp;&nbsp;&nbsp;
