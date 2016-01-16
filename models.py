@@ -9,6 +9,12 @@ class BlogCategoty(models.Model):
 	engname = models.CharField(max_length=64,db_index=True)
 	title = models.CharField(max_length=64)
 
+	def __unicode__(self):
+		return self.title
+
+	def __repr__(self):
+		return self.engname
+
 # Create your models here.
 class BlogPost(models.Model):
 	class Meta:
