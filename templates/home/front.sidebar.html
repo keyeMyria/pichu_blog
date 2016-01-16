@@ -1,3 +1,5 @@
+{% load authperm %}
+
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h4 class="panel-title">
@@ -24,3 +26,30 @@
         </tbody>
     </table>
 </div>
+
+{% ifperm "pichublog" "Writer" %}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <span class="glyphicon glyphicon-wrench btn-xs"></span>
+            前台管理操作
+        </h4>
+    </div>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    <span class="glyphicon glyphicon-plus btn-xs"></span>
+                    <a href="{% url 'pichublog_postadd' %}">新建文章</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="glyphicon glyphicon-th-list btn-xs"></span>
+                    <a href="{% url 'pichublog_postwbklist' %}">管理文章</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endifperm %}
