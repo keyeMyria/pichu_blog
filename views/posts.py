@@ -97,6 +97,7 @@ def PostList(request,ctname):
 		"request":request,
 		"ctname":ctname,
 		"lPage":lpg,
+		"ctlist":BlogCategoty.objects.all(),
 		'FilterHTML':fco.RenderHTML(request),
 	}
 	return render_to_response('home/post.list.html',kwvars,RequestContext(request))
