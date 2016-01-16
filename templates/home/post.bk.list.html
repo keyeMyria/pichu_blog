@@ -61,8 +61,8 @@
 					<span class="label label-info" style="display:inline-block">{{j.title}}</span>
 				{% endfor %}
 			</td>
-			<td>{{i.crttime|date:"Y-m-d H:M:S"}}</td>
-			<td>{{i.pubtime|date:"Y-m-d H:M:S"}}</td>
+			<td>{{i.crttime|date:"Y-m-d H:i:s"}}</td>
+			<td>{{i.pubtime|date:"Y-m-d H:i:s"}}</td>
 			<td>
 				{% if i.rendered %}
 					<span class="label label-success" style="display:inline-block">已渲染</span>
