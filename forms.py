@@ -15,6 +15,6 @@ class BlogCategotyForm(ModelForm):
 	def __init__(self,*args,**kwargs):
 		super(BlogCategotyForm,self).__init__(*args,**kwargs)
 		self.fields['engname'].label=u'英文名'
-		self.fields['engname'].error_messages={'required':u'请输入英文名（用于URL）'}
+		self.fields['engname'].error_messages={'required':u'请输入英文名（用于URL，仅能使用大小写字母、数字和下划线）'}
 		self.fields['title'].label=u'分类名称'
 		self.fields['title'].error_messages={'required':u'请输入分类名称'}
