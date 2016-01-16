@@ -33,8 +33,8 @@ class EditPostForm(forms.ModelForm):
         super(EditPostForm,self).__init__(*args,**kwargs)
         self.fields['title'].label=u'标题'
         self.fields['title'].required=True
-        self.fields['title'].error_messages="请输入标题"
+        self.fields['title'].error_messages={'required':u"请输入标题"}
         self.fields['category'].label=u'分类'
         self.fields['markdown'].label=u'正文'
         self.fields['markdown'].required=True
-        self.fields['markdown'].error_messages="请输入正文"
+        self.fields['markdown'].error_messages={'required':u"请输入正文"}
