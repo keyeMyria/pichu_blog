@@ -142,7 +142,7 @@ def PostEdit(request,ID):
 			nbp.html = renderMarkdownSafety(nbp.markdown)
 			nbp.rendered = True
 			nbp.save()
-			nbp.save_m2m()
+			form.save_m2m()
 			return HttpResponseRedirect(reverse('pichublog_postwbklist'))
 	else:
 		form = EditPostForm(instance=bpo)
