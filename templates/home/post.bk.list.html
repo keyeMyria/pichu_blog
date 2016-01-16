@@ -57,7 +57,7 @@
 				<td>{{i.author.name}}</td>
 			{% endif %}
 			<td>
-				{% for j in i.category %}
+				{% for j in i.category.all %}
 					<span class="label label-info" style="display:inline-block">{{j.title}}</span>
 				{% endfor %}
 			</td>
