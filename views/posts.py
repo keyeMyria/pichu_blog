@@ -117,6 +117,7 @@ def PostAdd(request):
 	return HttpResponseRedirect(reverse('pichublog_postedit',args=(bpo.id,)))
 
 def PostView(request,ID):
+	thisuser = GetUser(request)
 	try:
 		bpo = BlogPost.objects.get(id=ID)
 	except BlogPost.DoesNotExist:
@@ -124,7 +125,54 @@ def PostView(request,ID):
 		"request":request,
 		"ctlist":BlogCategoty.objects.all(),
 		}
-		return render_to_response('home/post.404.html',kwvars,RequestContext(request))
+		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
+	if not bpo.rendered:
+		kwvars = {
+		"request":request,
+		"ctlist":BlogCategoty.objects.all(),
+		}
+		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
+	if bpo.hidden:
+		if not bpo.author == thisuser:
+			if not PermCheck('pichublog','Admin'):
+				kwvars = {
+				"request":request,
+				"ctlist":BlogCategoty.objects.all(),
+				}
+				return render_to_response('home/post.err.html',kwvars,RequestContext(request))
+	if bpo.private:
+		if bpo.passwdlck:
+			if request.method == POST:
+				if not request.POST.get['ppppppppaaaaaassssssssssssswwwwwooorrrrrdddd'] == bpo.password:
+					messages.error(request,u"<b>密码错误！</b>")
+					return HttpResponseRedirect(reverse('pichublog_postpwdf',args=(bpo.id,)))
+			else:
+				return HttpResponseRedirect(reverse('pichublog_postpwdf',args=(bpo.id,)))
+		else:
+			pmh = False
+			for hgp in thisuser.group:
+				if hgp in bpo.readgrp:
+					if not thisuser in bpo.readuex:
+						pmh = True
+					break
+			if not pmh:
+				if thisuser in bpo.readuin:
+					pmh = True
+			if not pmh:
+				kwvars = {
+				"request":request,
+				"ctlist":BlogCategoty.objects.all(),
+				}
+				return render_to_response('home/post.err.html',kwvars,RequestContext(request))
+	kwvars = {
+		"request":request,
+		"title":bpo.title,
+		"content":bpo.html,
+		"postid":bpo.id,
+	}
+	return render_to_response('home/post.view.html',kwvars,RequestContext(request))
+
+
 
 def PostEdit(request,ID):
 	try:
@@ -133,8 +181,9 @@ def PostEdit(request,ID):
 		kwvars = {
 		"request":request,
 		"ctlist":BlogCategoty.objects.all(),
+		"randposts":BlogPost.objects.all().order_by('?')[:5],
 		}
-		return render_to_response('home/post.404.html',kwvars,RequestContext(request))
+		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 	if request.method == "POST":
 		form = EditPostForm(request.POST,instance=bpo)
 		if form.is_valid():
@@ -160,8 +209,9 @@ def PostGrant(request,ID):
 		kwvars = {
 		"request":request,
 		"ctlist":BlogCategoty.objects.all(),
+		"randposts":BlogPost.objects.all().order_by('?')[:5],
 		}
-		return render_to_response('home/post.404.html',kwvars,RequestContext(request))
+		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 
 def PostHidden(request,ID):
 	try:
@@ -170,8 +220,9 @@ def PostHidden(request,ID):
 		kwvars = {
 		"request":request,
 		"ctlist":BlogCategoty.objects.all(),
+		"randposts":BlogPost.objects.all().order_by('?')[:5],
 		}
-		return render_to_response('home/post.404.html',kwvars,RequestContext(request))
+		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 
 def PostDel(request,ID):
 	try:
@@ -180,5 +231,6 @@ def PostDel(request,ID):
 		kwvars = {
 		"request":request,
 		"ctlist":BlogCategoty.objects.all(),
+		"randposts":BlogPost.objects.all().order_by('?')[:5],
 		}
-		return render_to_response('home/post.404.html',kwvars,RequestContext(request))
+		return render_to_response('home/post.err.html',kwvars,RequestContext(request))

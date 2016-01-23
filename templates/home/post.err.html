@@ -1,0 +1,27 @@
+{% extends "base-with-sidebar.html" %}
+{% load staticres %}
+
+{% block title %}
+	无法查看该文章 - 丘丘塔台
+{% endblock %}
+
+{% block sidebar %}
+{% include "home/front.sidebar.html" %}
+{% endblock %}
+
+{% block content %}
+	<h1>抱歉，您无法查看本文章</h1>
+	<div class="alert alert-info" role="alert">请重新选择一篇存在且您有权查看的文章吧←_←</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">手气不错？</div>
+		<table class="table">
+			{% for i in randposts %}
+				<tr>
+					<td>
+						<a href="{% url 'pichublog_postview' i.id %}">{{i.title}}</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+{% endblock %}

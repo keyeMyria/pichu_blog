@@ -12,7 +12,11 @@
 {% endblock %}
 
 {% block sidebar %}
-{% include "home/sysconf.sidebar.html" %}
+{% if adminmode %}
+	{% include "home/sysconf.sidebar.html" %}
+{% else %}
+	{% include "home/front.sidebar.html" %}
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -46,13 +50,14 @@
 			<td>发布时间</td>
 			<td>状态</td>
 			<td>评论数</td>
+			<td>操作</td>
 		</tr>
 	</thead>
 	<tbody>
 		{% for i in lPage %}
 		<tr>
 			<td>{{i.id}}</td>
-			<td>{{i.title}}</td>
+			<td><a href="{% url 'pichublog_postpreview' i.id %}" target="_blank">{{i.title}}</a></td>
 			{% if adminmode %}
 				<td>{{i.author.name}}</td>
 			{% endif %}
@@ -83,6 +88,7 @@
 					<span class="label label-warning" style="display:inline-block">限制评论</span>
 				{% endif %}
 			</td>
+			<td>{{i.blogcomment_set.count}}</td>
 			<td>
 				<td class="host_buttom">
 					<a class="btn btn-primary btn-xs" href="{% url 'pichublog_postedit' i.id %}">编辑内容</a>
