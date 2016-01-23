@@ -98,7 +98,6 @@
 					{% else %}
 						{% setvar rfm = "w" %}
 					{% endif %}
-					--{{rfm}}--
 					<a class="btn btn-primary btn-xs" href="{% url 'pichublog_postedit' i.id %}?rfm={{rfm}}">编辑内容</a>
 					<a class="btn btn-success btn-xs" href="{% url 'pichublog_postgrant' i.id %}?rfm={{rfm}}">权限设置</a>
 					{% if i.hidden %}
