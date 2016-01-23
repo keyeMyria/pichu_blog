@@ -26,6 +26,8 @@ urlpatterns = patterns('pichublog.views',
 	url(r'^p/(?P<ID>\d+)/grant/$', 'posts.PostGrant', name='pichublog_postgrant'),
 	url(r'^p/(?P<ID>\d+)/hid/$', 'posts.PostHidden', name='pichublog_posthid'),
 	url(r'^p/(?P<ID>\d+)/del/$', 'posts.PostDel', name='pichublog_postdel'),
+	url(r'^p/(?P<ID>\d+)/comments/ajax/show/$', 'posts.AjaxShowComments', name='pichublog_cmtshow'),
+	url(r'^p/(?P<ID>\d+)/comments/add/$', 'posts.AddComments', name='pichublog_cmtadd'),
 	url(r'^pichu/post/list/$', 'posts.PostABkList', name='pichublog_postabklist'),
 	
 )

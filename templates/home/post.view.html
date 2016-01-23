@@ -2,11 +2,11 @@
 {% load staticres %}
 
 {% block title %}
-{{title}} - 丘丘塔台
+{{bpo.title}} - 丘丘塔台
 {% endblock %}
 
 {% block sidebar %}
-{% if adminmode %}
+{% if bkmode %}
   {% include "home/sysconf.sidebar.html" %}
 {% else %}
   {% include "home/front.sidebar.html" %}
@@ -28,21 +28,31 @@
         <a class="btn btn-info" href="#commentBox">
             评论
         </a>
+        {% if not bkmode %}
         <a class="btn btn-info" href="#commentAdd">
             发表评论
         </a>
+        {% endif %}
     </div>
 </div>
 <br />
 <div class="panel panel-info">
   <div class="panel-heading"><h4 class="panel-title">
-    {{title}}
+    {{bpo.title}}
     {% if bkmode %}
       (-*-预览-*-)
     {% endif %}
   </h4></div>
   <div id="context" class="panel-body">
-    {{content|safe}}
+    <div class="well well-sm">
+      <strong>{{bpo.author.nick}}</strong>&nbsp;发表于{{i.pubtime|date:"Y-m-d H:i:s"}}
+      <br />
+      <strong>分类：</strong>
+      {% for j in bpo.category.all %}
+        <a href="{% url 'pichublog_postlist' j.engname %}"><span class="label label-info" style="display:inline-block">{{j.title}}</span></a>
+      {% endfor %}
+    </div>
+    <div class="markdown">{{bpo.content|safe}}</div>
   </div>
 </div>
 
@@ -53,13 +63,15 @@
   </div>
 </div>
 
+{% if not bkmode %}
 <div class="panel panel-info">
   <div class="panel-heading">
     <h4 class="panel-title">发表评论</h4>
   </div>
   <div id="commentAdd" class="panel-body">
     <div class="container main-container-with-sidebar">
-      <form class="form-horizontal" role="form" action="" method="POST" >
+      {% if allowcmt %}
+      <form class="form-horizontal" role="form" action="{% url 'pichublog_cmtadd' bpo.id %}" method="POST" >
         {% csrf_token %}
         {% if not request.auth.islogin %}
         <div class="form-group">
@@ -85,7 +97,12 @@
           <input type="text" name="captcha" id="CaptInput" class="form-control" placeholder="验证码">
         </div>        
         <div><img id="captcha_box" src="" alt="" class="img-thumbnail"></div>
-        <div class="alert alert-info" role="alert"><strong>友情提示：</strong>注册后发表评论无需再输入验证码~</div>
+        <div class="alert alert-info" role="alert"><strong>友情提示：</strong>注册后发表评论无需再输入验证码。
+        <br />
+        {% if bpo.freecomment %}
+          {% if crws %}未注册用户的评论需经审核才能显示。{%endif%}
+        {% endif %}
+        </div>
         {% endif %}
         <br />
         <div class="form-group">
@@ -98,14 +115,18 @@
             {% endif %}
         </div>
       </form>
+      {% else %}
+        <div class="alert alert-danger" role="alert">作者只允许指定人员评论，您无权评论。</div>
+      {% endif %}
     </div>
   </div>
 </div>
+{% endif %}
 
 <script type="text/javascript">
 function LoadComment(page){
   $("#commentBox").html("载入中...");
-  //$("#commentBox").load("?page="+page);
+  $("#commentBox").load("{% url 'pichublog_cmtshow' bpo.id %}?page="+page);
 }
 function pageturn_cmt(page){
   LoadComment(page);

@@ -164,12 +164,22 @@ def PostView(request,ID):
 				"ctlist":BlogCategoty.objects.all(),
 				}
 				return render_to_response('home/post.err.html',kwvars,RequestContext(request))
+	if not bpo.freecomment:
+		pmhc = False
+		for hgp in thisuser.group:
+			if hgp in bpo.commentgrp:
+				if not thisuser in bpo.commentuex:
+					pmhc = True
+				break
+		if not pmhc:
+			if thisuser in bpo.commentuin:
+				pmhc = True
 	kwvars = {
 		"request":request,
-		"title":bpo.title,
-		"content":bpo.html,
-		"postid":bpo.id,
+		"bpo":bpo,
 		"bkmode":False,
+		"crws":CacheConfGet(cache,'CommentsReviewSwitch',default=True),
+		"allowcmt":pmhc,
 	}
 	return render_to_response('home/post.view.html',kwvars,RequestContext(request))
 
@@ -258,3 +268,84 @@ def PostDel(request,ID):
 		"randposts":BlogPost.objects.all().order_by('?')[:5],
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
+
+def AjaxShowComments(request,ID):
+	try:
+		bpo = BlogPost.objects.get(id=ID)
+	except BlogPost.DoesNotExist:
+		kwvars = {
+		"request":request,
+		"ctlist":BlogCategoty.objects.all(),
+		}
+		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
+	thisuser = GetUser(request)
+	owner = PermCheck(request.auth,'pichublog','Admin')
+	if not owner:
+		if bpo.author == thisuser:
+			owner = True
+	if owner:
+		cmt = BlogComment.objects.filter(post=bpo).order_by('-time')
+	else:
+		cmt = BlogComment.objects.filter(post=bpo,reviewed=True).order_by('-time')
+	lPage = SelfPaginator(request,cmt,20)
+	kwvars = {
+		'request':request,
+		'owner':owner,
+		'lPage':lPage,
+		'AjaxPaginatorID':'cmt',
+	}
+	return render_to_response('home/ajax.leavemsg.html',kwvars,RequestContext(request))
+
+def AddComments(request,ID):
+	try:
+		bpo = BlogPost.objects.get(id=ID)
+	except BlogPost.DoesNotExist:
+		kwvars = {
+		"request":request,
+		"ctlist":BlogCategoty.objects.all(),
+		}
+		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
+	if not bpo.freecomment:
+		pmhc = False
+		for hgp in thisuser.group:
+			if hgp in bpo.commentgrp:
+				if not thisuser in bpo.commentuex:
+					pmhc = True
+				break
+		if not pmhc:
+			if thisuser in bpo.commentuin:
+				pmhc = True
+	if not pmhc:
+		messages.error(request,u"<b>作者只允许指定身份的人评论本文，您不在此列。</b>")
+		return HttpResponseRedirect(reverse('pichublog_postview',args=(ID,)))
+	if request.method == "POST":
+		if request.auth.islogin:
+			chkpr=CheckPOST(['content'],request.POST.keys())
+			if not chkpr == "" :
+				return JsonResponse({"code":400,"msg":"Error Args."})
+		else:
+			chkpr=CheckPOST(['content','nick','website','mail','title'],request.POST.keys())
+			if not chkpr == "" :
+				return JsonResponse({"code":400,"msg":"Error Args."})
+		if request.auth.islogin:
+			content = request.POST.get('content')
+			title = request.POST.get('title')
+			stk = request.auth.cookie.get('zl2_token')
+			BlogComment.objects.create(post=bpo,cmid=BigIntUniqueID(),title=title,anonymou=False,stoken=stk,fromuser=request.auth.user,content=content,reviewed=True)
+			return HttpResponseRedirect(reverse('pichublog_postview',args=(ID,)))
+		else:
+			capt = request.POST.get('captcha')
+			if not CheckCaptcha(request,capt):
+				messages.error(request,u"<b>验证码错误</b>")
+				return HttpResponseRedirect(reverse('pichublog_postview',args=(ID,)))
+			content = request.POST.get('content')
+			nick = request.POST.get('nick')
+			mail = request.POST.get('mail')
+			web = request.POST.get('website')
+			title = request.POST.get('title')
+			stk = request.auth.cookie.get('zl2_token')
+			rws = not CacheConfGet(cache,'CommentsReviewSwitch',default=True)
+			LeaveMsg.objects.create(post=bpo,cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=rws)
+			return HttpResponseRedirect(reverse('pichublog_postview',args=(ID,)))
+	else:
+		return HttpResponse("405 Method Not Allowed")

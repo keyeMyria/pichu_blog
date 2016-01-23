@@ -73,6 +73,8 @@ def LeaveMsgAdd(request):
 			rws = not CacheConfGet(cache,'LeaveMsgReviewSwitch',default=True)
 			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=rws)
 			return HttpResponseRedirect(reverse('pichublog_msgboard'))
+	else:
+		return HttpResponse("405 Method Not Allowed")
 
 @PermNeed('pichublog','Admin')
 def SysConf(request):
@@ -91,7 +93,8 @@ def SysVarConf(request):
 @PermNeed('pichublog','Admin')
 def SysVarConfAjaxGet(request):
 	defaultconf = [
-		("LeaveMsgReviewSwitch","访客评论要求审核再显示",True,"bool"),
+		("LeaveMsgReviewSwitch","访客在留言板的留言要求审核再显示",True,"bool"),
+		("CommentsReviewSwitch","访客对文章的评论要求审核再显示",True,"bool"),
 		("HomePagePost","首页内容来源文章ID","","str"),
 	]
 	conf = []
