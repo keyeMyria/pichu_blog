@@ -169,11 +169,35 @@ def PostView(request,ID):
 		"title":bpo.title,
 		"content":bpo.html,
 		"postid":bpo.id,
+		"bkmode":False,
 	}
 	return render_to_response('home/post.view.html',kwvars,RequestContext(request))
 
-
-
+@PermNeed('pichublog','Writer')
+def PostPreview(request,ID):
+	try:
+		bpo = BlogPost.objects.get(id=ID)
+	except BlogPost.DoesNotExist:
+		kwvars = {
+		"request":request,
+		"ctlist":BlogCategoty.objects.all(),
+		}
+		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
+	if not PermCheck('pichublog','Admin'):
+		if not thisuser == bpo.author:
+			kwvars = {
+			"request":request,
+			"ctlist":BlogCategoty.objects.all(),
+			}
+		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
+	kwvars = {
+		"request":request,
+		"title":bpo.title,
+		"content":bpo.html,
+		"postid":bpo.id,
+		"bkmode":True,
+	}
+	return render_to_response('home/post.view.html',kwvars,RequestContext(request))
 def PostEdit(request,ID):
 	try:
 		bpo = BlogPost.objects.get(id=ID)

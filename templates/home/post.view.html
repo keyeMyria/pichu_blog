@@ -35,7 +35,12 @@
 </div>
 <br />
 <div class="panel panel-info">
-  <div class="panel-heading"><h4 class="panel-title">{{title}}</h4></div>
+  <div class="panel-heading"><h4 class="panel-title">
+    {{title}}
+    {% if bkmode %}
+      (-*-预览-*-)
+    {% endif %}
+  </h4></div>
   <div id="context" class="panel-body">
     {{content|safe}}
   </div>
