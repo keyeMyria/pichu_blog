@@ -183,7 +183,7 @@ def PostPreview(request,ID):
 		"ctlist":BlogCategoty.objects.all(),
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
-	if not PermCheck('pichublog','Admin'):
+	if not PermCheck(request.auth,'pichublog','Admin'):
 		if not thisuser == bpo.author:
 			kwvars = {
 			"request":request,
