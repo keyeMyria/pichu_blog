@@ -2,6 +2,13 @@
 {% load authperm %}
 {% load crypto %}
 {% load staticres %}
+{% load setvar %}
+
+{% if adminmode %}
+	{% setvar rfm = "a" %}
+{% else %}
+	{% setvar rfm = "w" %}
+{% endif %}
 
 {% block title %}
 {% if adminmode %}
@@ -92,14 +99,14 @@
 			<td>{{i.blogcomment_set.count}}</td>
 			<td>
 				<td class="host_buttom">
-					<a class="btn btn-primary btn-xs" href="{% url 'pichublog_postedit' i.id %}">编辑内容</a>
-					<a class="btn btn-success btn-xs" href="{% url 'pichublog_postgrant' i.id %}">权限设置</a>
+					<a class="btn btn-primary btn-xs" href="{% url 'pichublog_postedit' i.id %}?rfm={{rfm}}">编辑内容</a>
+					<a class="btn btn-success btn-xs" href="{% url 'pichublog_postgrant' i.id %}?rfm={{rfm}}">权限设置</a>
 					{% if i.hidden %}
-						<a class="btn btn-info btn-xs" href="{% url 'pichublog_posthid' i.id %}?val=false">取消隐藏</a>
+						<a class="btn btn-info btn-xs" href="{% url 'pichublog_posthid' i.id %}?val=false&rfm={{rfm}}">取消隐藏</a>
 					{% else %}
-						<a class="btn btn-warning btn-xs" href="{% url 'pichublog_posthid' i.id %}?val=true">隐藏</a>
+						<a class="btn btn-warning btn-xs" href="{% url 'pichublog_posthid' i.id %}?val=true&rfm={{rfm}}">隐藏</a>
 					{% endif %}
-					<a class="btn btn-danger btn-xs" href="{% url 'pichublog_postdel' i.id %}?confirmcode={% inthash i.id %}" onclick="return confirm('删除后不可恢复，是否确认删除？')">删除</a>
+					<a class="btn btn-danger btn-xs" href="{% url 'pichublog_postdel' i.id %}?confirmcode={% inthash i.title %}&rfm={{rfm}}" onclick="return confirm('删除后不可恢复，是否确认删除？')">删除</a>
 				</td>
 			</td>
 		</tr>

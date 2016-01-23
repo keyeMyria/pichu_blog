@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response,RequestContext
 from django.core.cache import get_cache
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,CacheConfGet
+from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,CacheConfGet,MakeSummary
 from siteutil.CommonPaginator import SelfPaginator
 from siteutil.CommonFilter import CommonFilter,FilterCondition
 from siteutil.htmlutil import renderMarkdownSafety
@@ -227,12 +227,16 @@ def PostEdit(request,ID):
 			nbp.rendered = True
 			nbp.save()
 			form.save_m2m()
-			return HttpResponseRedirect(reverse('pichublog_postwbklist'))
+			if request.REQUEST.get("rfm") == "w":
+				return HttpResponseRedirect(reverse('pichublog_postwbklist'))
+			else:
+				return HttpResponseRedirect(reverse('pichublog_postabklist'))
 	else:
 		form = EditPostForm(instance=bpo)
 	kwvars = {
 		"request":request,
 		'form':form,
+		'rfm':request.REQUEST.get("rfm"),
 	}
 	return render_to_response('home/post.edit.html',kwvars,RequestContext(request))
 
@@ -258,6 +262,14 @@ def PostHidden(request,ID):
 		"randposts":BlogPost.objects.all().order_by('?')[:5],
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
+	if not "val" in request.GET.keys():
+		return HttpResponse("Err Request Arguments")
+	bset = (request.GET['val']=="true")
+	bpo.hidden = bset
+	if request.REQUEST.get("rfm") == "w":
+		return HttpResponseRedirect(reverse('pichublog_postwbklist'))
+	else:
+		return HttpResponseRedirect(reverse('pichublog_postabklist'))
 
 def PostDel(request,ID):
 	try:
