@@ -206,7 +206,7 @@ def PostPreview(request,ID):
 	kwvars = {
 		"request":request,
 		"bpo":bpo,
-		"bkmode":False,
+		"bkmode":True,
 	}
 	return render_to_response('home/post.view.html',kwvars,RequestContext(request))
 def PostEdit(request,ID):
