@@ -4,12 +4,6 @@
 {% load staticres %}
 {% load setvar %}
 
-{% if adminmode %}
-	{% setvar rfm = "a" %}
-{% else %}
-	{% setvar rfm = "w" %}
-{% endif %}
-
 {% block title %}
 {% if adminmode %}
 	全局文章管理 - 丘丘塔台
@@ -32,7 +26,7 @@
 		{% url "pichublog_catlist" as pichublog_catlist %}
 		<a class="btn btn-primary {%if request.path = pichublog_postbklist %} active {% endif %}" href="{{ pichublog_catlist }}">
 			<span class="glyphicon glyphicon-th-list"></span>
-			文章列表{{rfm}}
+			文章列表
 		</a>
 		{% url "pichublog_catadd" as pichublog_catadd %}
 		<a class="btn btn-primary {%if request.path = pichublog_postadd %} active {% endif %}" href="{{ pichublog_catadd }}">
@@ -99,6 +93,12 @@
 			<td>{{i.blogcomment_set.count}}</td>
 			<td>
 				<td class="host_buttom">
+					{% if adminmode %}
+						{% setvar rfm = "a" %}
+					{% else %}
+						{% setvar rfm = "w" %}
+					{% endif %}
+					--{{rfm}}--
 					<a class="btn btn-primary btn-xs" href="{% url 'pichublog_postedit' i.id %}?rfm={{rfm}}">编辑内容</a>
 					<a class="btn btn-success btn-xs" href="{% url 'pichublog_postgrant' i.id %}?rfm={{rfm}}">权限设置</a>
 					{% if i.hidden %}
