@@ -38,7 +38,7 @@
 <div>{% include "common/paginator.html" %}</div>
 <br />
 <ul class="list-group">
-	{% for i in lPgae %}
+	{% for i in lPage %}
 	<li class="list-group-item">
 		<h3>
 			{% if i.private %}
@@ -51,8 +51,9 @@
 			<a href="{% url 'pichublog_postview' i.id %}">{{i.title}}</a>
 		</h3>
 		<p>
-			作者：{{i.author.nick}}&nbsp;&nbsp;&nbsp;
-			发布时间：{{i.pubtime|date:"Y-m-d H:i:s"}}&nbsp;&nbsp;&nbsp;
+			<b>作者：</b>{{i.author.nick}}&nbsp;&nbsp;&nbsp;
+			<b>发布时间：</b>{{i.pubtime|date:"Y-m-d H:i:s"}}&nbsp;&nbsp;&nbsp;
+			<blockquote>{% mksummary i.html "233" %}</blockquote>
 		</p>
 	</li>
 	{% endfor %}
