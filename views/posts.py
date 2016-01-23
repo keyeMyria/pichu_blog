@@ -178,6 +178,7 @@ def PostView(request,ID):
 		"request":request,
 		"bpo":bpo,
 		"bkmode":False,
+		"ctlist":BlogCategoty.objects.all(),
 		"crws":CacheConfGet(cache,'CommentsReviewSwitch',default=True),
 		"allowcmt":pmhc,
 	}
@@ -202,10 +203,8 @@ def PostPreview(request,ID):
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 	kwvars = {
 		"request":request,
-		"title":bpo.title,
-		"content":bpo.html,
-		"postid":bpo.id,
-		"bkmode":True,
+		"bpo":bpo,
+		"bkmode":False,
 	}
 	return render_to_response('home/post.view.html',kwvars,RequestContext(request))
 def PostEdit(request,ID):
