@@ -266,6 +266,7 @@ def PostHidden(request,ID):
 		return HttpResponse("Err Request Arguments")
 	bset = (request.GET['val']=="true")
 	bpo.hidden = bset
+	bpo.save()
 	if request.REQUEST.get("rfm") == "w":
 		return HttpResponseRedirect(reverse('pichublog_postwbklist'))
 	else:
