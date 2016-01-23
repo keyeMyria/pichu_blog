@@ -164,7 +164,9 @@ def PostView(request,ID):
 				"ctlist":BlogCategoty.objects.all(),
 				}
 				return render_to_response('home/post.err.html',kwvars,RequestContext(request))
-	if not bpo.freecomment:
+	if bpo.freecomment:
+		pmhc = True
+	else:
 		pmhc = False
 		for hgp in thisuser.group:
 			if hgp in bpo.commentgrp:
@@ -304,7 +306,9 @@ def AddComments(request,ID):
 		"ctlist":BlogCategoty.objects.all(),
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
-	if not bpo.freecomment:
+	if bpo.freecomment:
+		pmhc = True
+	else:
 		pmhc = False
 		for hgp in thisuser.group:
 			if hgp in bpo.commentgrp:
