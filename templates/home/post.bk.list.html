@@ -32,7 +32,7 @@
 		{% url "pichublog_catlist" as pichublog_catlist %}
 		<a class="btn btn-primary {%if request.path = pichublog_postbklist %} active {% endif %}" href="{{ pichublog_catlist }}">
 			<span class="glyphicon glyphicon-th-list"></span>
-			文章列表
+			文章列表{{rfm}}
 		</a>
 		{% url "pichublog_catadd" as pichublog_catadd %}
 		<a class="btn btn-primary {%if request.path = pichublog_postadd %} active {% endif %}" href="{{ pichublog_catadd }}">
