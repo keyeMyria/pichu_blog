@@ -50,7 +50,6 @@ class BlogComment(models.Model):
 	mail      = models.CharField(max_length=255,blank=True,null=True)
 	website   = models.CharField(max_length=255,blank=True,null=True)
 	fromuser = models.CharField(max_length=64)
-	title     = models.CharField(max_length=255)
 	content   = models.TextField()
 
 class LeaveMsg(models.Model):
@@ -62,5 +61,4 @@ class LeaveMsg(models.Model):
 	mail      = models.CharField(max_length=255,blank=True,null=True)
 	website   = models.CharField(max_length=255,blank=True,null=True)
 	fromuser = models.CharField(max_length=64)
-	title     = models.CharField(max_length=255)
 	content   = models.TextField()

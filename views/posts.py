@@ -353,9 +353,8 @@ def AddComments(request,ID):
 				return JsonResponse({"code":400,"msg":"Error Args."})
 		if request.auth.islogin:
 			content = request.POST.get('content')
-			title = request.POST.get('title')
 			stk = request.auth.cookie.get('zl2_token')
-			BlogComment.objects.create(post=bpo,cmid=BigIntUniqueID(),title=title,anonymou=False,stoken=stk,fromuser=request.auth.user,content=content,reviewed=True)
+			BlogComment.objects.create(post=bpo,cmid=BigIntUniqueID(),anonymou=False,stoken=stk,fromuser=request.auth.user,content=content,reviewed=True)
 			return HttpResponseRedirect(reverse('pichublog_postview',args=(ID,)))
 		else:
 			capt = request.POST.get('captcha')
@@ -366,10 +365,9 @@ def AddComments(request,ID):
 			nick = request.POST.get('nick')
 			mail = request.POST.get('mail')
 			web = request.POST.get('website')
-			title = request.POST.get('title')
 			stk = request.auth.cookie.get('zl2_token')
 			rws = not CacheConfGet(cache,'CommentsReviewSwitch',default=True)
-			LeaveMsg.objects.create(post=bpo,cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=rws)
+			LeaveMsg.objects.create(post=bpo,cmid=BigIntUniqueID(),anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=rws)
 			return HttpResponseRedirect(reverse('pichublog_postview',args=(ID,)))
 	else:
 		return HttpResponse("405 Method Not Allowed")
