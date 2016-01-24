@@ -282,6 +282,14 @@ def PostDel(request,ID):
 		"randposts":BlogPost.objects.all().order_by('?')[:5],
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
+	if request.GET.get('veryfycode') == unicode(hash(bpo.title)):
+		bpo.delete()
+	else:
+		messages.error(request,"<b>删除失败：</b>请求参数校验不成功，为了安全起见，该删除请求被服务器拒绝。")
+	if request.REQUEST.get("rfm") == "w":
+		return HttpResponseRedirect(reverse('pichublog_postwbklist'))
+	else:
+		return HttpResponseRedirect(reverse('pichublog_postabklist'))
 
 def AjaxShowComments(request,ID):
 	try:

@@ -55,7 +55,7 @@
 			<b>作者：</b>{{i.author.nick}}&nbsp;&nbsp;&nbsp;
 			<b>发布时间：</b>{{i.pubtime|date:"Y-m-d H:i:s"}}&nbsp;&nbsp;&nbsp;<br />
 			<strong>分类：</strong>
-			{% for j in bpo.category.all %}
+			{% for j in i.category.all %}
 				<a href="{% url 'pichublog_postlist' j.engname %}"><span class="label label-info" style="display:inline-block">{{j.title}}</span></a>
 			{% endfor %}
 		</p>
