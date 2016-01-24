@@ -316,7 +316,7 @@ def AjaxShowComments(request,ID):
 		'lPage':lPage,
 		'AjaxPaginatorID':'cmt',
 	}
-	return render_to_response('home/ajax.leavemsg.html',kwvars,RequestContext(request))
+	return render_to_response('home/ajax.comment.html',kwvars,RequestContext(request))
 
 def AddComments(request,ID):
 	try:
