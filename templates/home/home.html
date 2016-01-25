@@ -8,7 +8,13 @@
 {% block content %}
 <div class="jumbotron">
 	<div class="container">
-		<h1>欢迎！</h1>
+		{% if hp %}
+			<div class="homecontent">
+				{{mpo.html|safe}}
+			</div>
+		{% else %}
+			<h1>欢迎！</h1>
+		{% endif %}
 	</div>
 </div>
 {% endblock %}

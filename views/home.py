@@ -19,7 +19,16 @@ cache = get_cache("pichublog")
 
 @login_detect()
 def Home(request):
-	kwargs = {"request":request}
+	mpid = CacheConfGet(cache,'HomePagePost',default=0)
+	try:
+		mpo = BlogPost.objects.get(id=mpid)
+		hp = True
+	except:
+		hp = False
+	if hp:
+		if not mpo.rendered:
+			hp = False
+	kwargs = {"request":request,"hp":hp,"mpo":mpo}
 	return render_to_response('home/home.html',kwargs,RequestContext(request))
 
 def LeaveMsgPage(request):
