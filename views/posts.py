@@ -269,7 +269,7 @@ def PostGrant(request,ID):
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 	if request.method == "POST":
-		form = EditPostForm(request.POST,instance=bpo)
+		form = PostPermForm(request.POST,instance=bpo)
 		if form.is_valid():
 			form.save()
 			if request.REQUEST.get("rfm") == "w":
@@ -277,7 +277,7 @@ def PostGrant(request,ID):
 			else:
 				return HttpResponseRedirect(reverse('pichublog_postabklist'))
 	else:
-		form = EditPostForm(instance=bpo)
+		form = PostPermForm(instance=bpo)
 	kwvars = {
 		"request":request,
 		'form':form,
