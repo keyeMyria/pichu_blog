@@ -21,7 +21,7 @@ cache = get_cache("pichublog")
 def Home(request):
 	mpid = CacheConfGet(cache,'HomePagePost',default=0)
 	try:
-		mpo = BlogPost.objects.get(id=mpid)
+		mpo = BlogPost.objects.get(id=str2int(mpid))
 		hp = True
 	except:
 		hp = False
