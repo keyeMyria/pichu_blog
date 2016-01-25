@@ -6,7 +6,7 @@ class KVConf(models.Model):
 	value = models.TextField()
 
 class BlogCategoty(models.Model):
-	engname = models.CharField(max_length=64,db_index=True)
+	engname = models.CharField(unique=True,max_length=64,db_index=True)
 	title = models.CharField(max_length=64)
 	order = models.IntegerField()
 	topli = models.CharField(max_length=64,blank=True,null=True)

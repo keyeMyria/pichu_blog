@@ -108,6 +108,7 @@ def SysVarConfAjaxGet(request):
 		("LeaveMsgReviewSwitch","访客在留言板的留言要求审核再显示",True,"bool"),
 		("CommentsReviewSwitch","访客对文章的评论要求审核再显示",True,"bool"),
 		("HomePagePost","首页内容来源文章ID","","str"),
+		("MainTopList","总分类置顶列表（填文章ID，多项之间英文逗号隔开）","","str"),
 	]
 	conf = []
 	for i in defaultconf:

@@ -82,8 +82,24 @@ def PostWBkList(request):
 
 def PostList(request,ctname):
 	bpo = BlogPost.objects.all().filter(rendered=True,hidden=False)
-	if not ctname == "*":
+	if ctname == "*":
+		stcl = CacheConfGet(cache,'MainTopList',default="")
+		ltcl = stcl.split(',')
+		itcl = map(lambda x:str2int(x), ltcl)
+		toplist = BlogPost.objects.filter(id__in=itcl)
+	else:
 		bpo = bpo.filter(category__engname=ctname)
+		try:
+			cato = BlogCategoty.objects.get(engname=ctname)
+			stcl = cato.topli
+			ltcl = stcl.split(',')
+			itcl = map(lambda x:str2int(x), ltcl)
+			toplist = BlogPost.objects.filter(id__in=itcl)
+		except:
+			stcl = CacheConfGet(cache,'MainTopList',default="")
+			ltcl = stcl.split(',')
+			itcl = map(lambda x:str2int(x), ltcl)
+			toplist = BlogPost.objects.filter(id__in=itcl)
 	fco = FilterCondition()
 	fco.addTextContain("t","标题","title")
 	fco.addTextContain("au","作者用户名","author__name")
@@ -97,6 +113,7 @@ def PostList(request,ctname):
 	kwvars = {
 		"request":request,
 		"ctname":ctname,
+		"TopList":toplist,
 		"lPage":lpg,
 		"ctlist":BlogCategoty.objects.all().order_by('order'),
 		'FilterHTML':fco.RenderHTML(request),
