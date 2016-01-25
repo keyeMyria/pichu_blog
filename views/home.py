@@ -217,7 +217,7 @@ def CategoryDel(request,ID):
 	return HttpResponseRedirect(reverse('pichublog_catlist'))
 
 @PermNeed('pichublog','Admin')
-def AjaxCategoryMoveOrder(request,Proj):
+def AjaxCategoryMoveOrder(request):
 	chkpr = CheckPOST(['dct','mvid'],request.GET.keys())
 	if not chkpr == "" :
 		return JsonResponse({"code":400,"msg":"Error Args."})
