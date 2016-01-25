@@ -3,7 +3,7 @@
 {% load staticres %}
 
 {% block title %}
-	编辑文章 - 丘丘塔台
+	设置权限 - 丘丘塔台
 {% endblock %}
 
 {% ifequal rfm "a" %}
@@ -34,9 +34,15 @@
 	</div>
 </form>
 <script>
-    var catbox = $('select[name="category"]').bootstrapDualListbox({
-          nonSelectedListLabel: '可选择分类',
-          selectedListLabel: '已选择分类',
+    var rgbox = $('select[name="readgrp"]').bootstrapDualListbox({
+          nonSelectedListLabel: '可选择用户组',
+          selectedListLabel: '已选择用户组',
+          preserveSelectionOnMove: 'moved',
+          moveOnSelect: false,
+    });
+    var cgbox = $('select[name="commentgrp"]').bootstrapDualListbox({
+          nonSelectedListLabel: '可选择用户组',
+          selectedListLabel: '已选择用户组',
           preserveSelectionOnMove: 'moved',
           moveOnSelect: false,
     });
