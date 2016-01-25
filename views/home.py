@@ -20,19 +20,16 @@ import traceback
 
 @login_detect()
 def Home(request):
-	dbginfo = []
 	mpid = CacheConfGet(cache,'HomePagePost',default=0)
-	dbginfo.append(repr(mpid))
 	try:
 		mpo = BlogPost.objects.get(id=str2int(mpid))
 		hp = True
 	except:
-		dbginfo.append(traceback.format_exc())
 		hp = False
 	if hp:
 		if not mpo.rendered:
 			hp = False
-	kwargs = {"request":request,"hp":hp,"mpo":mpo,"dbginfo":dbginfo}
+	kwargs = {"request":request,"hp":hp,"mpo":mpo}
 	return render_to_response('home/home.html',kwargs,RequestContext(request))
 
 def LeaveMsgPage(request):
