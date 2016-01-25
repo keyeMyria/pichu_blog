@@ -47,8 +47,8 @@ class PostPermForm(forms.ModelForm):
 		#fields = ['private','passwdlck','passwd','readgrp','readuin','readuex','freecomment','commentgrp','commentuin','commentuex']
 		fields = ['private','passwdlck','passwd','freecomment']
 		widgets = {
-			"private":forms.CheckboxInput(attrs={'class':'form-control'}),
-			"passwdlck":forms. RadioSelect(attrs={'class':'form-control','placeholder':'（需设为私密文章方可有效）'}),
+			"private":forms.CheckboxInput(attrs={'class':'form-control switch'}),
+			"passwdlck":forms.CheckboxInput(attrs={'class':'form-control'}),
 		}
 
 	def __init__(self,*args,**kwargs):

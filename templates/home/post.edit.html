@@ -6,14 +6,17 @@
 	编辑文章 - 丘丘塔台
 {% endblock %}
 
-{% ifequal rfm "a" %}
-	{% include "home/sysconf.sidebar.html" %}
-{% else %}
-	{% include "home/front.sidebar.html" %}
-{% endifequal %}
+{% block sidebar %}
+	{% ifequal rfm "a" %}
+		{% include "home/sysconf.sidebar.html" %}
+	{% else %}
+		{% include "home/front.sidebar.html" %}
+	{% endifequal %}
+{% endblock %}
 
 {% block head %}
 {% res js "duallistbox" %}
+{% res css "duallistbox" %}
 {% endblock %}
 
 {% block content %}

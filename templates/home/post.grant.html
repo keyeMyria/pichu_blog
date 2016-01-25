@@ -6,14 +6,19 @@
 	设置权限 - 丘丘塔台
 {% endblock %}
 
-{% ifequal rfm "a" %}
-	{% include "home/sysconf.sidebar.html" %}
-{% else %}
-	{% include "home/front.sidebar.html" %}
-{% endifequal %}
+{% block sidebar %}
+	{% ifequal rfm "a" %}
+		{% include "home/sysconf.sidebar.html" %}
+	{% else %}
+		{% include "home/front.sidebar.html" %}
+	{% endifequal %}
+{% endblock %}
 
 {% block head %}
 {% res js "duallistbox" %}
+{% res css "duallistbox" %}
+{% res js "switch" %}
+{% res css "switch" %}
 {% endblock %}
 
 {% block content %}
