@@ -44,7 +44,7 @@ class EditPostForm(forms.ModelForm):
 class PostPermForm(forms.ModelForm):
 	class Meta:
 		model = BlogPost
-		fields = ['private','passwdlck','password','readgrp','readuin','readuex','freecomment','commentgrp','commentuin','commentuex']
+		fields = ['private','passwdlck','passwd','readgrp','readuin','readuex','freecomment','commentgrp','commentuin','commentuex']
 		widgets = {
 			"private":forms.CheckboxInput(attrs={'class':'form-control'}),
 			"passwdlck":forms.CheckboxInput(attrs={'class':'form-control','placeholder':'（需设为私密文章方可有效）'}),
