@@ -25,7 +25,7 @@ def PostABkList(request):
 	bpo = BlogPost.objects.all()
 	ctids = []
 	ctals = []
-	for i in BlogCategoty.objects.all():
+	for i in BlogCategoty.objects.all().order_by('order'):
 		ctids.append(i.id)
 		ctals.append(i.title)
 
@@ -56,7 +56,7 @@ def PostWBkList(request):
 	mList = bpo.filter(author=GetUser(request))
 	ctids = []
 	ctals = []
-	for i in BlogCategoty.objects.all():
+	for i in BlogCategoty.objects.all().order_by('order'):
 		ctids.append(i.id)
 		ctals.append(i.title)
 
@@ -98,7 +98,7 @@ def PostList(request,ctname):
 		"request":request,
 		"ctname":ctname,
 		"lPage":lpg,
-		"ctlist":BlogCategoty.objects.all(),
+		"ctlist":BlogCategoty.objects.all().order_by('order'),
 		'FilterHTML':fco.RenderHTML(request),
 	}
 	return render_to_response('home/post.list.html',kwvars,RequestContext(request))
@@ -123,13 +123,13 @@ def PostView(request,ID):
 	except BlogPost.DoesNotExist:
 		kwvars = {
 		"request":request,
-		"ctlist":BlogCategoty.objects.all(),
+		"ctlist":BlogCategoty.objects.all().order_by('order'),
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 	if not bpo.rendered:
 		kwvars = {
 		"request":request,
-		"ctlist":BlogCategoty.objects.all(),
+		"ctlist":BlogCategoty.objects.all().order_by('order'),
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 	if bpo.hidden:
@@ -137,7 +137,7 @@ def PostView(request,ID):
 			if not PermCheck('pichublog','Admin'):
 				kwvars = {
 				"request":request,
-				"ctlist":BlogCategoty.objects.all(),
+				"ctlist":BlogCategoty.objects.all().order_by('order'),
 				}
 				return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 	if bpo.private:
@@ -161,7 +161,7 @@ def PostView(request,ID):
 			if not pmh:
 				kwvars = {
 				"request":request,
-				"ctlist":BlogCategoty.objects.all(),
+				"ctlist":BlogCategoty.objects.all().order_by('order'),
 				}
 				return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 	if bpo.freecomment:
@@ -180,7 +180,7 @@ def PostView(request,ID):
 		"request":request,
 		"bpo":bpo,
 		"bkmode":False,
-		"ctlist":BlogCategoty.objects.all(),
+		"ctlist":BlogCategoty.objects.all().order_by('order'),
 		"crws":CacheConfGet(cache,'CommentsReviewSwitch',default=True),
 		"allowcmt":pmhc,
 	}
@@ -193,14 +193,14 @@ def PostPreview(request,ID):
 	except BlogPost.DoesNotExist:
 		kwvars = {
 		"request":request,
-		"ctlist":BlogCategoty.objects.all(),
+		"ctlist":BlogCategoty.objects.all().order_by('order'),
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 	if not PermCheck(request.auth,'pichublog','Admin'):
 		if not thisuser == bpo.author:
 			kwvars = {
 			"request":request,
-			"ctlist":BlogCategoty.objects.all(),
+			"ctlist":BlogCategoty.objects.all().order_by('order'),
 			}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 	kwvars = {
@@ -215,7 +215,7 @@ def PostEdit(request,ID):
 	except BlogPost.DoesNotExist:
 		kwvars = {
 		"request":request,
-		"ctlist":BlogCategoty.objects.all(),
+		"ctlist":BlogCategoty.objects.all().order_by('order'),
 		"randposts":BlogPost.objects.all().order_by('?')[:5],
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
@@ -247,7 +247,7 @@ def PostGrant(request,ID):
 	except BlogPost.DoesNotExist:
 		kwvars = {
 		"request":request,
-		"ctlist":BlogCategoty.objects.all(),
+		"ctlist":BlogCategoty.objects.all().order_by('order'),
 		"randposts":BlogPost.objects.all().order_by('?')[:5],
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
@@ -258,7 +258,7 @@ def PostHidden(request,ID):
 	except BlogPost.DoesNotExist:
 		kwvars = {
 		"request":request,
-		"ctlist":BlogCategoty.objects.all(),
+		"ctlist":BlogCategoty.objects.all().order_by('order'),
 		"randposts":BlogPost.objects.all().order_by('?')[:5],
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
@@ -278,7 +278,7 @@ def PostDel(request,ID):
 	except BlogPost.DoesNotExist:
 		kwvars = {
 		"request":request,
-		"ctlist":BlogCategoty.objects.all(),
+		"ctlist":BlogCategoty.objects.all().order_by('order'),
 		"randposts":BlogPost.objects.all().order_by('?')[:5],
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
@@ -297,7 +297,7 @@ def AjaxShowComments(request,ID):
 	except BlogPost.DoesNotExist:
 		kwvars = {
 		"request":request,
-		"ctlist":BlogCategoty.objects.all(),
+		"ctlist":BlogCategoty.objects.all().order_by('order'),
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 	thisuser = GetUser(request)
@@ -324,7 +324,7 @@ def AddComments(request,ID):
 	except BlogPost.DoesNotExist:
 		kwvars = {
 		"request":request,
-		"ctlist":BlogCategoty.objects.all(),
+		"ctlist":BlogCategoty.objects.all().order_by('order'),
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 	if bpo.freecomment:

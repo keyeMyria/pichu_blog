@@ -155,7 +155,7 @@ def CategoryList(request):
 
 @PermNeed('pichublog','Admin')
 def AjaxCategoryList(request):
-	cto = BlogCategoty.objects.all()
+	cto = BlogCategoty.objects.all().order_by('order')
 	kwvars = {
 		"request":request,
 		"cto":cto,
