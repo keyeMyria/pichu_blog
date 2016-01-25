@@ -32,7 +32,7 @@ def Home(request):
 	if hp:
 		if not mpo.rendered:
 			hp = False
-	kwargs = {"request":request,"hp":hp,"mpo":mpo,"dbginfo":dbg}
+	kwargs = {"request":request,"hp":hp,"mpo":mpo,"dbginfo":dbginfo}
 	return render_to_response('home/home.html',kwargs,RequestContext(request))
 
 def LeaveMsgPage(request):
