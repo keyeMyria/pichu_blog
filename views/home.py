@@ -171,7 +171,7 @@ def CategoryAdd(request):
 			maxorder = BlogCategoty.objects.all().aggregate(order_max=DbMax('order'))['order_max']
 			if maxorder == None:
 				maxorder = 0
-			co.order = maxorder
+			co.order = maxorder+1
 			co.save()
 			form.save_m2m()
 			return HttpResponseRedirect(reverse('pichublog_catlist'))
