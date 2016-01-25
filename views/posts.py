@@ -268,6 +268,22 @@ def PostGrant(request,ID):
 		"randposts":BlogPost.objects.all().order_by('?')[:5],
 		}
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
+	if request.method == "POST":
+		form = EditPostForm(request.POST,instance=bpo)
+		if form.is_valid():
+			form.save()
+			if request.REQUEST.get("rfm") == "w":
+				return HttpResponseRedirect(reverse('pichublog_postwbklist'))
+			else:
+				return HttpResponseRedirect(reverse('pichublog_postabklist'))
+	else:
+		form = EditPostForm(instance=bpo)
+	kwvars = {
+		"request":request,
+		'form':form,
+		'rfm':request.REQUEST.get("rfm"),
+	}
+	return render_to_response('home/post.grant.html',kwvars,RequestContext(request))
 
 def PostHidden(request,ID):
 	try:
