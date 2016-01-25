@@ -45,7 +45,7 @@ class PostPermForm(forms.ModelForm):
 	class Meta:
 		model = BlogPost
 		#fields = ['private','passwdlck','passwd','readgrp','readuin','readuex','freecomment','commentgrp','commentuin','commentuex']
-		fields = ['private','passwdlck','passwd','freecomment','readgrp']
+		fields = ['private','passwdlck','passwd','freecomment']
 		widgets = {
 			"private":forms.CheckboxInput(attrs={'class':'form-control'}),
 			"passwdlck":forms.CheckboxInput(attrs={'class':'form-control'}),
