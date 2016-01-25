@@ -21,6 +21,7 @@ import traceback
 @login_detect()
 def Home(request):
 	mpid = CacheConfGet(cache,'HomePagePost',default=0)
+	mpo = None
 	try:
 		mpo = BlogPost.objects.get(id=str2int(mpid))
 		hp = True
