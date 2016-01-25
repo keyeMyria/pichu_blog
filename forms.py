@@ -50,7 +50,7 @@ class PostPermForm(forms.ModelForm):
 			"passwdlck":forms.CheckboxInput(attrs={'class':'form-control','placeholder':'（需设为私密文章方可有效）'}),
 		}
 
-	 def __init__(self,*args,**kwargs):
+	def __init__(self,*args,**kwargs):
 		super(PostPermForm,self).__init__(*args,**kwargs)
 		self.fields['private'].label=u'设为私密文章'
 		self.fields['private'].label=u'使用密码保护'
