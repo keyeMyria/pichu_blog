@@ -1,6 +1,44 @@
 from django.db import models
 from zlogin.models import User,UserGroup
 
+class CrossDbForeignKey(models.ForeignKey):
+    def validate(self, value, model_instance):
+        if self.rel.parent_link:
+            return
+        super(models.ForeignKey, self).validate(value, model_instance)
+        if value is None:
+            return
+
+        # Here is the trick, get db relating to fk, not to root model
+        using = router.db_for_read(self.rel.to, instance=model_instance)
+
+        qs = self.rel.to._default_manager.using(using).filter(
+                **{self.rel.field_name: value}
+             )
+        qs = qs.complex_filter(self.rel.limit_choices_to)
+        if not qs.exists():
+            raise exceptions.ValidationError(self.error_messages['invalid'] % {
+                'model': self.rel.to._meta.verbose_name, 'pk': value})
+
+class CrossDbManyToManyField(models.ManyToManyField):
+    def validate(self, value, model_instance):
+        if self.rel.parent_link:
+            return
+        super(models.ManyToManyField, self).validate(value, model_instance)
+        if value is None:
+            return
+
+        # Here is the trick, get db relating to fk, not to root model
+        using = router.db_for_read(self.rel.to, instance=model_instance)
+
+        qs = self.rel.to._default_manager.using(using).filter(
+                **{self.rel.field_name: value}
+             )
+        qs = qs.complex_filter(self.rel.limit_choices_to)
+        if not qs.exists():
+            raise exceptions.ValidationError(self.error_messages['invalid'] % {
+                'model': self.rel.to._meta.verbose_name, 'pk': value})
+
 class KVConf(models.Model):
 	key = models.CharField(max_length=64,unique=True,db_index=True)
 	value = models.TextField()
@@ -34,13 +72,13 @@ class BlogPost(models.Model):
 	private = models.BooleanField(default=False)
 	passwdlck = models.BooleanField(default=False)
 	passwd = models.CharField(max_length=128)
-	readgrp = models.ManyToManyField('zlogin.UserGroup',blank=True,null=True,related_name="pichublog_readgrp")
-	readuin = models.ManyToManyField('zlogin.User',blank=True,null=True,related_name="pichublog_readuin")
-	readuex = models.ManyToManyField('zlogin.User',blank=True,null=True,related_name="pichublog_readuex")
+	readgrp = CrossDbManyToManyField('zlogin.UserGroup',blank=True,null=True,related_name="pichublog_readgrp")
+	readuin = CrossDbManyToManyField('zlogin.User',blank=True,null=True,related_name="pichublog_readuin")
+	readuex = CrossDbManyToManyField('zlogin.User',blank=True,null=True,related_name="pichublog_readuex")
 	freecomment = models.BooleanField(default=True)
-	commentgrp = models.ManyToManyField('zlogin.UserGroup',blank=True,null=True,related_name="pichublog_commentgrp")
-	commentuin = models.ManyToManyField('zlogin.User',blank=True,null=True,related_name="pichublog_commentuin")
-	commentuex = models.ManyToManyField('zlogin.User',blank=True,null=True,related_name="pichublog_commentuex")
+	commentgrp = CrossDbManyToManyField('zlogin.UserGroup',blank=True,null=True,related_name="pichublog_commentgrp")
+	commentuin = CrossDbManyToManyField('zlogin.User',blank=True,null=True,related_name="pichublog_commentuin")
+	commentuex = CrossDbManyToManyField('zlogin.User',blank=True,null=True,related_name="pichublog_commentuex")
 
 class BlogComment(models.Model):
 	cmid      = models.BigIntegerField(primary_key=True)
