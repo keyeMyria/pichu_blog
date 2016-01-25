@@ -40,3 +40,17 @@ class EditPostForm(forms.ModelForm):
         self.fields['markdown'].label=u'正文'
         self.fields['markdown'].required=True
         self.fields['markdown'].error_messages={'required':u"请输入正文"}
+
+class PostPermForm(forms.ModelForm):
+	class Meta:
+		model = BlogPost
+		fields = ['private','passwdlck','password','readgrp','readuin','readuex','freecomment','commentgrp','commentuin','commentuex']
+		widgets = {
+			"private":forms.CheckboxInput(attrs={'class':'form-control'}),
+			"passwdlck":forms.CheckboxInput(attrs={'class':'form-control','placeholder':'（需设为私密文章方可有效）'}),
+		}
+
+	 def __init__(self,*args,**kwargs):
+        super(PostPermForm,self).__init__(*args,**kwargs)
+        self.fields['private'].label=u'设为私密文章'
+        self.fields['private'].label=u'使用密码保护'
