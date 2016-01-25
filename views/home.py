@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response,RequestContext
 from django.core.cache import get_cache
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.db.models import Max as DbMax
 from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,CacheConfGet
 from siteutil.CommonPaginator import SelfPaginator
 from zlogin.common.JsonResponse import JsonResponse
@@ -147,19 +148,29 @@ def SysVarConfAjaxToggle(request):
 
 @PermNeed('pichublog','Admin')
 def CategoryList(request):
+	kwvars = {
+		"request":request,
+	}
+	return render_to_response('home/sysconf.category.list.html',kwvars,RequestContext(request))
+
+@PermNeed('pichublog','Admin')
+def AjaxCategoryList(request):
 	cto = BlogCategoty.objects.all()
 	kwvars = {
 		"request":request,
 		"cto":cto,
 	}
-	return render_to_response('home/sysconf.category.list.html',kwvars,RequestContext(request))
+	return render_to_response('home/sysconf.catlist.ajax.html',kwvars,RequestContext(request))
 
 @PermNeed('pichublog','Admin')
 def CategoryAdd(request):
 	if request.method == "POST":
 		form = BlogCategotyForm(request.POST)
 		if form.is_valid():
-			form.save()
+			co = form.save(commit=False)
+			co.order = BlogCategoty.objects.all().aggregate(order_max=DbMax('order'))['order_max']
+			co.save()
+			form.save_m2m()
 			return HttpResponseRedirect(reverse('pichublog_catlist'))
 	else:
 		form = BlogCategotyForm()
@@ -180,7 +191,10 @@ def CategoryEdit(request,ID):
 	if request.method == "POST":
 		form = BlogCategotyForm(request.POST,instance=bco)
 		if form.is_valid():
-			form.save()
+			co = form.save(commit=False)
+			co.order = BlogCategoty.objects.all().aggregate(order_max=DbMax('order'))['order_max']
+			co.save()
+			form.save_m2m()
 			return HttpResponseRedirect(reverse('pichublog_catlist'))
 	else:
 		form = BlogCategotyForm(instance=bco)
@@ -198,3 +212,32 @@ def CategoryDel(request,ID):
 	except BlogCategoty.DoesNotExist:
 		messages.error(request,u"<b>删除分类失败</b><br /><b>详细信息：</b>找不到ID为%s的分类！"%ID)
 	return HttpResponseRedirect(reverse('pichublog_catlist'))
+
+@PermNeed('pichublog','Admin')
+def AjaxCategoryMoveOrder(request,Proj):
+	chkpr = CheckPOST(['dct','mvid'],request.GET.keys())
+	if not chkpr == "" :
+		return JsonResponse({"code":400,"msg":"Error Args."})
+	dct = request.GET.get('dct')
+	mvid = request.GET.get('mvid')
+	try:
+		curo = BlogCategoty.objects.get(id=mvid)
+	except BlogCategoty.DoesNotExist:
+		return JsonResponse({"code":404,"msg":"object Not Found."})
+	if dct == "up":
+		neo = curo.order - 1
+	elif dct == "dn":
+		neo = curo.order + 1
+	try:
+		nexto = BlogCategoty.objects.get(order=neo)
+	except BlogCategoty.DoesNotExist:
+		return JsonResponse({"code":300,"msg":"Attached Limit."})
+	except BlogCategoty.MultipleObjectsReturned:
+		return JsonResponse({"code":500,"isec":"500@AjaxChpOcMv$100","msg":"Internal Server Error, Please Contact With Website Master or Admin."})
+	o1=nexto.order
+	o2=curo.order
+	nexto.order=o2
+	curo.order=o1
+	nexto.save()
+	curo.save()
+	return JsonResponse({"code":200,"msg":"OK."})

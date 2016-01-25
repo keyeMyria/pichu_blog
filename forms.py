@@ -6,10 +6,11 @@ from django import forms
 class BlogCategotyForm(ModelForm):
 	class Meta:
 		model = BlogCategoty
-		fields = ['engname','title']
+		fields = ['engname','title','topli']
 		widgets = {
 			"engname":forms.TextInput(attrs={'class':'form-control',"placeholder":"请输入英文名（用于URL，仅能使用大小写字母、数字和下划线）"}),
 			"title":forms.TextInput(attrs={'class':'form-control',"placeholder":"请输入分类名称"}),
+			"topli":forms.TextInput(attrs={'class':'form-control',"placeholder":"请输入置顶文章ID列表，英文逗号隔开，若没有请留空"}),
 		}
 
 	def __init__(self,*args,**kwargs):
@@ -18,6 +19,7 @@ class BlogCategotyForm(ModelForm):
 		self.fields['engname'].error_messages={'required':u'请输入英文名（用于URL，仅能使用大小写字母、数字和下划线）'}
 		self.fields['title'].label=u'分类名称'
 		self.fields['title'].error_messages={'required':u'请输入分类名称'}
+		self.fields['topli'].label=u'置顶列表'
 
 class EditPostForm(forms.ModelForm):
     class Meta:

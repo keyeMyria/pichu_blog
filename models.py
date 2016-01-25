@@ -8,6 +8,8 @@ class KVConf(models.Model):
 class BlogCategoty(models.Model):
 	engname = models.CharField(max_length=64,db_index=True)
 	title = models.CharField(max_length=64)
+	order = models.IntegerField()
+	topli = models.CharField(max_length=64,blank=True,null=True)
 
 	def __unicode__(self):
 		return self.title
