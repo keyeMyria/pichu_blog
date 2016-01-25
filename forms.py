@@ -50,13 +50,13 @@ class PostPermForm(forms.ModelForm):
 			"private":forms.CheckboxInput(attrs={'class':'form-control'}),
 			"passwdlck":forms.CheckboxInput(attrs={'class':'form-control'}),
 			"passwd":forms.TextInput(attrs={'class':'form-control',"placeholder":"请输入访问密码"}),
-			"readgrp":form.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
-			"readuin":form.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
-			"readuex":form.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
+			"readgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
+			"readuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
+			"readuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
 			"freecomment":forms.CheckboxInput(attrs={'class':'form-control'}),
-			"commentgrp":form.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
-			"commentuin":form.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
-			"commentuex":form.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
+			"commentgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
+			"commentuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
+			"commentuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
 		}
 
 	def __init__(self,*args,**kwargs):

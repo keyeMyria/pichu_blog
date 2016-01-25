@@ -19,6 +19,8 @@
 {% res css "duallistbox" %}
 {% res js "switch" %}
 {% res css "switch" %}
+{% res js "taginput" %}
+{% res css "taginput" %}
 {% endblock %}
 
 {% block content %}
@@ -39,13 +41,13 @@
 	</div>
 </form>
 <script>
-    var rgbox = $('select[name="readgrp"]').bootstrapDualListbox({
+    $('select[name="readgrp"]').bootstrapDualListbox({
           nonSelectedListLabel: '可选择用户组',
           selectedListLabel: '已选择用户组',
           preserveSelectionOnMove: 'moved',
           moveOnSelect: false,
     });
-    var cgbox = $('select[name="commentgrp"]').bootstrapDualListbox({
+    $('select[name="commentgrp"]').bootstrapDualListbox({
           nonSelectedListLabel: '可选择用户组',
           selectedListLabel: '已选择用户组',
           preserveSelectionOnMove: 'moved',
