@@ -22,24 +22,24 @@ class BlogCategotyForm(ModelForm):
 		self.fields['topli'].label=u'置顶列表'
 
 class EditPostForm(forms.ModelForm):
-    class Meta:
-        model = BlogPost
-        fields = ['title','category','markdown']
-        widgets = {
-        	"title":forms.TextInput(attrs={'class':'form-control',"placeholder":"请输入标题"}),
-            "category" : forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'}),
-            "markdown":forms.Textarea(attrs={'class':'form-control',"placeholder":"正文"}),
-        }
+	class Meta:
+		model = BlogPost
+		fields = ['title','category','markdown']
+		widgets = {
+			"title":forms.TextInput(attrs={'class':'form-control',"placeholder":"请输入标题"}),
+			"category" : forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'}),
+			"markdown":forms.Textarea(attrs={'class':'form-control',"placeholder":"正文"}),
+		}
 
-    def __init__(self,*args,**kwargs):
-        super(EditPostForm,self).__init__(*args,**kwargs)
-        self.fields['title'].label=u'标题'
-        self.fields['title'].required=True
-        self.fields['title'].error_messages={'required':u"请输入标题"}
-        self.fields['category'].label=u'分类'
-        self.fields['markdown'].label=u'正文'
-        self.fields['markdown'].required=True
-        self.fields['markdown'].error_messages={'required':u"请输入正文"}
+	def __init__(self,*args,**kwargs):
+		super(EditPostForm,self).__init__(*args,**kwargs)
+		self.fields['title'].label=u'标题'
+		self.fields['title'].required=True
+		self.fields['title'].error_messages={'required':u"请输入标题"}
+		self.fields['category'].label=u'分类'
+		self.fields['markdown'].label=u'正文'
+		self.fields['markdown'].required=True
+		self.fields['markdown'].error_messages={'required':u"请输入正文"}
 
 class PostPermForm(forms.ModelForm):
 	class Meta:
@@ -51,6 +51,6 @@ class PostPermForm(forms.ModelForm):
 		}
 
 	 def __init__(self,*args,**kwargs):
-        super(PostPermForm,self).__init__(*args,**kwargs)
-        self.fields['private'].label=u'设为私密文章'
-        self.fields['private'].label=u'使用密码保护'
+		super(PostPermForm,self).__init__(*args,**kwargs)
+		self.fields['private'].label=u'设为私密文章'
+		self.fields['private'].label=u'使用密码保护'
