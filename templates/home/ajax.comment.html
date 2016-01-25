@@ -31,15 +31,15 @@
 			发表于
 			&nbsp;
 			{{ i.time|date:"Y-m-d H:i:s" }}
+			{% if owner%}
+			<a role="button" class="btn btn-danger btn-xs" href="javascript:dellm('{{i.cmid}}');">删除</a>
+			{% if i.reviewed %}
+			<a role="button" class="btn btn-warning btn-xs" href="javascript:reviewedCancel('{{i.cmid}}');">取消审核</a>
+			{% else %}
+			<a role="button" class="btn btn-success btn-xs" href="javascript:reviewedOK('{{i.cmid}}');">审核通过</a>
+			{% endif %}
+			{% endif %}
 		</h5>
-		{% if owner%}
-		<a role="button" class="btn btn-danger btn-xs" href="javascript:dellm('{{i.cmid}}');">删除</a>
-		{% if i.reviewed %}
-		<a role="button" class="btn btn-warning btn-xs" href="javascript:reviewedCancel('{{i.cmid}}');">取消审核</a>
-		{% else %}
-		<a role="button" class="btn btn-success btn-xs" href="javascript:reviewedOK('{{i.cmid}}');">审核通过</a>
-		{% endif %}
-		{% endif %}
 		<blockquote>{{i.content|linebreaks}}</blockquote>
 	</li>
 	{% endfor %}

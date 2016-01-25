@@ -28,7 +28,7 @@
 			<span class="glyphicon glyphicon-th-list"></span>
 			文章列表
 		</a>
-		{% url "pichublog_catadd" as pichublog_catadd %}
+		{% url "pichublog_postadd" as pichublog_catadd %}
 		<a class="btn btn-primary {%if request.path = pichublog_postadd %} active {% endif %}" href="{{ pichublog_catadd }}">
 			<span class="glyphicon glyphicon-plus"></span>
 			新建文章
