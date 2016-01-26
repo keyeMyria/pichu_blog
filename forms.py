@@ -74,6 +74,7 @@ class PostPermForm(forms.ModelForm):
 		self.fields['readgrp'].required=False
 		self.fields['readuin'].label=u'额外允许访问的用户'
 		self.fields['readuin'].required=False
+		self.fields['readuin'].queryset=None
 		self.fields['readuex'].label=u'额外不允许访问的用户'
 		self.fields['readuex'].required=False
 		self.fields['freecomment'].label=u'允许任何人评论'
