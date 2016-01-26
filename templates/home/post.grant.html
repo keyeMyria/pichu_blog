@@ -62,7 +62,9 @@
 				case 'right'   : return 'label label-primary';
 				case 'wrong'  : return 'label label-danger label-important';
 			}
-		}
+		},
+		itemValue: 'value',
+		itemText: 'text'
     });
     window.i = 0;
     $("select[name='readuin']").on('beforeItemAdd', function(event) {
