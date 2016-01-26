@@ -56,13 +56,7 @@
     $("input[type='checkbox']").bootstrapSwitch();
     //$("select[name='readuin']").tagsinput('items');
     $("select[name='readuin']").tagsinput({
-    	confirmKeys: [13, 32, 44],
-    	tagClass: function(item) {
-			switch (item.continent) {
-				case 'right'   : return 'label label-primary';
-				case 'wrong'  : return 'label label-danger label-important';
-			}
-		}
+    	confirmKeys: [13, 32, 44]
     });
     $("select[name='readuin']").on('itemAdded', function(event) {
 		// event.item: contains the item
@@ -81,5 +75,14 @@
     $("select[name='readuex']").tagsinput('items');
     $("select[name='commentuin']").tagsinput('items');
     $("select[name='commentuex']").tagsinput('items');
+
+
+  //   ,
+  //   	tagClass: function(item) {
+		// 	switch (item.continent) {
+		// 		case 'right'   : return 'label label-primary';
+		// 		case 'wrong'  : return 'label label-danger label-important';
+		// 	}
+		// }
 </script>
 {% endblock %}
