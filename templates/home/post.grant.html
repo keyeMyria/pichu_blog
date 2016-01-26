@@ -65,13 +65,13 @@
 		}
     });
     window.i = 0;
-    $("select[name='readuin']").on('beforeItemAdd', function(event) {
+    $("select[name='readuin']").on('ItemAdded', function(event) {
 		// event.item: contains the item
 		// event.cancel: set to true to prevent the item getting added
 		var txt = event.item;
 		console.log(txt);
 		window.i++;
-		$("select[name='readuin']").tagsinput('add', { "value": window.i, "text": txt, "continent": 'wrong' });
+		$("select[name='readuin'] option[value='"+txt+"']").val(window.i);
 	});
     // $("select[name='readuin']").tagsinput({
     // 	confirmKeys: [13, 32, 44],
