@@ -73,7 +73,7 @@
 		var txt = event.item;
 		console.log(txt);
 		window.i++;
-		$("select[name='readuin']").tagsinput('add', { id: window.i, text: txt, continent: 'wrong' });
+		$("select[name='readuin']").tagsinput('add', { "value": window.i, "text": txt, "continent": 'wrong' });
 	});
     // $("select[name='readuin']").tagsinput({
     // 	confirmKeys: [13, 32, 44],
