@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 from django.forms import ModelForm
 from pichublog.models import *
+from zlogin.models import User
 from django import forms
 
 class BlogCategotyForm(ModelForm):
@@ -74,13 +75,16 @@ class PostPermForm(forms.ModelForm):
 		self.fields['readgrp'].required=False
 		self.fields['readuin'].label=u'额外允许访问的用户'
 		self.fields['readuin'].required=False
-		self.fields['readuin'].queryset=None
+		self.fields['readuin'].queryset=User.objects.none()
 		self.fields['readuex'].label=u'额外不允许访问的用户'
 		self.fields['readuex'].required=False
+		self.fields['readuex'].queryset=User.objects.none()
 		self.fields['freecomment'].label=u'允许任何人评论'
 		self.fields['commentgrp'].label=u'允许评论的用户组'
 		self.fields['commentgrp'].required=False
 		self.fields['commentuin'].label=u'额外允许评论的用户'
 		self.fields['commentuin'].required=False
+		self.fields['commentuin'].queryset=User.objects.none()
 		self.fields['commentuex'].label=u'额外不允许评论的用户'
 		self.fields['commentuex'].required=False
+		self.fields['commentuex'].queryset=User.objects.none()
