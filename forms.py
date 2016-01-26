@@ -44,8 +44,8 @@ class EditPostForm(forms.ModelForm):
 class PostPermForm(forms.ModelForm):
 	class Meta:
 		model = BlogPost
-		#fields = ['private','passwdlck','passwd','readgrp','readuin','readuex','freecomment','commentgrp','commentuin','commentuex']
-		fields = ['private','passwdlck','passwd','freecomment']
+		fields = ['private','passwdlck','passwd','readgrp','readuin','readuex','freecomment','commentgrp','commentuin','commentuex']
+		#fields = ['private','passwdlck','passwd','freecomment']
 		widgets = {
 			"private":forms.CheckboxInput(attrs={'class':'form-control'}),
 			"passwdlck":forms.CheckboxInput(attrs={'class':'form-control'}),
@@ -56,13 +56,13 @@ class PostPermForm(forms.ModelForm):
 			"commentgrp":forms.TextInput(),
 			"commentuin":forms.TextInput(),
 			"commentuex":forms.TextInput(),
-			# "readgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
-			# "readuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
-			# "readuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
+			"readgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
+			"readuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
+			"readuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
 			"freecomment":forms.CheckboxInput(attrs={'class':'form-control'}),
-			# "commentgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
-			# "commentuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
-			# "commentuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
+			"commentgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
+			"commentuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
+			"commentuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
 		}
 
 	def __init__(self,*args,**kwargs):
@@ -70,16 +70,16 @@ class PostPermForm(forms.ModelForm):
 		self.fields['private'].label=u'设为私密文章'
 		self.fields['passwdlck'].label=u'使用密码保护'
 		self.fields['passwd'].label=u'访问密码'
-		# self.fields['readgrp'].label=u'允许访问的用户组'
-		# self.fields['readgrp'].required=False
-		# self.fields['readuin'].label=u'额外允许访问的用户'
-		# self.fields['readuin'].required=False
-		# self.fields['readuex'].label=u'额外不允许访问的用户'
-		# self.fields['readuex'].required=False
+		self.fields['readgrp'].label=u'允许访问的用户组'
+		self.fields['readgrp'].required=False
+		self.fields['readuin'].label=u'额外允许访问的用户'
+		self.fields['readuin'].required=False
+		self.fields['readuex'].label=u'额外不允许访问的用户'
+		self.fields['readuex'].required=False
 		self.fields['freecomment'].label=u'允许任何人评论'
-		# self.fields['commentgrp'].label=u'允许评论的用户组'
-		# self.fields['commentgrp'].required=False
-		# self.fields['commentuin'].label=u'额外允许评论的用户'
-		# self.fields['commentuin'].required=False
-		# self.fields['commentuex'].label=u'额外不允许评论的用户'
-		# self.fields['commentuex'].required=False
+		self.fields['commentgrp'].label=u'允许评论的用户组'
+		self.fields['commentgrp'].required=False
+		self.fields['commentuin'].label=u'额外允许评论的用户'
+		self.fields['commentuin'].required=False
+		self.fields['commentuex'].label=u'额外不允许评论的用户'
+		self.fields['commentuex'].required=False
