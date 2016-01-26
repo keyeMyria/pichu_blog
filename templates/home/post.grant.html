@@ -56,13 +56,7 @@
     $("input[type='checkbox']").bootstrapSwitch();
     //$("select[name='readuin']").tagsinput('items');
     $("select[name='readuin']").tagsinput({
-    	confirmKeys: [13, 32, 44],
-    	tagClass: function(item) {
-			switch (item.continent) {
-				case 'right'   : return 'label label-primary';
-				case 'wrong'  : return 'label label-danger label-important';
-			}
-		}
+    	confirmKeys: [13, 32, 44]
     });
     window.i = 0;
     $("select[name='readuin']").on('ItemAdded', function(event) {
@@ -71,6 +65,7 @@
 		var txt = event.item;
 		console.log(txt);
 		window.i++;
+		console.log($("select[name='readuin'] option[value='"+txt+"']").val(window.i));
 		$("select[name='readuin'] option[value='"+txt+"']").val(window.i);
 	});
     // $("select[name='readuin']").tagsinput({
