@@ -24,7 +24,7 @@
 {% endblock %}
 
 {% block content %}
-<form class="form-horizontal" role="form" action="" method="POST" >
+<form class="form-horizontal" role="form" action="" method="POST" onkeydown="if(event.keyCode==13)return false;" >
 	{% csrf_token %}
     {% for item in form %}
     <input type="hidden" name="rfm" value="{{rfm}}">
@@ -55,6 +55,23 @@
     });
     $("input[type='checkbox']").bootstrapSwitch();
     //$("select[name='readuin']").tagsinput('items');
+    $("select[name='readuin']").tagsinput({
+    	confirmKeys: [13, 32, 44],
+    	tagClass: function(item) {
+			switch (item.continent) {
+				case 'right'   : return 'label label-primary';
+				case 'wrong'  : return 'label label-danger label-important';
+			}
+		},
+    });
+    $("select[name='readuin']").on('beforeItemAdd', function(event) {
+		// event.item: contains the item
+		// event.cancel: set to true to prevent the item getting added
+		console.log("id: "+item.id);
+		console.log("text: "+item.text);
+		console.log("container: "+item.continent);
+		item.id = "233";
+	});
     // $("select[name='readuin']").tagsinput({
     // 	confirmKeys: [13, 32, 44],
     // 	itemValue: function(item){

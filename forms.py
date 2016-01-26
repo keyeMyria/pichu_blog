@@ -71,6 +71,7 @@ class PostPermForm(forms.ModelForm):
 		self.fields['private'].label=u'设为私密文章'
 		self.fields['passwdlck'].label=u'使用密码保护'
 		self.fields['passwd'].label=u'访问密码'
+		self.fields['passwd'].required=False
 		self.fields['readgrp'].label=u'允许访问的用户组'
 		self.fields['readgrp'].required=False
 		self.fields['readuin'].label=u'额外允许访问的用户'
