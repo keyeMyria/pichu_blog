@@ -67,10 +67,10 @@
     $("select[name='readuin']").on('beforeItemAdd', function(event) {
 		// event.item: contains the item
 		// event.cancel: set to true to prevent the item getting added
-		console.log("id: "+item.id);
-		console.log("text: "+item.text);
-		console.log("container: "+item.continent);
-		item.id = "233";
+		console.log("id: "+event.item.id);
+		console.log("text: "+event.item.text);
+		console.log("container: "+event.item.continent);
+		event.item.id = "233";
 	});
     // $("select[name='readuin']").tagsinput({
     // 	confirmKeys: [13, 32, 44],
