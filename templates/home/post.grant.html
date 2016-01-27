@@ -77,7 +77,7 @@
 		console.log(txt);
 		//$("select[name='readuin'] option[value='"+txt+"']").html("(验证用户有效性...)");
 		//$('.tag', tgi.$container)
-		var $tag = $('<span class="tag readuin-tag" ival="'+ txt +'">(验证用户有效性...)<span data-role="remove"></span></span>');
+		var $tag = $('<span class="tag label label-info readuin-tag" ival="'+ txt +'">(验证用户有效性...)<span data-role="remove"></span></span>');
         $tag.data('item', txt);
 		getWarpperBeforeInput(tgi).before($tag);
 		$tag.after(' ');
@@ -89,7 +89,7 @@
             $option.data('item', data['nick']);
             tgi.$element.append($option);
 		});
-		
+		event.cancel = true;
 	});
 
     // $("select[name='readuin']").tagsinput({
