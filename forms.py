@@ -77,7 +77,8 @@ class PostPermForm(forms.ModelForm):
 				for val in value:
 					if not User.objects.exists(id=str2int(val)):
 						raise ValidationError(
-						self.error_messages['invalid_choice'],
+						#self.error_messages['invalid_choice'],
+						"errrrrrrrrrrrrrro"
 							code='invalid_choice',
 							params={'value': val},
 						)
