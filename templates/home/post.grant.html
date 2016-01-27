@@ -56,7 +56,8 @@
     $("input[type='checkbox']").bootstrapSwitch();
     //$("select[name='readuin']").tagsinput('items');
     $("select[name='readuin']").tagsinput({
-    	confirmKeys: [13, 32, 44]
+    	confirmKeys: [13, 32, 44],
+    	trimValue: true
     });
     window.i = 0;
     $("select[name='readuin']").on('itemAdded', function(event) {
@@ -64,13 +65,11 @@
 		// event.cancel: set to true to prevent the item getting added
 		var txt = event.item;
 		console.log(txt);
-		console.log($("select[name='readuin'] option[value='"+txt+"']").val(window.i));
+		console.log(txt.data('item'));
 		$("select[name='readuin'] option[value='"+txt+"']").html("(验证用户有效性...)");
-		$("select[name='readuin']").tagsinput('refresh');
 		$.get("/pichu/sysconf/ajax/getu/"+txt+"/",function(data){
 			$("select[name='readuin'] option[value='"+txt+"']").html(data['nick']);
 			$("select[name='readuin'] option[value='"+txt+"']").val(data['uid']);
-			$("select[name='readuin']").tagsinput('refresh');
 		});
 		
 	});
