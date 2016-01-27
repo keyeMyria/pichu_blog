@@ -57,31 +57,35 @@
     //$("select[name='readuin']").tagsinput('items');
     $("select[name='readuin']").tagsinput({
     	confirmKeys: [13, 32, 44],
-    	trimValue: true,
-		tagClass: function(item) {
-			return 'label label-info';
-		},
-		itemValue: function(item) {
-			console.log(item);
-			return item ? item.toString() : item;
-		},
-		itemText: function(item) {
-			return this.itemValue(item);
-		}
+    	trimValue: true
     });
-    window.i = 0;
- //    $("select[name='readuin']").on('itemAdded', function(event) {
-	// 	// event.item: contains the item
-	// 	// event.cancel: set to true to prevent the item getting added
-	// 	var txt = event.item;
-	// 	console.log(txt);
-	// 	$("select[name='readuin'] option[value='"+txt+"']").html("(验证用户有效性...)");
-	// 	$.get("/pichu/sysconf/ajax/getu/"+txt+"/",function(data){
-	// 		$("select[name='readuin'] option[value='"+txt+"']").html(data['nick']);
-	// 		$("select[name='readuin'] option[value='"+txt+"']").val(data['uid']);
-	// 	});
+    
+    function getWarpperBeforeInput(tgi){
+    	var elt = tgi.$input[0];
+    	var container = tgi.$container[0];
+    	while(elt && elt.parentNode !== container){
+			elt = elt.parentNode;
+		}
+		return $(elt);
+    }
+
+    $("select[name='readuin']").on('beforeItemAdd', function(event) {
+		// event.item: contains the item
+		// event.cancel: set to true to prevent the item getting added
+		var txt = event.item;
+        var tgi = $("select[name='readuin']").data('tagsinput');
+		console.log(txt);
+		//$("select[name='readuin'] option[value='"+txt+"']").html("(验证用户有效性...)");
+		//$('.tag', tgi.$container)
+		getWarpperBeforeInput()..before($tag);
+		$tag.after(' ');
+		$.get("/pichu/sysconf/ajax/getu/"+txt+"/",function(data){
+			$("select[name='readuin'] option[value='"+txt+"']").html(data['nick']);
+			$("select[name='readuin'] option[value='"+txt+"']").val(data['uid']);
+		});
 		
-	// });
+	});
+
     // $("select[name='readuin']").tagsinput({
     // 	confirmKeys: [13, 32, 44],
     // 	itemValue: function(item){
