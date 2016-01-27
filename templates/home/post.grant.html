@@ -64,9 +64,15 @@
 		// event.cancel: set to true to prevent the item getting added
 		var txt = event.item;
 		console.log(txt);
-		window.i++;
 		console.log($("select[name='readuin'] option[value='"+txt+"']").val(window.i));
-		$("select[name='readuin'] option[value='"+txt+"']").val(window.i);
+		$("select[name='readuin'] option[value='"+txt+"']").html("(验证用户有效性...)");
+		$("select[name='readuin']").tagsinput('refresh');
+		$.get("/pichu/sysconf/ajax/getu/"+txt+"/",function(data){
+			$("select[name='readuin'] option[value='"+txt+"']").html(data['nick']);
+			$("select[name='readuin'] option[value='"+txt+"']").val(data['uid']);
+			$("select[name='readuin']").tagsinput('refresh');
+		});
+		
 	});
     // $("select[name='readuin']").tagsinput({
     // 	confirmKeys: [13, 32, 44],
