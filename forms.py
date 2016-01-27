@@ -71,7 +71,7 @@ class PostPermForm(forms.ModelForm):
 			"commentgrp":forms.TextInput(),
 			"commentuin":forms.TextInput(),
 			"commentuex":forms.TextInput(),
-			"readgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=(),validator=[mc_validator,]),
+			"readgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=(),validators=[mc_validator,]),
 			"readuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
 			"readuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
 			"freecomment":forms.CheckboxInput(attrs={'class':'form-control'}),
