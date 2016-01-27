@@ -18,6 +18,7 @@ urlpatterns = patterns('pichublog.views',
 	url(r'^pichu/sysconf/category/add/$', 'home.CategoryAdd', name='pichublog_catadd'),
 	url(r'^pichu/sysconf/category/del/(?P<ID>\d+)/$', 'home.CategoryDel', name='pichublog_catdel'),
 	url(r'^pichu/sysconf/category/edit/(?P<ID>\d+)/$', 'home.CategoryEdit', name='pichublog_catedit'),
+	url(r'^pichu/sysconf/ajax/getu/(?P<uname>[0-9a-zA-Z_\*]+)/$', 'home.AjaxGetUserID', name='pichublog_ajaxgetu'),
 
 	url(r'^c/(?P<ctname>[0-9a-zA-Z_\*]+)/$', 'posts.PostList', name='pichublog_postlist'),
 	url(r'^writer/post/list/$', 'posts.PostWBkList', name='pichublog_postwbklist'),

@@ -245,3 +245,11 @@ def AjaxCategoryMoveOrder(request):
 	nexto.save()
 	curo.save()
 	return JsonResponse({"code":200,"msg":"OK."})
+
+@PermNeed('pichublog','Admin')
+def AjaxGetUserID(request,uname):
+	uobj = zlauth.GetUserByName(uname)
+	if uobj == None:
+		return JsonResponse({"code":404,"nick":u"（用户不存在）","uid":"0"})
+	else:
+		return JsonResponse({"code":200,"nick":u"%s<%s>"%(uobj.nick,uobj.name),"uid":unicode(uobj.id)})
