@@ -77,7 +77,7 @@
 		console.log(txt);
 		//$("select[name='readuin'] option[value='"+txt+"']").html("(验证用户有效性...)");
 		//$('.tag', tgi.$container)
-		getWarpperBeforeInput().before($tag);
+		getWarpperBeforeInput(tgi).before($tag);
 		$tag.after(' ');
 		$.get("/pichu/sysconf/ajax/getu/"+txt+"/",function(data){
 			var tgi = $("select[name='readuin']").data('tagsinput');
