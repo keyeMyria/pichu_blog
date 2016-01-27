@@ -3,6 +3,8 @@ from django.forms import ModelForm
 from pichublog.models import *
 from zlogin.models import User
 from django import forms
+from django.core.exceptions import ValidationError
+from siteutil.DataConvert import str2int
 
 class BlogCategotyForm(ModelForm):
 	class Meta:
@@ -68,6 +70,18 @@ class PostPermForm(forms.ModelForm):
 
 	def __init__(self,*args,**kwargs):
 		super(PostPermForm,self).__init__(*args,**kwargs)
+
+		def mc_validate(self, value):
+			if self.required and not value:
+				raise ValidationError(self.error_messages['required'], code='required')
+				for val in value:
+					if not User.objects.exists(id=str2int(val)):
+						raise ValidationError(
+						self.error_messages['invalid_choice'],
+							code='invalid_choice',
+							params={'value': val},
+						)
+
 		self.fields['private'].label=u'设为私密文章'
 		self.fields['passwdlck'].label=u'使用密码保护'
 		self.fields['passwd'].label=u'访问密码'
@@ -76,6 +90,7 @@ class PostPermForm(forms.ModelForm):
 		self.fields['readgrp'].required=False
 		self.fields['readuin'].label=u'额外允许访问的用户'
 		self.fields['readuin'].required=False
+		self.fields['readuin'].validate=mc_validate
 		self.fields['readuin'].queryset=User.objects.none()
 		self.fields['readuex'].label=u'额外不允许访问的用户'
 		self.fields['readuex'].required=False
