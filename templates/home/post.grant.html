@@ -80,8 +80,12 @@
 		getWarpperBeforeInput().before($tag);
 		$tag.after(' ');
 		$.get("/pichu/sysconf/ajax/getu/"+txt+"/",function(data){
-			$("select[name='readuin'] option[value='"+txt+"']").html(data['nick']);
-			$("select[name='readuin'] option[value='"+txt+"']").val(data['uid']);
+			var tgi = $("select[name='readuin']").data('tagsinput');
+			$tag.data('item', data['nick']);
+            $($tag).html(data['nick']);
+            var $option = $('<option selected value="'+data['uid']+'">' + data['nick'] + '</option>');
+            $option.data('item', data['nick']);
+            tgi.$element.append($option);
 		});
 		
 	});
