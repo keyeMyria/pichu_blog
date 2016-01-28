@@ -88,12 +88,13 @@ class PostPermForm(forms.ModelForm):
 				raise ValidationError(self.error_messages['required'], code='required')
 				for val in value:
 					if not User.objects.exists(id=str2int(val)):
-						raise ValidationError(
-						#self.error_messages['invalid_choice'],
-						"errrrrrrrrrrrrrro",
-							code='invalid_choice',
-							params={'value': val},
-						)
+						raise ValidationError("Invalid User.")
+						# raise ValidationError(
+						# #self.error_messages['invalid_choice'],
+						# "errrrrrrrrrrrrrro",
+						# 	code='invalid_choice',
+						# 	params={'value': val},
+						# )
 
 		self.fields['private'].label=u'设为私密文章'
 		self.fields['passwdlck'].label=u'使用密码保护'
