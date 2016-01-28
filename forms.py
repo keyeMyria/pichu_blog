@@ -84,6 +84,7 @@ class PostPermForm(forms.ModelForm):
 		super(PostPermForm,self).__init__(*args,**kwargs)
 
 		def mc_validate(self, value):
+			raise ValidationError("Test")
 			if self.required and not value:
 				raise ValidationError(self.error_messages['required'], code='required')
 				for val in value:
