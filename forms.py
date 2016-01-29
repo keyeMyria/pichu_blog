@@ -17,6 +17,40 @@ def mc_validator(value):
 					params={'value': val},
 				)
 
+def mc_validate(self, value):
+	raise ValidationError("Test")
+	if self.required and not value:
+		raise ValidationError(self.error_messages['required'], code='required')
+		for val in value:
+			if not User.objects.exists(id=str2int(val)):
+				raise ValidationError("Invalid User.")
+				# raise ValidationError(
+				# #self.error_messages['invalid_choice'],
+				# "errrrrrrrrrrrrrro",
+				# 	code='invalid_choice',
+				# 	params={'value': val},
+				# )
+
+def mc_clean(self,value):
+	value = self.to_python(value)
+	self.mc_validate(value)
+	return value
+
+class UserMultiChoiceField(forms.MultipleChoiceField):
+	def validate(self,value):
+		raise ValidationError("Test")
+		if self.required and not value:
+			raise ValidationError(self.error_messages['required'], code='required')
+			for val in value:
+				if not User.objects.exists(id=str2int(val)):
+					raise ValidationError("Invalid User.")
+					# raise ValidationError(
+					# #self.error_messages['invalid_choice'],
+					# "errrrrrrrrrrrrrro",
+					# 	code='invalid_choice',
+					# 	params={'value': val},
+					# )
+
 class BlogCategotyForm(forms.ModelForm):
 	class Meta:
 		model = BlogCategoty
@@ -81,26 +115,6 @@ class PostPermForm(forms.ModelForm):
 
 	def __init__(self,*args,**kwargs):
 		super(PostPermForm,self).__init__(*args,**kwargs)
-
-		def mc_validate(self, value):
-			raise ValidationError("Test")
-			if self.required and not value:
-				raise ValidationError(self.error_messages['required'], code='required')
-				for val in value:
-					if not User.objects.exists(id=str2int(val)):
-						raise ValidationError("Invalid User.")
-						# raise ValidationError(
-						# #self.error_messages['invalid_choice'],
-						# "errrrrrrrrrrrrrro",
-						# 	code='invalid_choice',
-						# 	params={'value': val},
-						# )
-		
-		def mc_clean(self,value):
-			value = self.to_python(value)
-			self.mc_validate(value)
-			return value
-
 		self.fields['private'].label=u'设为私密文章'
 		self.fields['passwdlck'].label=u'使用密码保护'
 		self.fields['passwd'].label=u'访问密码'
