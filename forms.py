@@ -121,10 +121,9 @@ class PostPermForm(forms.ModelForm):
 		self.fields['passwd'].required=False
 		self.fields['readgrp'].label=u'允许访问的用户组'
 		self.fields['readgrp'].required=False
+		self.fields['readuin'] = UserMultiChoiceField()
 		self.fields['readuin'].label=u'额外允许访问的用户'
 		self.fields['readuin'].required=False
-		self.fields['readuin'].mc_validate=mc_validate
-		self.fields['readuin'].clean=mc_clean
 		self.fields['readuin'].queryset=User.objects.none()
 		self.fields['readuex'].label=u'额外不允许访问的用户'
 		self.fields['readuex'].required=False
