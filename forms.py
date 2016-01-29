@@ -3,8 +3,9 @@ from pichublog.models import *
 from zlogin.models import User
 from django import forms
 from django.core.exceptions import ValidationError
-from siteutil.DataConvert import str2int
-
+from siteutil.DataConvert import str2in
+import logging
+logger = logging.getLogger('userlog_file')
 # def mc_validator(value):
 # 	if self.required and not value:
 # 		raise ValidationError(self.error_messages['required'], code='required')
@@ -123,6 +124,7 @@ class PostPermForm(forms.ModelForm):
 		self.fields['readuin'] = UserMultiChoiceField()
 		self.fields['readuin'].label=u'额外允许访问的用户'
 		self.fields['readuin'].required=False
+		logger.debug(repr(kwargs.keys()))
 		if 'instance' in kwargs.keys():
 			self.fields['readuin'].queryset=kwargs['instance'].readuin.all()
 		else:
