@@ -104,13 +104,13 @@ class PostPermForm(forms.ModelForm):
 			"commentgrp":forms.TextInput(),
 			"commentuin":forms.TextInput(),
 			"commentuex":forms.TextInput(),
-			"readgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
-			"readuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
-			"readuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
+			"readgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'}),
+			"readuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'}),
+			"readuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'}),
 			"freecomment":forms.CheckboxInput(attrs={'class':'form-control'}),
-			"commentgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
-			"commentuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
-			"commentuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
+			"commentgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'}),
+			"commentuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'}),
+			"commentuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'}),
 		}
 
 	def __init__(self,*args,**kwargs):
