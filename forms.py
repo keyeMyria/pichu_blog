@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-from django.forms import ModelForm
 from pichublog.models import *
 from zlogin.models import User
 from django import forms
@@ -18,7 +17,7 @@ def mc_validator(value):
 					params={'value': val},
 				)
 
-class BlogCategotyForm(ModelForm):
+class BlogCategotyForm(forms.ModelForm):
 	class Meta:
 		model = BlogCategoty
 		fields = ['engname','title','topli']
@@ -80,6 +79,8 @@ class PostPermForm(forms.ModelForm):
 			"commentuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
 		}
 
+	def is_valid(self)
+
 	def __init__(self,*args,**kwargs):
 		super(PostPermForm,self).__init__(*args,**kwargs)
 
@@ -96,6 +97,11 @@ class PostPermForm(forms.ModelForm):
 						# 	code='invalid_choice',
 						# 	params={'value': val},
 						# )
+		
+		def mc_clean(self,value):
+			value = self.to_python(value)
+			self.mc_validate(value)
+			return value
 
 		self.fields['private'].label=u'设为私密文章'
 		self.fields['passwdlck'].label=u'使用密码保护'
@@ -105,7 +111,8 @@ class PostPermForm(forms.ModelForm):
 		self.fields['readgrp'].required=False
 		self.fields['readuin'].label=u'额外允许访问的用户'
 		self.fields['readuin'].required=False
-		self.fields['readuin'].validate=mc_validate
+		self.fields['readuin'].mc_validate=mc_validate
+		self.fields['readuin'].clean=mc_clean
 		self.fields['readuin'].queryset=User.objects.none()
 		self.fields['readuex'].label=u'额外不允许访问的用户'
 		self.fields['readuex'].required=False
