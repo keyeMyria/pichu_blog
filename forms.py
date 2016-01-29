@@ -5,40 +5,39 @@ from django import forms
 from django.core.exceptions import ValidationError
 from siteutil.DataConvert import str2int
 
-def mc_validator(value):
-	if self.required and not value:
-		raise ValidationError(self.error_messages['required'], code='required')
-		for val in value:
-			if not User.objects.exists(id=str2int(val)):
-				raise ValidationError(
-				#self.error_messages['invalid_choice'],
-				"errrrrrrrrrrrrrro",
-					code='invalid_choice',
-					params={'value': val},
-				)
+# def mc_validator(value):
+# 	if self.required and not value:
+# 		raise ValidationError(self.error_messages['required'], code='required')
+# 		for val in value:
+# 			if not User.objects.exists(id=str2int(val)):
+# 				raise ValidationError(
+# 				#self.error_messages['invalid_choice'],
+# 				"errrrrrrrrrrrrrro",
+# 					code='invalid_choice',
+# 					params={'value': val},
+# 				)
 
-def mc_validate(self, value):
-	raise ValidationError("Test")
-	if self.required and not value:
-		raise ValidationError(self.error_messages['required'], code='required')
-		for val in value:
-			if not User.objects.exists(id=str2int(val)):
-				raise ValidationError("Invalid User.")
-				# raise ValidationError(
-				# #self.error_messages['invalid_choice'],
-				# "errrrrrrrrrrrrrro",
-				# 	code='invalid_choice',
-				# 	params={'value': val},
-				# )
+# def mc_validate(self, value):
+# 	raise ValidationError("Test")
+# 	if self.required and not value:
+# 		raise ValidationError(self.error_messages['required'], code='required')
+# 		for val in value:
+# 			if not User.objects.exists(id=str2int(val)):
+# 				raise ValidationError("Invalid User.")
+# 				# raise ValidationError(
+# 				# #self.error_messages['invalid_choice'],
+# 				# "errrrrrrrrrrrrrro",
+# 				# 	code='invalid_choice',
+# 				# 	params={'value': val},
+# 				# )
 
-def mc_clean(self,value):
-	value = self.to_python(value)
-	self.mc_validate(value)
-	return value
+# def mc_clean(self,value):
+# 	value = self.to_python(value)
+# 	self.mc_validate(value)
+# 	return value
 
 class UserMultiChoiceField(forms.MultipleChoiceField):
 	def validate(self,value):
-		raise ValidationError("Test")
 		if self.required and not value:
 			raise ValidationError(self.error_messages['required'], code='required')
 			for val in value:
