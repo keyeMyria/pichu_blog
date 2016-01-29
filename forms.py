@@ -79,8 +79,6 @@ class PostPermForm(forms.ModelForm):
 			"commentuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'},choices=()),
 		}
 
-	def is_valid(self)
-
 	def __init__(self,*args,**kwargs):
 		super(PostPermForm,self).__init__(*args,**kwargs)
 
