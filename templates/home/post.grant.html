@@ -54,7 +54,7 @@
           moveOnSelect: false,
     });
     $("input[type='checkbox']").bootstrapSwitch();
-    //$("select[name='readuin']").tagsinput('items');
+    //$("select[name='"+fieldname+"']").tagsinput('items');
     
     function getWarpperBeforeInput(tgi){
     	var elt = tgi.$input[0];
@@ -65,39 +65,37 @@
 		return $(elt);
     }
 
-    // $("select[name='readuin']").tagsinput({
-    // 	confirmKeys: [13, 32, 44],
-    // 	trimValue: true
-    // });
+    function RegistUserTaginput(fieldname){
+    	$("select[name='"+fieldname+"']").tagsinput({
+	    	confirmKeys: [13, 32, 44],
+	    	trimValue: true
+	    });
+	    $("select[name='"+fieldname+"']").on('beforeItemAdd', function(event) {
+			// event.item: contains the item
+			// event.cancel: set to true to prevent the item getting added
+			var txt = event.item;
+	        var tgi = $("select[name='"+fieldname+"']").data('tagsinput');
+			console.log(txt);
+			var $tag = $('<span class="tag label label-info "+fieldname+"-tag" ival="'+ txt +'">(验证用户有效性...)<span data-role="remove"></span></span>');
+	        $tag.data('item', txt);
+			getWarpperBeforeInput(tgi).before($tag);
+			$tag.after(' ');
+			$.get("/pichu/sysconf/ajax/getu/"+txt+"/",function(data){
+				var tgi = $("select[name='"+fieldname+"']").data('tagsinput');
+				$tag.data('item', data['nick']);
+	            $($tag).html(data['nick']);
+	            var $option = $('<option selected value="'+data['uid']+'">' + data['nick'] + '</option>');
+	            $option.data('item', data['nick']);
+	            tgi.$element.append($option);
+			});
+			event.cancel = true;
+		});
+	}
 
- //    $("select[name='readuin']").on('beforeItemAdd', function(event) {
-	// 	// event.item: contains the item
-	// 	// event.cancel: set to true to prevent the item getting added
-	// 	var txt = event.item;
- //        var tgi = $("select[name='readuin']").data('tagsinput');
-	// 	console.log(txt);
-	// 	//$("select[name='readuin'] option[value='"+txt+"']").html("(验证用户有效性...)");
-	// 	//$('.tag', tgi.$container)
-	// 	var $tag = $('<span class="tag label label-info readuin-tag" ival="'+ txt +'">(验证用户有效性...)<span data-role="remove"></span></span>');
- //        $tag.data('item', txt);
-	// 	getWarpperBeforeInput(tgi).before($tag);
-	// 	$tag.after(' ');
-	// 	$.get("/pichu/sysconf/ajax/getu/"+txt+"/",function(data){
-	// 		var tgi = $("select[name='readuin']").data('tagsinput');
-	// 		$tag.data('item', data['nick']);
- //            $($tag).html(data['nick']);
- //            var $option = $('<option selected value="'+data['uid']+'">' + data['nick'] + '</option>');
- //            $option.data('item', data['nick']);
- //            tgi.$element.append($option);
-	// 	});
-	// 	event.cancel = true;
-	// });
-
-    // $("select[name='readuex']").tagsinput('items');
-    // $("select[name='commentuin']").tagsinput('items');
-    // $("select[name='commentuex']").tagsinput('items');
-
-
+	RegistUserTaginput('readuin');
+	RegistUserTaginput('readuex');
+	RegistUserTaginput('commentuin');
+	RegistUserTaginput('commentuex');
     
 </script>
 {% endblock %}

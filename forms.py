@@ -43,13 +43,7 @@ class UserMultiChoiceField(forms.MultipleChoiceField):
 			raise ValidationError(self.error_messages['required'], code='required')
 			for val in value:
 				if not User.objects.exists(id=str2int(val)):
-					raise ValidationError("Invalid User.")
-					# raise ValidationError(
-					# #self.error_messages['invalid_choice'],
-					# "errrrrrrrrrrrrrro",
-					# 	code='invalid_choice',
-					# 	params={'value': val},
-					# )
+					raise ValidationError(u"用户不存在！")
 
 class BlogCategotyForm(forms.ModelForm):
 	class Meta:
@@ -97,6 +91,8 @@ class PostPermForm(forms.ModelForm):
 		field_classes = {
 			"readuin":UserMultiChoiceField,
 			"readuex":UserMultiChoiceField,
+			"commentuin":UserMultiChoiceField,
+			"commentuex":UserMultiChoiceField,
 		}
 		widgets = {
 			"private":forms.CheckboxInput(attrs={'class':'form-control'}),
@@ -125,7 +121,6 @@ class PostPermForm(forms.ModelForm):
 		self.fields['passwd'].required=False
 		self.fields['readgrp'].label=u'允许访问的用户组'
 		self.fields['readgrp'].required=False
-		#self.fields['readuin'] = UserMultiChoiceField()
 		self.fields['readuin'].label=u'额外允许访问的用户'
 		self.fields['readuin'].required=False
 		if 'instance' in kwargs.keys():
@@ -133,16 +128,27 @@ class PostPermForm(forms.ModelForm):
 			self.fields['readuin'].queryset=kwargs['instance'].readuin.all()
 		else:
 			self.fields['readuin'].queryset=User.objects.none()
-		#self.fields['readuex'] = UserMultiChoiceField()
 		self.fields['readuex'].label=u'额外不允许访问的用户'
 		self.fields['readuex'].required=False
-		#self.fields['readuex'].queryset=User.objects.none()
+		if 'instance' in kwargs.keys():
+			logger.debug(repr(kwargs['instance'].readuin.all()))
+			self.fields['readuex'].queryset=kwargs['instance'].readuex.all()
+		else:
+			self.fields['readuex'].queryset=User.objects.none()
 		self.fields['freecomment'].label=u'允许任何人评论'
 		self.fields['commentgrp'].label=u'允许评论的用户组'
 		self.fields['commentgrp'].required=False
 		self.fields['commentuin'].label=u'额外允许评论的用户'
 		self.fields['commentuin'].required=False
-		self.fields['commentuin'].queryset=User.objects.none()
+		if 'instance' in kwargs.keys():
+			logger.debug(repr(kwargs['instance'].readuin.all()))
+			self.fields['commentuin'].queryset=kwargs['instance'].commentuin.all()
+		else:
+			self.fields['commentuin'].queryset=User.objects.none()
 		self.fields['commentuex'].label=u'额外不允许评论的用户'
 		self.fields['commentuex'].required=False
-		self.fields['commentuex'].queryset=User.objects.none()
+		if 'instance' in kwargs.keys():
+			logger.debug(repr(kwargs['instance'].readuin.all()))
+			self.fields['commentuex'].queryset=kwargs['instance'].commentuex.all()
+		else:
+			self.fields['commentuex'].queryset=User.objects.none()
