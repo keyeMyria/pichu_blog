@@ -124,8 +124,8 @@ class PostPermForm(forms.ModelForm):
 		self.fields['readuin'] = UserMultiChoiceField()
 		self.fields['readuin'].label=u'额外允许访问的用户'
 		self.fields['readuin'].required=False
-		logger.debug(repr(kwargs.keys()))
 		if 'instance' in kwargs.keys():
+			logger.debug(repr(kwargs['instance'].readuin.all()))
 			self.fields['readuin'].queryset=kwargs['instance'].readuin.all()
 		else:
 			self.fields['readuin'].queryset=User.objects.none()
