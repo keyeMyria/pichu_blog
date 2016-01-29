@@ -55,10 +55,6 @@
     });
     $("input[type='checkbox']").bootstrapSwitch();
     //$("select[name='readuin']").tagsinput('items');
-    $("select[name='readuin']").tagsinput({
-    	confirmKeys: [13, 32, 44],
-    	trimValue: true
-    });
     
     function getWarpperBeforeInput(tgi){
     	var elt = tgi.$input[0];
@@ -68,6 +64,11 @@
 		}
 		return $(elt);
     }
+
+    // $("select[name='readuin']").tagsinput({
+    // 	confirmKeys: [13, 32, 44],
+    // 	trimValue: true
+    // });
 
  //    $("select[name='readuin']").on('beforeItemAdd', function(event) {
 	// 	// event.item: contains the item
