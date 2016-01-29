@@ -94,6 +94,10 @@ class PostPermForm(forms.ModelForm):
 		model = BlogPost
 		fields = ['private','passwdlck','passwd','readgrp','readuin','readuex','freecomment','commentgrp','commentuin','commentuex']
 		#fields = ['private','passwdlck','passwd','freecomment']
+		field_classes = {
+			"readuin":UserMultiChoiceField,
+			"readuex":UserMultiChoiceField,
+		}
 		widgets = {
 			"private":forms.CheckboxInput(attrs={'class':'form-control'}),
 			"passwdlck":forms.CheckboxInput(attrs={'class':'form-control'}),
@@ -104,13 +108,13 @@ class PostPermForm(forms.ModelForm):
 			"commentgrp":forms.TextInput(),
 			"commentuin":forms.TextInput(),
 			"commentuex":forms.TextInput(),
-			"readgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'}),
-			"readuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'}),
-			"readuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'}),
+			"readgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10'}),
+			"readuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10'}),
+			"readuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10'}),
 			"freecomment":forms.CheckboxInput(attrs={'class':'form-control'}),
-			"commentgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'}),
-			"commentuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'}),
-			"commentuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10','multiple':'multiple'}),
+			"commentgrp":forms.SelectMultiple(attrs={'class':'form-control','size':'10'}),
+			"commentuin":forms.SelectMultiple(attrs={'class':'form-control','size':'10'}),
+			"commentuex":forms.SelectMultiple(attrs={'class':'form-control','size':'10'}),
 		}
 
 	def __init__(self,*args,**kwargs):
@@ -121,7 +125,7 @@ class PostPermForm(forms.ModelForm):
 		self.fields['passwd'].required=False
 		self.fields['readgrp'].label=u'允许访问的用户组'
 		self.fields['readgrp'].required=False
-		self.fields['readuin'] = UserMultiChoiceField()
+		#self.fields['readuin'] = UserMultiChoiceField()
 		self.fields['readuin'].label=u'额外允许访问的用户'
 		self.fields['readuin'].required=False
 		if 'instance' in kwargs.keys():
@@ -129,7 +133,7 @@ class PostPermForm(forms.ModelForm):
 			#self.fields['readuin'].queryset=kwargs['instance'].readuin.all()
 		else:
 			self.fields['readuin'].queryset=User.objects.none()
-		self.fields['readuex'] = UserMultiChoiceField()
+		#self.fields['readuex'] = UserMultiChoiceField()
 		self.fields['readuex'].label=u'额外不允许访问的用户'
 		self.fields['readuex'].required=False
 		#self.fields['readuex'].queryset=User.objects.none()
