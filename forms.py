@@ -3,7 +3,7 @@ from pichublog.models import *
 from zlogin.models import User
 from django import forms
 from django.core.exceptions import ValidationError
-from siteutil.DataConvert import str2in
+from siteutil.DataConvert import str2int
 import logging
 logger = logging.getLogger('userlog_file')
 # def mc_validator(value):
