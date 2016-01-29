@@ -126,7 +126,7 @@ class PostPermForm(forms.ModelForm):
 		self.fields['readuin'].required=False
 		if 'instance' in kwargs.keys():
 			logger.debug(repr(kwargs['instance'].readuin.all()))
-			self.fields['readuin'].queryset=kwargs['instance'].readuin.all()
+			#self.fields['readuin'].queryset=kwargs['instance'].readuin.all()
 		else:
 			self.fields['readuin'].queryset=User.objects.none()
 		self.fields['readuex'].label=u'额外不允许访问的用户'
