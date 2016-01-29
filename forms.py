@@ -129,6 +129,7 @@ class PostPermForm(forms.ModelForm):
 			#self.fields['readuin'].queryset=kwargs['instance'].readuin.all()
 		else:
 			self.fields['readuin'].queryset=User.objects.none()
+		self.fields['readuex'] = UserMultiChoiceField()
 		self.fields['readuex'].label=u'额外不允许访问的用户'
 		self.fields['readuex'].required=False
 		#self.fields['readuex'].queryset=User.objects.none()
