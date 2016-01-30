@@ -84,10 +84,10 @@ class EditPostForm(forms.ModelForm):
 		self.fields['markdown'].error_messages={'required':u"请输入正文"}
 
 class PostPermForm(forms.ModelForm):
-	readuin = UserMultiChoiceField()
-	readuex = UserMultiChoiceField()
-	commentuin = UserMultiChoiceField()
-	commentuex = UserMultiChoiceField()
+	readuin = UserMultiChoiceField(queryset=None)
+	readuex = UserMultiChoiceField(queryset=None)
+	commentuin = UserMultiChoiceField(queryset=None)
+	commentuex = UserMultiChoiceField(queryset=None)
 
 	class Meta:
 		model = BlogPost
