@@ -126,7 +126,6 @@ class PostPermForm(forms.ModelForm):
 		self.fields['passwd'].required=False
 		self.fields['readgrp'].label=u'允许访问的用户组'
 		self.fields['readgrp'].required=False
-		self.fields['readuin'] = UserMultiChoiceField()
 		self.fields['readuin'].label=u'额外允许访问的用户'
 		self.fields['readuin'].required=False
 		if 'instance' in kwargs.keys():
