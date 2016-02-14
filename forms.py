@@ -37,7 +37,7 @@ logger = logging.getLogger('userlog_file')
 # 	self.mc_validate(value)
 # 	return value
 
-class UserMultiChoiceField(forms.MultipleChoiceField):
+class UserMultiChoiceField(forms.ModelMultipleChoiceField):
 	def validate(self,value):
 		if self.required and not value:
 			raise ValidationError(self.error_messages['required'], code='required')
@@ -84,6 +84,11 @@ class EditPostForm(forms.ModelForm):
 		self.fields['markdown'].error_messages={'required':u"请输入正文"}
 
 class PostPermForm(forms.ModelForm):
+	readuin = UserMultiChoiceField(queryset=None)
+	readuex = UserMultiChoiceField(queryset=None)
+	commentuin = UserMultiChoiceField(queryset=None)
+	commentuex = UserMultiChoiceField(queryset=None)
+
 	class Meta:
 		model = BlogPost
 		fields = ['private','passwdlck','passwd','readgrp','readuin','readuex','freecomment','commentgrp','commentuin','commentuex']
