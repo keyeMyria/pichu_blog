@@ -88,12 +88,12 @@ class PostPermForm(forms.ModelForm):
 		model = BlogPost
 		fields = ['private','passwdlck','passwd','readgrp','readuin','readuex','freecomment','commentgrp','commentuin','commentuex']
 		#fields = ['private','passwdlck','passwd','freecomment']
-		field_classes = {
-			"readuin":UserMultiChoiceField,
-			"readuex":UserMultiChoiceField,
-			"commentuin":UserMultiChoiceField,
-			"commentuex":UserMultiChoiceField,
-		}
+		# field_classes = {
+		# 	"readuin":UserMultiChoiceField,
+		# 	"readuex":UserMultiChoiceField,
+		# 	"commentuin":UserMultiChoiceField,
+		# 	"commentuex":UserMultiChoiceField,
+		# }
 		widgets = {
 			"private":forms.CheckboxInput(attrs={'class':'form-control'}),
 			"passwdlck":forms.CheckboxInput(attrs={'class':'form-control'}),
