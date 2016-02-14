@@ -4,12 +4,14 @@ from django.conf import settings
 from django.shortcuts import render_to_response,RequestContext
 #from django_hosts.resolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.core.cache import get_cache
+#from django.core.cache import get_cache
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.db.models import Max as DbMax
-from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,CacheConfGet
+from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID
 from siteutil.CommonPaginator import SelfPaginator
+from siteutil.redisconf import RedisConfigHandler
 from zlogin.common.JsonResponse import JsonResponse
 from zlogin.decorators import login_detect,login_required,PermNeed
 from zlogin import zlauth
@@ -17,12 +19,20 @@ from zlogin.zlauth import GetUser,PermCheck
 from zlogin.captcha_app import CheckCaptcha,OutsiteCaptchaURL
 from pichublog.models import *
 from pichublog.forms import *
-cache = get_cache("pichublog")
+#cache = get_cache("pichublog")
 import traceback
+
+def strFastConfGet(key,default=""):
+	r = RedisConfigHandler(settings.CFG_REDIS,"pichublog")
+	return r.get_or_set(key,default)
+
+def boolFastConfGet(key,default=False):
+	r = RedisConfigHandler(settings.CFG_REDIS,"pichublog")
+	return r.get_or_set_bool(key,default)
 
 @login_detect()
 def Home(request):
-	mpid = CacheConfGet(cache,'HomePagePost',default=0)
+	mpid = strFastConfGet('HomePagePost',default=0)
 	mpo = None
 	try:
 		mpo = BlogPost.objects.get(id=str2int(mpid))
@@ -37,7 +47,7 @@ def Home(request):
 
 def LeaveMsgPage(request):
 	kwargs = {"request":request,'OutsiteCaptchaURL':OutsiteCaptchaURL(request),
-			  "LeaveMsgReviewSwitch":CacheConfGet(cache,'LeaveMsgReviewSwitch',default=True)}
+			  "LeaveMsgReviewSwitch":boolFastConfGet('LeaveMsgReviewSwitch',default=True)}
 	return render_to_response('home/leave.msg.html',kwargs,RequestContext(request))
 
 def AjaxShowLeaveMsg(request):
@@ -83,7 +93,7 @@ def LeaveMsgAdd(request):
 			web = request.POST.get('website')
 			title = request.POST.get('title')
 			stk = request.auth.cookie.get('zl2_token')
-			rws = not CacheConfGet(cache,'LeaveMsgReviewSwitch',default=True)
+			rws = not boolFastConfGet('LeaveMsgReviewSwitch',default=True)
 			LeaveMsg.objects.create(cmid=BigIntUniqueID(),title=title,anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=rws)
 			return HttpResponseRedirect(reverse('pichublog_msgboard'))
 	else:
@@ -114,7 +124,10 @@ def SysVarConfAjaxGet(request):
 	]
 	conf = []
 	for i in defaultconf:
-		conf.append((i[0],i[1],CacheConfGet(cache,i[0],default=i[2]),i[3]))
+		if i[3] == "bool":
+			conf.append((i[0],i[1],boolFastConfGet(i[0],default=i[2]),i[3]))
+		else:
+			conf.append((i[0],i[1],strFastConfGet(i[0],default=i[2]),i[3]))
 	kwvars = {
 		"request":request,
 		"conf":conf
@@ -128,7 +141,8 @@ def SysVarConfAjaxEdit(request):
 		chkpr=CheckPOST(['key','value'],request.POST.keys())
 		if not chkpr == "" :
 			return JsonResponse({"code":"400","errmsg":"Invalid Args."})
-		cache.set(request.POST['key'],request.POST['value'])
+		r = RedisConfigHandler(settings.CFG_REDIS,"pichublog")
+		r.set(request.POST['key'],request.POST['value'])
 		return JsonResponse({"code":"200"})
 	else:
 		return JsonResponse({"code":"400","errmsg":"Invalid Args."})
@@ -140,11 +154,12 @@ def SysVarConfAjaxToggle(request):
 		chkpr=CheckPOST(['key'],request.POST.keys())
 		if not chkpr == "" :
 			return JsonResponse({"code":"400","errmsg":"Invalid Args."})
-		c = cache.get(request.POST['key'])
-		if c == True:
-			cache.set(request.POST['key'],False)
-		elif c == False:
-			cache.set(request.POST['key'],True)
+		r = RedisConfigHandler(settings.CFG_REDIS,"pichublog")
+		c = r.get(request.POST['key'])
+		if c == "True":
+			r.set_bool(request.POST['key'],False)
+		elif c == "False":
+			r.set_bool(request.POST['key'],True)
 		else:
 			return JsonResponse({"code":"505","errmsg":"Not Boolean Field"})
 		return JsonResponse({"code":"200"})

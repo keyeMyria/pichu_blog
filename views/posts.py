@@ -3,10 +3,12 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.conf import settings
 from django.shortcuts import render_to_response,RequestContext
 #from django_hosts.resolvers import reverse
-from django.core.cache import get_cache
+#from django.core.cache import get_cache
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,CacheConfGet,MakeSummary
+from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,MakeSummary
 from siteutil.CommonPaginator import SelfPaginator
 from siteutil.CommonFilter import CommonFilter,FilterCondition
 from siteutil.htmlutil import renderMarkdownSafety
@@ -18,7 +20,15 @@ from zlogin.captcha_app import CheckCaptcha,OutsiteCaptchaURL
 from pichublog.models import *
 from pichublog.forms import *
 import time
-cache = get_cache("pichublog")
+#cache = get_cache("pichublog")
+
+def strFastConfGet(key,default=""):
+	r = RedisConfigHandler(settings.CFG_REDIS,"pichublog")
+	return r.get_or_set(key,default)
+
+def boolFastConfGet(key,default=False):
+	r = RedisConfigHandler(settings.CFG_REDIS,"pichublog")
+	return r.get_or_set_bool(key,default)
 
 @PermNeed('pichublog','Admin')
 def PostABkList(request):
@@ -83,7 +93,7 @@ def PostWBkList(request):
 def PostList(request,ctname):
 	bpo = BlogPost.objects.all().filter(rendered=True,hidden=False)
 	if ctname == "*":
-		stcl = CacheConfGet(cache,'MainTopList',default="")
+		stcl = strFastConfGet('MainTopList',default="")
 		ltcl = stcl.split(',')
 		itcl = map(lambda x:str2int(x), ltcl)
 		toplist = BlogPost.objects.filter(id__in=itcl)
@@ -96,7 +106,7 @@ def PostList(request,ctname):
 			itcl = map(lambda x:str2int(x), ltcl)
 			toplist = BlogPost.objects.filter(id__in=itcl)
 		except:
-			stcl = CacheConfGet(cache,'MainTopList',default="")
+			stcl = strFastConfGet('MainTopList',default="")
 			ltcl = stcl.split(',')
 			itcl = map(lambda x:str2int(x), ltcl)
 			toplist = BlogPost.objects.filter(id__in=itcl)
@@ -198,7 +208,7 @@ def PostView(request,ID):
 		"bpo":bpo,
 		"bkmode":False,
 		"ctlist":BlogCategoty.objects.all().order_by('order'),
-		"crws":CacheConfGet(cache,'CommentsReviewSwitch',default=True),
+		"crws":boolFastConfGet('CommentsReviewSwitch',default=True),
 		"allowcmt":pmhc,
 	}
 	return render_to_response('home/post.view.html',kwvars,RequestContext(request))
@@ -399,7 +409,7 @@ def AddComments(request,ID):
 			mail = request.POST.get('mail')
 			web = request.POST.get('website')
 			stk = request.auth.cookie.get('zl2_token')
-			rws = not CacheConfGet(cache,'CommentsReviewSwitch',default=True)
+			rws = not boolFastConfGet('CommentsReviewSwitch',default=True)
 			LeaveMsg.objects.create(post=bpo,cmid=BigIntUniqueID(),anonymou=True,stoken=stk,fromuser=nick,mail=mail,website=web,content=content,reviewed=rws)
 			return HttpResponseRedirect(reverse('pichublog_postview',args=(ID,)))
 	else:
