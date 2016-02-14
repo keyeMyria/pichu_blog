@@ -3,6 +3,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.conf import settings
 from django.shortcuts import render_to_response,RequestContext
 #from django_hosts.resolvers import reverse
+from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import get_cache
 from django.core.urlresolvers import reverse
 from django.contrib import messages
@@ -102,6 +103,7 @@ def SysVarConf(request):
 	}
 	return render_to_response('home/sysconf.var.html',kwvars,RequestContext(request))
 
+@csrf_exempt
 @PermNeed('pichublog','Admin')
 def SysVarConfAjaxGet(request):
 	defaultconf = [
@@ -119,6 +121,7 @@ def SysVarConfAjaxGet(request):
 	}
 	return render_to_response('home/sysconf.var.ajax.list.html',kwvars,RequestContext(request))
 
+@csrf_exempt
 @PermNeed('pichublog','Admin')
 def SysVarConfAjaxEdit(request):
 	if request.method == "POST":
@@ -130,6 +133,7 @@ def SysVarConfAjaxEdit(request):
 	else:
 		return JsonResponse({"code":"400","errmsg":"Invalid Args."})
 
+@csrf_exempt
 @PermNeed('pichublog','Admin')
 def SysVarConfAjaxToggle(request):
 	if request.method == "POST":
