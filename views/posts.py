@@ -11,7 +11,7 @@ from django.contrib import messages
 from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,MakeSummary
 from siteutil.CommonPaginator import SelfPaginator
 from siteutil.CommonFilter import CommonFilter,FilterCondition
-from siteutil.htmlutil import renderMarkdownSafety
+from siteutil.htmlutil import renderPichuMarkDown as renderMarkdownSafety
 from zlogin.common.JsonResponse import JsonResponse
 from zlogin.decorators import login_detect,login_required,PermNeed
 from zlogin import zlauth
