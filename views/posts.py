@@ -12,6 +12,7 @@ from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,MakeS
 from siteutil.CommonPaginator import SelfPaginator
 from siteutil.CommonFilter import CommonFilter,FilterCondition
 from siteutil.htmlutil import renderPichuMarkDown as renderMarkdownSafety
+from siteutil.redisconf import RedisConfigHandler
 from zlogin.common.JsonResponse import JsonResponse
 from zlogin.decorators import login_detect,login_required,PermNeed
 from zlogin import zlauth
