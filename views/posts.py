@@ -178,7 +178,7 @@ def PostView(request,ID):
 	if bpo.private:
 		if bpo.passwdlck:
 			if request.method == "POST":
-				if not request.POST.get('ppppppppaaaaaassssssssssssswwwwwooorrrrrdddd') == bpo.password:
+				if not request.POST.get('ppppppppaaaaaassssssssssssswwwwwooorrrrrdddd') == bpo.passwd:
 					messages.error(request,u"<b>密码错误！</b>")
 					return HttpResponseRedirect(reverse('pichublog_postpwdf',args=(bpo.id,)))
 			else:
