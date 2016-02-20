@@ -11,6 +11,15 @@
 {% endblock %}
 
 {% block content %}
+<div class="btn-toolbar">
+    <div class="btn-group">
+        <a class="btn btn-primary" href="javascript:history.go(-1);">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            后退
+        </a>
+    </div>
+</div>
+
 <div class="row">
 	<div class="col-md-5 col-md-offset-1">
 		<form class="form-horizontal" role="form" action="{% url 'pichublog_postview' pid %}" method="POST">

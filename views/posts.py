@@ -147,6 +147,7 @@ def PostAdd(request):
 def PostPasswordForm(request,ID):
 	kwvars = {
 		"request":request,
+		"ctlist":BlogCategoty.objects.all().order_by('order'),
 		"pid":ID,
 	}
 	return render_to_response('home/post.pswd.form.html',kwvars,RequestContext(request))
