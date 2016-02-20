@@ -170,7 +170,7 @@ def PostView(request,ID):
 				return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 	if bpo.private:
 		if bpo.passwdlck:
-			if request.method == POST:
+			if request.method == "POST":
 				if not request.POST.get['ppppppppaaaaaassssssssssssswwwwwooorrrrrdddd'] == bpo.password:
 					messages.error(request,u"<b>密码错误！</b>")
 					return HttpResponseRedirect(reverse('pichublog_postpwdf',args=(bpo.id,)))
@@ -237,6 +237,7 @@ def PostPreview(request,ID):
 		"bkmode":True,
 	}
 	return render_to_response('home/post.view.html',kwvars,RequestContext(request))
+
 def PostEdit(request,ID):
 	try:
 		bpo = BlogPost.objects.get(id=ID)

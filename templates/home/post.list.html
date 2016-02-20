@@ -60,7 +60,11 @@
 				<a href="{% url 'pichublog_postlist' j.engname %}"><span class="label label-info" style="display:inline-block">{{j.title}}</span></a>
 			{% endfor %}
 		</p>
-		<blockquote>{% mksummary i.html "233" %}</blockquote>
+		{% if i.private %}
+			<blockquote>{% mksummary i.html "233" %}</blockquote>
+		{% else %}
+			<div class="alert alert-warning" role="alert">这是私密文章，不提供摘要预览。</div>
+		{% endif %}
 	</li>
 	{% endfor %}
 	{% for i in lPage %}
@@ -83,7 +87,11 @@
 				<a href="{% url 'pichublog_postlist' j.engname %}"><span class="label label-info" style="display:inline-block">{{j.title}}</span></a>
 			{% endfor %}
 		</p>
-		<blockquote>{% mksummary i.html "233" %}</blockquote>
+		{% if i.private %}
+			<blockquote>{% mksummary i.html "233" %}</blockquote>
+		{% else %}
+			<div class="alert alert-warning" role="alert">这是私密文章，不提供摘要预览。</div>
+		{% endif %}
 	</li>
 	{% endfor %}
 </ul>
