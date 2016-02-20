@@ -144,6 +144,13 @@ def PostAdd(request):
 	)
 	return HttpResponseRedirect(reverse('pichublog_postedit',args=(bpo.id,)))
 
+def PostPasswordForm(request,pid):
+	kwvars = {
+		"request":request,
+		"pid":pid,
+	}
+	return render_to_response('home/post.pswd.form.html',kwvars,RequestContext(request))
+
 def PostView(request,ID):
 	thisuser = GetUser(request)
 	try:
