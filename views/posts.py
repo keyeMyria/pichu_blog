@@ -144,10 +144,10 @@ def PostAdd(request):
 	)
 	return HttpResponseRedirect(reverse('pichublog_postedit',args=(bpo.id,)))
 
-def PostPasswordForm(request,pid):
+def PostPasswordForm(request,ID):
 	kwvars = {
 		"request":request,
-		"pid":pid,
+		"pid":ID,
 	}
 	return render_to_response('home/post.pswd.form.html',kwvars,RequestContext(request))
 
