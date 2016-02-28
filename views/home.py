@@ -17,8 +17,8 @@ from zlogin.decorators import login_detect,login_required,PermNeed
 from zlogin import zlauth
 from zlogin.zlauth import GetUser,PermCheck
 from zlogin.captcha_app import CheckCaptcha,OutsiteCaptchaURL
-from pichublog.models import *
-from pichublog.forms import *
+from pichublog.models import KVConf,BlogCategoty,BlogPost,BlogComment,LeaveMsg
+from pichublog.forms import BlogCategotyForm,EditPostForm,PostPermForm
 #cache = get_cache("pichublog")
 import traceback
 

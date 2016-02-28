@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-from pichublog.models import *
+from pichublog.models import KVConf,BlogCategoty,BlogPost,BlogComment,LeaveMsg
 from zlogin.models import User
 from django import forms
 from django.core.exceptions import ValidationError
