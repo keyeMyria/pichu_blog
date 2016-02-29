@@ -13,6 +13,10 @@
 {% endif %}
 {% endblock %}
 
+{% block head %}
+{% res css 'zumdown.default' %}
+{% endblock %}
+
 {% block content %}
 <div class="btn-toolbar">
     <div class="btn-group">
@@ -52,7 +56,7 @@
         <a href="{% url 'pichublog_postlist' j.engname %}"><span class="label label-info" style="display:inline-block">{{j.title}}</span></a>
       {% endfor %}
     </div>
-    <div class="markdown">{{bpo.html|safe}}</div>
+    <div class="zumdown">{{bpo.html|safe}}</div>
   </div>
 </div>
 

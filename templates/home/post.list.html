@@ -63,7 +63,7 @@
 		{% if i.private %}
 			<div class="alert alert-warning" role="alert">这是私密文章，不提供摘要预览。</div>
 		{% else %}
-			<blockquote>{% mksummary i.html "233" %}</blockquote>
+			<blockquote>{% mksummary i.markdown "233" %}</blockquote>
 		{% endif %}
 	</li>
 	{% endfor %}
@@ -90,7 +90,7 @@
 		{% if i.private %}
 			<div class="alert alert-warning" role="alert">这是私密文章，不提供摘要预览。</div>
 		{% else %}
-			<blockquote>{% mksummary i.html "233" %}</blockquote>
+			<blockquote>{% mksummary i.markdown "233" %}</blockquote>
 		{% endif %}
 	</li>
 	{% endfor %}
