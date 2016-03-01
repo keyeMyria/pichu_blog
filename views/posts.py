@@ -98,8 +98,14 @@ def PostList(request,ctname):
 		ltcl = stcl.split(',')
 		itcl = map(lambda x:str2int(x), ltcl)
 		toplist = BlogPost.objects.filter(id__in=itcl)
+		cttitle = "*"
 	else:
 		bpo = bpo.filter(category__engname=ctname)
+		try:
+			cto = BlogCategoty.objects.get(engname=ctname)
+			cttitle = cto.title
+		except:
+			cttitle = "?"
 		try:
 			cato = BlogCategoty.objects.get(engname=ctname)
 			stcl = cato.topli
@@ -124,6 +130,7 @@ def PostList(request,ctname):
 	kwvars = {
 		"request":request,
 		"ctname":ctname,
+		"cttitle":cttitle,
 		"TopList":toplist,
 		"lPage":lpg,
 		"ctlist":BlogCategoty.objects.all().order_by('order'),
