@@ -177,7 +177,7 @@ def PostView(request,ID):
 		return render_to_response('home/post.err.html',kwvars,RequestContext(request))
 	if bpo.hidden:
 		if not bpo.author == thisuser:
-			if not PermCheck('pichublog','Admin'):
+			if not PermCheck(request.auth,'pichublog','Admin'):
 				kwvars = {
 				"request":request,
 				"ctlist":BlogCategoty.objects.all().order_by('order'),
