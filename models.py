@@ -95,6 +95,7 @@ class BlogComment(models.Model):
 class LeaveMsg(models.Model):
 	cmid      = models.BigIntegerField(primary_key=True)
 	reviewed  = models.BooleanField(default=False)
+	title     = models.CharField(max_length=255)
 	time      = models.DateTimeField(auto_now_add=True,auto_now=True)
 	anonymou  = models.BooleanField(default=True)
 	stoken    = models.CharField(max_length=36,db_index=True)
