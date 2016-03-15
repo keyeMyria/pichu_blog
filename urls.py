@@ -6,6 +6,8 @@ urlpatterns = patterns('pichublog.views',
 	url(r'^msgboard/$', 'home.LeaveMsgPage', name='pichublog_msgboard'),
 	url(r'^msgboard/ajax/show/$', 'home.AjaxShowLeaveMsg', name='pichublog_lmshow'),
 	url(r'^msgboard/add/$', 'home.LeaveMsgAdd', name='pichublog_lmadd'),
+	url(r'^msgboard/del/(?P<cmid>[0-9]+)/$', 'home.LeaveMsgDel', name='pichublog_lmdel'),
+	url(r'^msgboard/review/(?P<cmid>[0-9]+)/$', 'home.LeaveMsgSetReview', name='pichublog_lmsr'),
 
 	url(r'^pichu/sysconf/$', 'home.SysConf', name='pichublog_sysconf'),
 	url(r'^pichu/sysconf/var/$', 'home.SysVarConf', name='pichublog_sysvarconf'),
@@ -32,6 +34,8 @@ urlpatterns = patterns('pichublog.views',
 	url(r'^p/(?P<ID>\d+)/del/$', 'posts.PostDel', name='pichublog_postdel'),
 	url(r'^p/(?P<ID>\d+)/comments/ajax/show/$', 'posts.AjaxShowComments', name='pichublog_cmtshow'),
 	url(r'^p/(?P<ID>\d+)/comments/add/$', 'posts.AddComments', name='pichublog_cmtadd'),
+	url(r'^comments/del/(?P<cmid>[0-9]+)/$', 'posts.DelComments', name='pichublog_cmtdel'),
+	url(r'^comments/rev/(?P<cmid>[0-9]+)/$', 'posts.SetCommentsReview', name='pichublog_cmtsr'),
 	url(r'^pichu/post/list/$', 'posts.PostABkList', name='pichublog_postabklist'),
 	
 )

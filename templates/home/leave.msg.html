@@ -83,6 +83,7 @@
 
 <script type="text/javascript">
 function LoadComment(page){
+  window.thispagenum = page;
   $("#commentBox").html("载入中...");
   $("#commentBox").load("{% url 'pichublog_lmshow' %}?page="+page);
 }
@@ -94,6 +95,39 @@ function newCaptcha(){
   var urlsource = "{{OutsiteCaptchaURL}}";
   var url = urlsource + uuid + ".png";
   $("#captcha_box").attr("src",url);
+}
+function dellm(cmid,vcode){
+  var urlsource = "{% url 'pichublog_lmdel' '23333' %}";
+  var url = urlsource.replace(/23333/,cmid) + "?veryfycode="+vcode;
+  $.get(url,function(data){
+    if(data['stat'] == 'ok'){
+      LoadComment(window.thispagenum);
+    }else{
+      alert('删除失败：'+data['type']);
+    }
+  })
+}
+function reviewedCancel(cmid){
+  var urlsource = "{% url 'pichublog_lmsr' '23333' %}";
+  var url = urlsource.replace(/23333/,cmid) + "?val=false";
+  $.get(url,function(data){
+    if(data['stat'] == 'ok'){
+      LoadComment(window.thispagenum);
+    }else{
+      alert('取消审核失败：'+data['type']);
+    }
+  })
+}
+function reviewedOK(cmid){
+  var urlsource = "{% url 'pichublog_lmsr' '23333' %}";
+  var url = urlsource.replace(/23333/,cmid) + "?val=true";
+  $.get(url,function(data){
+    if(data['stat'] == 'ok'){
+      LoadComment(window.thispagenum);
+    }else{
+      alert('审核失败：'+data['type']);
+    }
+  })
 }
 LoadComment(1);
 newCaptcha();

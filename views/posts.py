@@ -8,7 +8,7 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,MakeSummary
+from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,MakeSummary,TIIHASH
 from siteutil.CommonPaginator import SelfPaginator
 from siteutil.CommonFilter import CommonFilter,FilterCondition
 from siteutil.htmlutil import renderPichuMarkDown as renderMarkdownSafety
@@ -253,6 +253,7 @@ def PostPreview(request,ID):
 	}
 	return render_to_response('home/post.view.html',kwvars,RequestContext(request))
 
+@PermNeed('pichublog','Admin')
 def PostEdit(request,ID):
 	try:
 		bpo = BlogPost.objects.get(id=ID)
@@ -284,7 +285,7 @@ def PostEdit(request,ID):
 	}
 	return render_to_response('home/post.edit.html',kwvars,RequestContext(request))
 
-
+@PermNeed('pichublog','Admin')
 def PostGrant(request,ID):
 	try:
 		bpo = BlogPost.objects.get(id=ID)
@@ -312,6 +313,7 @@ def PostGrant(request,ID):
 	}
 	return render_to_response('home/post.grant.html',kwvars,RequestContext(request))
 
+@PermNeed('pichublog','Admin')
 def PostHidden(request,ID):
 	try:
 		bpo = BlogPost.objects.get(id=ID)
@@ -332,6 +334,7 @@ def PostHidden(request,ID):
 	else:
 		return HttpResponseRedirect(reverse('pichublog_postabklist'))
 
+@PermNeed('pichublog','Admin')
 def PostDel(request,ID):
 	try:
 		bpo = BlogPost.objects.get(id=ID)
@@ -377,6 +380,30 @@ def AjaxShowComments(request,ID):
 		'AjaxPaginatorID':'cmt',
 	}
 	return render_to_response('home/ajax.comment.html',kwvars,RequestContext(request))
+
+@PermNeed('pichublog','Admin')
+def DelComments(request,cmid):
+	try:
+		lmo = BlogComment.objects.get(cmid=cmid)
+	except BlogComment.DoesNotExist:
+		return JsonResponse({"stat":"err","type":"DoesNotExist"})
+	if request.GET.get('veryfycode') == TIIHASH(lmo.fromuser,lmo.fromuser):
+		lmo.delete()
+	else:
+		return JsonResponse({"stat":"err","type":"VerificationError"})
+	return JsonResponse({"stat":"ok","type":"OK"})
+
+@PermNeed('pichublog','Admin')
+def SetCommentsReview(request,cmid):
+	try:
+		lmo = BlogComment.objects.get(cmid=cmid)
+	except BlogComment.DoesNotExist:
+		return JsonResponse({"stat":"err","type":"DoesNotExist"})
+	logic = request.GET.get('val')
+	bl = (logic == "true")
+	lmo.reviewed = bl
+	lmo.save()
+	return JsonResponse({"stat":"ok","type":"OK"})
 
 def AddComments(request,ID):
 	try:

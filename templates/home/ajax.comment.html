@@ -1,4 +1,5 @@
 {% load staticres %}
+{% load crypto %}
 <ul class="list-group">
 	{% for i in lPage %}
 	<li class="list-group-item">
@@ -32,7 +33,7 @@
 			&nbsp;
 			{{ i.time|date:"Y-m-d H:i:s" }}
 			{% if owner%}
-			<a role="button" class="btn btn-danger btn-xs" href="javascript:dellm('{{i.cmid}}');">删除</a>
+			<a role="button" class="btn btn-danger btn-xs" href="javascript:dellm('{{i.cmid}}','{% tiihash i.fromuser i.fromuser %}');">删除</a>
 			{% if i.reviewed %}
 			<a role="button" class="btn btn-warning btn-xs" href="javascript:reviewedCancel('{{i.cmid}}');">取消审核</a>
 			{% else %}

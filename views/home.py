@@ -9,7 +9,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.db.models import Max as DbMax
-from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID
+from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,TIIHASH
 from siteutil.CommonPaginator import SelfPaginator
 from siteutil.redisconf import RedisConfigHandler
 from zlogin.common.JsonResponse import JsonResponse
@@ -65,6 +65,30 @@ def AjaxShowLeaveMsg(request):
 		'AjaxPaginatorID':'cmt',
 	}
 	return render_to_response('home/ajax.leavemsg.html',kwvars,RequestContext(request))
+
+@PermNeed('pichublog','Admin')
+def LeaveMsgDel(request,cmid):
+	try:
+		lmo = LeaveMsg.objects.get(cmid=cmid)
+	except LeaveMsg.DoesNotExist:
+		return JsonResponse({"stat":"err","type":"DoesNotExist"})
+	if request.GET.get('veryfycode') == TIIHASH(lmo.title,lmo.fromuser):
+		lmo.delete()
+	else:
+		return JsonResponse({"stat":"err","type":"VerificationError"})
+	return JsonResponse({"stat":"ok","type":"OK"})
+
+@PermNeed('pichublog','Admin')
+def LeaveMsgSetReview(request,cmid):
+	try:
+		lmo = LeaveMsg.objects.get(cmid=cmid)
+	except LeaveMsg.DoesNotExist:
+		return JsonResponse({"stat":"err","type":"DoesNotExist"})
+	logic = request.GET.get('val')
+	bl = (logic == "true")
+	lmo.reviewed = bl
+	lmo.save()
+	return JsonResponse({"stat":"ok","type":"OK"})
 
 def LeaveMsgAdd(request):
 	if request.method == "POST":
