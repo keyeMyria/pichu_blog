@@ -23,7 +23,7 @@
 <div class="alert alert-info">
 	内容支持使用{{zumdownver}}书写，渲染引擎为{{rnginver}}
 </div>
-<form class="form-horizontal" role="form" action="" method="POST">
+<form id="mainform" class="form-horizontal" role="form" action="" method="POST">
 	{% csrf_token %}
     {% for item in form %}
     <input type="hidden" name="rfm" value="{{rfm}}">
