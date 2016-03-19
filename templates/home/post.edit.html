@@ -20,6 +20,9 @@
 {% endblock %}
 
 {% block content %}
+<div class="alert alert-info">
+	内容支持使用{{zumdownver}}书写，渲染引擎为{{rnginver}}
+</div>
 <form class="form-horizontal" role="form" action="" method="POST">
 	{% csrf_token %}
     {% for item in form %}
@@ -32,7 +35,8 @@
 	{% endfor %}
 	<div class="form-group">
 		<div class="col-md-offset-1 col-md-10">
-			<button type="submit" class="btn btn-primary btn-lg">提交更改</button>
+			<button class="btn btn-primary btn-lg" onclick="esubmit();">提交更改</button>
+			<button class="btn btn-info btn-lg" onclick="zumdown_preview();">先行预览</button>
 		</div>
 	</div>
 </form>
@@ -43,5 +47,17 @@
           preserveSelectionOnMove: 'moved',
           moveOnSelect: false,
     });
+
+    function zumdown_preview(){
+		$("#mainform").attr('action','{% siteurl "inabar" %}');
+		$("#mainform").attr('target','_blank');
+		$("#mainform").submit();
+    }
+
+    function esubmit(){
+    	$("#mainform").attr('action','');
+		$("#mainform").attr('target','_self');
+		$("#mainform").submit();
+    }
 </script>
 {% endblock %}

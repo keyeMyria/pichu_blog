@@ -11,8 +11,9 @@ from django.contrib import messages
 from siteutil.DataConvert import str2int,CheckPOST,str2long,BigIntUniqueID,MakeSummary,TIIHASH
 from siteutil.CommonPaginator import SelfPaginator
 from siteutil.CommonFilter import CommonFilter,FilterCondition
-from siteutil.htmlutil import renderPichuMarkDown as renderMarkdownSafety
+#from siteutil.htmlutil import renderPichuMarkDown as renderMarkdownSafety
 from siteutil.redisconf import RedisConfigHandler
+from siteutil.InabaR.renderer import BlogRender,getver
 from zlogin.common.JsonResponse import JsonResponse
 from zlogin.decorators import login_detect,login_required,PermNeed
 from zlogin import zlauth
@@ -268,7 +269,8 @@ def PostEdit(request,ID):
 		form = EditPostForm(request.POST,instance=bpo)
 		if form.is_valid():
 			nbp = form.save(commit=False)
-			nbp.html = renderMarkdownSafety(nbp.markdown)
+			#nbp.html = renderMarkdownSafety(nbp.markdown)
+			nbp.html = BlogRender(nbp.markdown,html=False,traceback=False)
 			nbp.rendered = True
 			nbp.save()
 			form.save_m2m()
@@ -278,9 +280,12 @@ def PostEdit(request,ID):
 				return HttpResponseRedirect(reverse('pichublog_postabklist'))
 	else:
 		form = EditPostForm(instance=bpo)
+	ver = getver()
 	kwvars = {
 		"request":request,
 		'form':form,
+		'rnginver':ver[0],
+		'zumdownver':ver[1],
 		'rfm':request.REQUEST.get("rfm"),
 	}
 	return render_to_response('home/post.edit.html',kwvars,RequestContext(request))
