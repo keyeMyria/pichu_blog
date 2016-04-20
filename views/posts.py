@@ -224,6 +224,7 @@ def PostView(request,ID):
 		"request":request,
 		"bpo":bpo,
 		"bkmode":False,
+		"OutsiteCaptchaURL":OutsiteCaptchaURL(request),
 		"ctlist":BlogCategoty.objects.all().order_by('order'),
 		"crws":boolFastConfGet('CommentsReviewSwitch',default=True),
 		"allowcmt":pmhc,
